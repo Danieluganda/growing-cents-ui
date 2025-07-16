@@ -1,10 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Dashboard - Growing Cents</title>
-  <link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg-dark: #103125;
@@ -127,19 +120,6 @@
     background-color: #155642;
   }
 
-  main.content {
-    flex-grow: 1;
-    padding: 40px 50px;
-    overflow-y: auto;
-  }
-
-  main.content header h1 {
-    font-size: 2.2rem;
-    color: var(--accent-gold);
-    font-family: 'Marcellus', serif;
-    margin-bottom: 0.5em;
-  }
-
   /* Responsive sidebar */
   @media (max-width: 900px) {
     body {
@@ -177,15 +157,8 @@
       z-index: 100;
       padding: 0;
     }
-
-    main.content {
-      padding: 20px;
-    }
   }
 </style>
-
-</head>
-<body>
 
 <nav class="sidebar">
   <h2>Growing Cents</h2>
@@ -279,94 +252,3 @@
     });
   });
 </script>
-
-<main style="flex-grow:1; padding:40px 50px; overflow-y:auto; color:#fff;">
-  <header>
-    <h1 style="font-size:2.2rem; color:#C39E3D; font-family:'Marcellus', serif; margin-bottom:0.5em;">
-      Admin Dashboard
-    </h1>
-    <p style="font-size:1.1rem;">Analytics and insights on club performance and assessments.</p>
-  </header>
-
-  <!-- Filters -->
-  <section style="display:flex; flex-wrap:wrap; gap:20px; margin-bottom:30px;">
-    <div style="display:flex; flex-direction:column;">
-      <label for="filter-country" style="margin-bottom:5px; font-weight:600;">Country</label>
-      <select id="filter-country" style="padding:10px; border-radius:6px; border:none; font-size:1rem;">
-        <option value="">All</option>
-        <option>Uganda</option>
-        <option>Kenya</option>
-      </select>
-    </div>
-    <div style="display:flex; flex-direction:column;">
-      <label for="filter-tier" style="margin-bottom:5px; font-weight:600;">Club Tier</label>
-      <select id="filter-tier" style="padding:10px; border-radius:6px; border:none; font-size:1rem;">
-        <option value="">All</option>
-        <option>Tier 1</option>
-        <option>Tier 2</option>
-        <option>Tier 3</option>
-      </select>
-    </div>
-    <div style="display:flex; flex-direction:column;">
-      <label for="filter-status" style="margin-bottom:5px; font-weight:600;">Status</label>
-      <select id="filter-status" style="padding:10px; border-radius:6px; border:none; font-size:1rem;">
-        <option value="">All</option>
-        <option>Completed</option>
-        <option>Incomplete</option>
-      </select>
-    </div>
-  </section>
-
-  <!-- Dashboard Cards -->
-  <section style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:20px; margin-bottom:30px;">
-    <div style="background:#fff; color:#333; padding:20px; border-radius:10px; box-shadow:0 3px 6px rgba(0,0,0,0.1);">
-      <h3 style="margin:0; font-size:1.4rem; color:#103125;">Total Clubs</h3>
-      <p style="font-size:1.1rem; margin-top:10px;">124</p>
-    </div>
-    <div style="background:#fff; color:#333; padding:20px; border-radius:10px; box-shadow:0 3px 6px rgba(0,0,0,0.1);">
-      <h3 style="margin:0; font-size:1.4rem; color:#103125;">Active Subscriptions</h3>
-      <p style="font-size:1.1rem; margin-top:10px;">98</p>
-    </div>
-    <div style="background:#fff; color:#333; padding:20px; border-radius:10px; box-shadow:0 3px 6px rgba(0,0,0,0.1);">
-      <h3 style="margin:0; font-size:1.4rem; color:#103125;">Expired Subscriptions</h3>
-      <p style="font-size:1.1rem; margin-top:10px;">12</p>
-    </div>
-    <div style="background:#fff; color:#333; padding:20px; border-radius:10px; box-shadow:0 3px 6px rgba(0,0,0,0.1);">
-      <h3 style="margin:0; font-size:1.4rem; color:#103125;">Assessments Pending</h3>
-      <p style="font-size:1.1rem; margin-top:10px;">24</p>
-    </div>
-    <div style="background:#fff; color:#333; padding:20px; border-radius:10px; box-shadow:0 3px 6px rgba(0,0,0,0.1);">
-      <h3 style="margin:0; font-size:1.4rem; color:#103125;">Average Maturity Score</h3>
-      <p style="font-size:1.1rem; margin-top:10px;">52.4%</p>
-    </div>
-    <div style="background:#fff; color:#333; padding:20px; border-radius:10px; box-shadow:0 3px 6px rgba(0,0,0,0.1);">
-      <h3 style="margin:0; font-size:1.4rem; color:#103125;">Clubs in Critical Health</h3>
-      <p style="font-size:1.1rem; margin-top:10px;">7</p>
-    </div>
-    <div style="background:#fff; color:#333; padding:20px; border-radius:10px; box-shadow:0 3px 6px rgba(0,0,0,0.1);">
-      <h3 style="margin:0; font-size:1.4rem; color:#103125;">Most Active Region</h3>
-      <p style="font-size:1.1rem; margin-top:10px;">Central Uganda</p>
-    </div>
-    <div style="background:#fff; color:#333; padding:20px; border-radius:10px; box-shadow:0 3px 6px rgba(0,0,0,0.1);">
-      <h3 style="margin:0; font-size:1.4rem; color:#103125;">Incomplete Assessments</h3>
-      <p style="font-size:1.1rem; margin-top:10px;">16</p>
-    </div>
-  </section>
-
-  <!-- Nudge Trigger -->
-  <section style="background:#fff; border-radius:10px; padding:20px; color:#333; max-width:400px;">
-    <h3 style="margin-top:0; color:#103125;">Trigger Nudges</h3>
-    <label for="nudge-delay" style="margin-top:10px; display:block;">Select Inactivity Period:</label>
-    <select id="nudge-delay" style="padding:8px; width:100%; margin:10px 0; border-radius:6px;">
-      <option>3 days</option>
-      <option>7 days</option>
-      <option>14 days</option>
-      <option>30 days</option>
-    </select>
-    <button onclick="alert('Nudge triggered!')" style="background:#C39E3D; border:none; color:#103125; padding:12px 20px; font-weight:bold; border-radius:6px; cursor:pointer; width:100%;">Send Nudge to Inactive Clubs</button>
-  </section>
-</main>
-
-
-</body>
-</html>

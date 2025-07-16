@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <title>User Approvals – Growing Cents</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet" />
   <style>
     :root {
       --bg-dark: #103125;
@@ -26,41 +26,6 @@
       color: var(--light);
       display: flex;
       min-height: 100vh;
-    }
-
-    nav.sidebar {
-      width: 260px;
-      background-color: var(--bg-dark);
-      display: flex;
-      flex-direction: column;
-      padding-top: 30px;
-      box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
-      flex-shrink: 0;
-    }
-
-    nav.sidebar h2 {
-      font-family: 'Marcellus', serif;
-      font-size: 1.8rem;
-      padding: 0 30px 24px;
-      color: var(--accent-gold);
-      margin: 0;
-      border-bottom: 2px solid rgba(255, 255, 255, 0.2);
-    }
-
-    nav.sidebar a {
-      color: white;
-      text-decoration: none;
-      padding: 15px 30px;
-      font-weight: 600;
-      font-size: 1.1rem;
-      border-left: 4px solid transparent;
-      transition: background-color 0.3s ease;
-    }
-
-    nav.sidebar a:hover,
-    nav.sidebar a.active {
-      background-color: rgba(255,255,255,0.05);
-      border-left-color: var(--accent-gold);
     }
 
     main.content {
@@ -160,25 +125,6 @@
         flex-direction: column;
       }
 
-      nav.sidebar {
-        width: 100%;
-        flex-direction: row;
-        padding: 10px;
-        overflow-x: auto;
-        border-bottom: 1px solid #ccc;
-      }
-
-      nav.sidebar h2 {
-        display: none;
-      }
-
-      nav.sidebar a {
-        flex: 1 0 auto;
-        padding: 10px;
-        font-size: 1rem;
-        text-align: center;
-      }
-
       main.content {
         padding: 20px;
       }
@@ -187,65 +133,75 @@
 </head>
 <body>
 
-<nav class="sidebar">
-  <h2>Growing Cents</h2>
-  <a href="admin-dashboard.html">Dashboard</a>
-  <a href="clubs.html">All Clubs</a>
-  <a href="audit-logs.html">Audit Logs</a>
-  <a href="admin-users.html" class="active">User Approvals</a>
-  <a href="logout.html">Logout</a>
-</nav>
+  <div id="sidebar-container"></div>
 
-<main class="content">
-  <header>
-    <h1>User Approvals</h1>
-    <p>Review and approve club member accounts and club creation requests.</p>
-  </header>
+  <main class="content">
+    <header>
+      <h1>User Approvals</h1>
+      <p>Review and approve club member accounts and club creation requests.</p>
+    </header>
 
-  <section>
-    <h2>Pending User Approvals</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>User Name</th>
-          <th>Email</th>
-          <th>Requested Club</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Sarah N.</td>
-          <td>sarah@example.com</td>
-          <td>Green Harvest</td>
-          <td>
-            <button class="btn-approve">Approve</button>
-            <button class="btn-reject">Reject</button>
-          </td>
-        </tr>
-        <tr>
-          <td>David O.</td>
-          <td>david@example.com</td>
-          <td>Club not found</td>
-          <td>
-            <button class="btn-approve">Approve</button>
-            <button class="btn-reject">Reject</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
+    <section>
+      <h2>Pending User Approvals</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>User Name</th>
+            <th>Email</th>
+            <th>Requested Club</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Sarah N.</td>
+            <td>sarah@example.com</td>
+            <td>Green Harvest</td>
+            <td>
+              <button class="btn-approve">Approve</button>
+              <button class="btn-reject">Reject</button>
+            </td>
+          </tr>
+          <tr>
+            <td>David O.</td>
+            <td>david@example.com</td>
+            <td>Club not found</td>
+            <td>
+              <button class="btn-approve">Approve</button>
+              <button class="btn-reject">Reject</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
 
-  <section>
-    <h2>Create New Club</h2>
-    <div class="create-club-form">
-      <input type="text" placeholder="Club Name" />
-      <input type="text" placeholder="Country" />
-      <input type="text" placeholder="Region" />
-      <button>Create Club</button>
-    </div>
-  </section>
-</main>
+    <section>
+      <h2>Create New Club</h2>
+      <div class="create-club-form">
+        <input type="text" placeholder="Club Name" />
+        <input type="text" placeholder="Country" />
+        <input type="text" placeholder="Region" />
+        <button>Create Club</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    fetch('admin-menu.html')
+      .then(response => response.text())
+      .then(html => {
+        document.getElementById('sidebar-container').innerHTML = html;
+
+        // Re-attach the menu-toggle event listeners after loading menu content
+        document.querySelectorAll('.menu-toggle').forEach(button => {
+          button.addEventListener('click', () => {
+            const submenu = button.nextElementSibling;
+            submenu.classList.toggle('show');
+          });
+        });
+      })
+      .catch(err => console.error('Failed to load menu:', err));
+  </script>
 
 </body>
 </html>
