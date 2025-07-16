@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Growing Cents - Assessment Questions</title>
+<style>
+  /* Reset */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0; padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f4f7fa;
+    color: #2c3e50;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* Sidebar */
+  nav.sidebar {
+    width: 260px;
+    background: #2a9df4;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding-top: 30px;
+    flex-shrink: 0;
+    box-shadow: 2px 0 8px rgba(42,157,244,0.4);
+  }
+
+  nav.sidebar h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    padding: 0 30px 24px 30px;
+    margin: 0;
+    border-bottom: 2px solid rgba(255,255,255,0.3);
+  }
+
+  nav.sidebar a {
+    color: white;
+    text-decoration: none;
+    padding: 15px 30px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: background-color 0.25s ease;
+    border-left: 4px solid transparent;
+  }
+  nav.sidebar a:hover {
+    background-color: #1d6fd6;
+    border-left-color: #f2a365;
+  }
+  nav.sidebar a.active {
+    background-color: #1d6fd6;
+    border-left-color: #f2a365;
+  }
+
+  /* Main content */
+  main.content {
+    flex-grow: 1;
+    padding: 40px 50px;
+    max-width: 100%;
+    overflow-y: auto;
+  }
+
+  main.content header {
+    margin-bottom: 30px;
+  }
+  main.content header h1 {
+    margin: 0 0 6px 0;
+    font-weight: 700;
+    font-size: 2.4rem;
+    color: #34495e;
+  }
+  main.content header p {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #5d6d7e;
+  }
+
+  /* Form Styles */
+  form#assessmentForm {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
+    padding: 28px 36px;
+    max-width: 700px;
+  }
+
+  .step {
+    display: none;
+  }
+
+  .step.active {
+    display: block;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+
+  input[type="text"], select, textarea {
+    width: 100%;
+    padding: 10px 14px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+  }
+
+  .btn-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  button {
+    background-color: #2a9df4;
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(42,157,244,0.4);
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background-color: #1d6fd6;
+  }
+  button[disabled] {
+    background-color: #a6c9f9;
+    cursor: not-allowed;
+  }
+
+  /* Progress Bar */
+  #progressBar {
+    width: 100%;
+    background-color: #e6f0ff;
+    border-radius: 10px;
+    margin-bottom: 24px;
+    overflow: hidden;
+    height: 18px;
+  }
+  #progressBar div {
+    height: 100%;
+    background-color: #2a9df4;
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    body {
+      flex-direction: column;
+    }
+    nav.sidebar {
+      width: 100%;
+      flex-direction: row;
+      padding: 10px 0;
+      overflow-x: auto;
+      box-shadow: none;
+      border-bottom: 1px solid #ccc;
+    }
+    nav.sidebar h2 {
+      display: none;
+    }
+    nav.sidebar a {
+      flex: 1 0 auto;
+      padding: 15px 12px;
+      font-size: 1rem;
+      border-left: none;
+      text-align: center;
+    }
+    nav.sidebar a.active {
+      border-left: none;
+      border-bottom: 3px solid #f2a365;
+      background-color: transparent;
+    }
+    main.content {
+      padding: 20px;
+    }
+    form#assessmentForm {
+      padding: 20px;
+      max-width: 100%;
+    }
+    .btn-group {
+      flex-direction: column;
+    }
+    .btn-group button {
+      width: 100%;
+      margin-bottom: 12px;
+      padding: 14px 0;
+    }
+  }
+</style>
+</head>
+<body>
+
+<nav class="sidebar" role="navigation" aria-label="Main menu">
+  <h2>Growing Cents</h2>
+  <a href="index.html">Dashboard</a>
+  <a href="assessment-start.html">Start Assessment</a>
+  <a href="question.html" class="active" aria-current="page">Assessment Questions</a>
+  <a href="history.html">Past Assessments</a>
+  <a href="club-profile.html">My Club Profile</a>
+  <a href="logout.html">Logout</a>
+</nav>
+
+<main class="content" role="main">
+  <header>
+    <h1>Assessment Questions</h1>
+    <p>Complete the sections below to evaluate your club's health and maturity.</p>
+  </header>
+
+  <form id="assessmentForm" novalidate>
+
+    <div id="progressBar" aria-label="Assessment progress">
+      <div></div>
+    </div>
+
+    <!-- Step 1 -->
+    <div class="step active" aria-label="Step 1">
+      <h2>Step 1: Basic Information</h2>
+      <label for="clubName">Club Name</label>
+      <input type="text" id="clubName" name="clubName" required placeholder="Enter your club's name" />
+      
+      <label for="assessmentDate">Assessment Date</label>
+      <input type="date" id="assessmentDate" name="assessmentDate" required />
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step" aria-label="Step 2">
+      <h2>Step 2: Financial Health</h2>
+      <label for="monthlyRevenue">Monthly Revenue (USD)</label>
+      <input type="number" id="monthlyRevenue" name="monthlyRevenue" min="0" required placeholder="e.g. 10000" />
+      
+      <label for="expenses">Monthly Expenses (USD)</label>
+      <input type="number" id="expenses" name="expenses" min="0" required placeholder="e.g. 5000" />
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step" aria-label="Step 3">
+      <h2>Step 3: Member Engagement</h2>
+      <label for="meetingFrequency">Meeting Frequency</label>
+      <select id="meetingFrequency" name="meetingFrequency" required>
+        <option value="" disabled selected>Select frequency</option>
+        <option value="weekly">Weekly</option>
+        <option value="biweekly">Bi-Weekly</option>
+        <option value="monthly">Monthly</option>
+        <option value="quarterly">Quarterly</option>
+      </select>
+      
+      <label for="activeMembers">Number of Active Members</label>
+      <input type="number" id="activeMembers" name="activeMembers" min="1" required placeholder="e.g. 20" />
+    </div>
+
+    <div class="btn-group">
+      <button type="button" id="prevBtn" onclick="nextPrev(-1)" disabled>Previous</button>
+      <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+    </div>
+  </form>
+</main>
+
+<script>
+  const form = document.getElementById('assessmentForm');
+  const steps = document.querySelectorAll('.step');
+  const progressBar = document.querySelector('#progressBar div');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  let currentStep = 0;
+
+  function showStep(n) {
+    steps.forEach((step, i) => {
+      step.classList.toggle('active', i === n);
+    });
+    prevBtn.disabled = (n === 0);
+    nextBtn.textContent = (n === steps.length - 1) ? 'Submit' : 'Next';
+    updateProgressBar(n);
+  }
+
+  function updateProgressBar(n) {
+    const percent = ((n) / (steps.length - 1)) * 100;
+    progressBar.style.width = percent + '%';
+  }
+
+  function validateStep() {
+    const inputs = steps[currentStep].querySelectorAll('input, select');
+    for (let input of inputs) {
+      if (!input.checkValidity()) {
+        input.reportValidity();
+        return false;
+      }
+    }
+    return true;
+  }
+
+  function nextPrev(n) {
+    if (n === 1 && !validateStep()) return;
+
+    currentStep += n;
+    if (currentStep >= steps.length) {
+      // Submit form logic here
+      alert('Assessment submitted! Thank you.');
+      form.reset();
+      currentStep = 0;
+    }
+    showStep(currentStep);
+  }
+
+  // Initialize
+  showStep(currentStep);
+</script>
+
+</body>
+</html>

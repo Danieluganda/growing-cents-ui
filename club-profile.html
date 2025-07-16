@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Growing Cents - Club Profile</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f7fa;
+      color: #2c3e50;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+    nav.sidebar {
+      width: 260px;
+      background: #2a9df4;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      padding-top: 30px;
+      flex-shrink: 0;
+      box-shadow: 2px 0 8px rgba(42,157,244,0.4);
+    }
+    nav.sidebar h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      padding: 0 30px 24px 30px;
+      margin: 0;
+      border-bottom: 2px solid rgba(255,255,255,0.3);
+    }
+    nav.sidebar a {
+      color: white;
+      text-decoration: none;
+      padding: 15px 30px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: background-color 0.25s ease;
+      border-left: 4px solid transparent;
+    }
+    nav.sidebar a:hover {
+      background-color: #1d6fd6;
+      border-left-color: #f2a365;
+    }
+    nav.sidebar a.active {
+      background-color: #1d6fd6;
+      border-left-color: #f2a365;
+    }
+
+    /* Main Content */
+    main.content {
+      flex-grow: 1;
+      padding: 40px 50px;
+      max-width: 100%;
+    }
+    header h1 {
+      margin: 0 0 10px;
+      font-size: 2.2rem;
+      font-weight: bold;
+    }
+    header p {
+      margin-top: 0;
+      color: #5d6d7e;
+    }
+
+    section.profile-section {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      max-width: 700px;
+    }
+    section h2 {
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+      color: #2a9df4;
+      border-left: 5px solid #2a9df4;
+      padding-left: 12px;
+    }
+    form label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    form input, form select, form textarea {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    button.save-btn {
+      background: #2a9df4;
+      color: white;
+      border: none;
+      padding: 12px 22px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button.save-btn:hover {
+      background: #1d6fd6;
+    }
+
+    @media (max-width: 900px) {
+      body {
+        flex-direction: column;
+      }
+      nav.sidebar {
+        width: 100%;
+        flex-direction: row;
+        padding: 10px 0;
+        overflow-x: auto;
+        box-shadow: none;
+        border-bottom: 1px solid #ccc;
+      }
+      nav.sidebar h2 {
+        display: none;
+      }
+      nav.sidebar a {
+        flex: 1 0 auto;
+        padding: 15px 12px;
+        font-size: 1rem;
+        text-align: center;
+        border-left: none;
+      }
+      nav.sidebar a.active {
+        border-left: none;
+        border-bottom: 3px solid #f2a365;
+        background-color: transparent;
+      }
+      main.content {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="sidebar" role="navigation" aria-label="Main menu">
+  <h2>Growing Cents</h2>
+  <a href="index.html">Dashboard</a>
+  <a href="assessment-start.html">Start Assessment</a>
+  <a href="question.html">Assessment Questions</a>
+  <a href="history.html">Past Assessments</a>
+  <a href="club-profile.html" class="active" aria-current="page">My Club Profile</a>
+  <a href="logout.html">Logout</a>
+</nav>
+
+<main class="content" role="main">
+  <header>
+    <h1>Club Profile</h1>
+    <p>View and update your investment club information.</p>
+  </header>
+
+  <section class="profile-section" aria-labelledby="profile-form-heading">
+    <h2 id="profile-form-heading">Club Information</h2>
+    <form>
+      <label for="clubName">Club Name</label>
+      <input type="text" id="clubName" name="clubName" value="Dummy Dummy Investment Club" />
+
+      <label for="country">Country</label>
+      <input type="text" id="country" name="country" value="Uganda" />
+
+      <label for="region">Region</label>
+      <input type="text" id="region" name="region" value="Central" />
+
+      <label for="tier">Club Tier</label>
+      <select id="tier" name="tier">
+        <option>Tier 1</option>
+        <option selected>Tier 2</option>
+        <option>Tier 3</option>
+      </select>
+
+      <label for="description">Club Description</label>
+      <textarea id="description" rows="4">This club focuses on digital investments for rural youth in Uganda.</textarea>
+
+      <button type="submit" class="save-btn">Save Changes</button>
+    </form>
+  </section>
+</main>
+
+</body>
+</html>

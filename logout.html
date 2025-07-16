@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Logged Out – Growing Cents</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-dark: #103125;
+      --accent-gold: #C39E3D;
+      --light: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-dark);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--light);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+      flex-direction: column;
+    }
+
+    .brand {
+      font-family: 'Marcellus', serif;
+      font-size: 2.4rem;
+      color: var(--accent-gold);
+      margin-bottom: 0.3em;
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: var(--light);
+      margin-bottom: 0.5em;
+    }
+
+    p {
+      font-size: 1.1rem;
+      margin-bottom: 2em;
+    }
+
+    a.button {
+      display: inline-block;
+      padding: 12px 24px;
+      background-color: var(--accent-gold);
+      color: var(--bg-dark);
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 6px;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+    }
+
+    a.button:hover {
+      background-color: #b18c33;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="brand">Growing Cents</div>
+  <h1>You have been logged out</h1>
+  <p>Thank you for using Growing Cents. You can log in again at any time.</p>
+  <a href="login.html" class="button">Back to Login</a>
+
+</body>
+</html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Audit Logs – Growing Cents</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #103125;
+      --accent-gold: #C39E3D;
+      --light: #ffffff;
+      --card-bg: #fefefe;
+      --text-dark: #2c3e50;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg-dark);
+      color: var(--light);
+      display: flex;
+      min-height: 100vh;
+    }
+
+    nav.sidebar {
+      width: 260px;
+      background-color: var(--bg-dark);
+      display: flex;
+      flex-direction: column;
+      padding-top: 30px;
+      box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
+      flex-shrink: 0;
+    }
+
+    nav.sidebar h2 {
+      font-family: 'Marcellus', serif;
+      font-size: 1.8rem;
+      padding: 0 30px 24px;
+      color: var(--accent-gold);
+      margin: 0;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    }
+
+    nav.sidebar a {
+      color: white;
+      text-decoration: none;
+      padding: 15px 30px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      border-left: 4px solid transparent;
+      transition: background-color 0.3s ease;
+    }
+
+    nav.sidebar a:hover,
+    nav.sidebar a.active {
+      background-color: rgba(255,255,255,0.05);
+      border-left-color: var(--accent-gold);
+    }
+
+    main.content {
+      flex-grow: 1;
+      padding: 40px 50px;
+      overflow-y: auto;
+    }
+
+    header h1 {
+      font-family: 'Marcellus', serif;
+      color: var(--accent-gold);
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+    }
+
+    section {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      color: var(--text-dark);
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+
+    section h2 {
+      margin-top: 0;
+      color: var(--bg-dark);
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .filters select, .filters input {
+      padding: 10px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+
+    th {
+      background-color: #e8f0ee;
+      color: #333;
+    }
+
+    tr:hover {
+      background-color: #f9f9f9;
+    }
+
+    .export-btn {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background: var(--accent-gold);
+      color: var(--bg-dark);
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .export-btn:hover {
+      background-color: #b18c33;
+    }
+
+    @media (max-width: 900px) {
+      body {
+        flex-direction: column;
+      }
+
+      nav.sidebar {
+        width: 100%;
+        flex-direction: row;
+        padding: 10px;
+        overflow-x: auto;
+        border-bottom: 1px solid #ccc;
+      }
+
+      nav.sidebar h2 {
+        display: none;
+      }
+
+      nav.sidebar a {
+        flex: 1 0 auto;
+        padding: 10px;
+        font-size: 1rem;
+        text-align: center;
+      }
+
+      main.content {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="sidebar">
+  <h2>Growing Cents</h2>
+  <a href="admin-dashboard.html">Dashboard</a>
+  <a href="clubs.html">All Clubs</a>
+  <a href="audit-logs.html" class="active">Audit Logs</a>
+  <a href="admin-users.html">User Approvals</a>
+  <a href="logout.html">Logout</a>
+</nav>
+
+<main class="content">
+  <header>
+    <h1>Audit Logs</h1>
+    <p>Review system activity by users, clubs, or actions taken.</p>
+  </header>
+
+  <section>
+    <h2>Filters</h2>
+    <div class="filters">
+      <select>
+        <option>User</option>
+        <option>Daniel N.</option>
+        <option>Grace M.</option>
+      </select>
+      <select>
+        <option>Club</option>
+        <option>Alpha Club</option>
+        <option>Smart Savers</option>
+      </select>
+      <select>
+        <option>Action Type</option>
+        <option>Login</option>
+        <option>Assessment Submission</option>
+        <option>Edit Profile</option>
+      </select>
+      <input type="date" />
+    </div>
+    <button class="export-btn">Export CSV</button>
+  </section>
+
+  <section>
+    <h2>Audit Trail</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Club</th>
+          <th>Action</th>
+          <th>Date</th>
+          <th>Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Daniel N.</td>
+          <td>Alpha Club</td>
+          <td>Login</td>
+          <td>2025-07-15</td>
+          <td>Logged in from IP 192.168.1.1</td>
+        </tr>
+        <tr>
+          <td>Grace M.</td>
+          <td>Smart Savers</td>
+          <td>Submitted Assessment</td>
+          <td>2025-07-14</td>
+          <td>Submitted 54.6% maturity score</td>
+        </tr>
+        <tr>
+          <td>Admin</td>
+          <td>All Clubs</td>
+          <td>Approved Club</td>
+          <td>2025-07-13</td>
+          <td>Approved ‘New Growth Club’</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+</main>
+
+</body>
+</html>

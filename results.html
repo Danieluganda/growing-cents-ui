@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Growing Cents - Assessment Results</title>
+<style>
+  /* Reset */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0; padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f4f7fa;
+    color: #2c3e50;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* Sidebar */
+  nav.sidebar {
+    width: 260px;
+    background: #2a9df4;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding-top: 30px;
+    flex-shrink: 0;
+    box-shadow: 2px 0 8px rgba(42,157,244,0.4);
+  }
+  nav.sidebar h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    padding: 0 30px 24px 30px;
+    margin: 0;
+    border-bottom: 2px solid rgba(255,255,255,0.3);
+  }
+  nav.sidebar a {
+    color: white;
+    text-decoration: none;
+    padding: 15px 30px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: background-color 0.25s ease;
+    border-left: 4px solid transparent;
+  }
+  nav.sidebar a:hover {
+    background-color: #1d6fd6;
+    border-left-color: #f2a365;
+  }
+  nav.sidebar a.active {
+    background-color: #1d6fd6;
+    border-left-color: #f2a365;
+  }
+
+  /* Main content */
+  main.content {
+    flex-grow: 1;
+    padding: 40px 50px;
+    max-width: 100%;
+    overflow-y: auto;
+  }
+  main.content header {
+    margin-bottom: 30px;
+  }
+  main.content header h1 {
+    margin: 0 0 6px 0;
+    font-weight: 700;
+    font-size: 2.4rem;
+    color: #34495e;
+  }
+  main.content header p {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #5d6d7e;
+  }
+
+  /* Sections */
+  section {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
+    margin-bottom: 32px;
+    padding: 28px 36px;
+    max-width: 900px;
+  }
+
+  section h2 {
+    font-weight: 700;
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+    border-left: 5px solid #2a9df4;
+    padding-left: 14px;
+    color: #2a9df4;
+  }
+
+  /* Executive Summary */
+  .summary-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 28px;
+  }
+  .summary-item {
+    flex: 1 1 200px;
+    font-size: 1.1rem;
+  }
+  .summary-item strong {
+    color: #1f618d;
+  }
+
+  /* Colored Score Bar */
+  .score-bar {
+    position: relative;
+    height: 28px;
+    background: #ddd;
+    border-radius: 14px;
+    overflow: hidden;
+    margin-top: 6px;
+  }
+  .score-bar > div {
+    height: 100%;
+    border-radius: 14px 0 0 14px;
+    background: linear-gradient(90deg, #2a9df4, #2a9df4);
+    width: 0%;
+    transition: width 1s ease;
+  }
+  .score-label {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    top: 3px;
+    font-weight: 700;
+    color: white;
+    text-shadow: 0 0 4px rgba(0,0,0,0.6);
+    font-size: 1.1rem;
+  }
+
+  /* Table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1rem;
+  }
+  thead {
+    background-color: #e3f2fd;
+  }
+  th, td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid #d6dbe1;
+  }
+  tbody tr:hover {
+    background-color: #f1f9ff;
+  }
+
+  /* Priority Areas */
+  .priority-list {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .priority-box {
+    flex: 1 1 45%;
+    background: #eaf3fd;
+    padding: 16px 24px;
+    border-radius: 10px;
+  }
+  .priority-box h3 {
+    margin-top: 0;
+    color: #2a9df4;
+  }
+  .priority-box ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+
+  /* Maturity Descriptions */
+  .maturity-desc p {
+    font-size: 1rem;
+    margin: 8px 0;
+    line-height: 1.4;
+    color: #34495e;
+  }
+  .maturity-desc strong {
+    color: #1f618d;
+  }
+
+  /* Responsive */
+  @media (max-width: 950px) {
+    main.content {
+      padding: 20px 20px 40px 20px;
+    }
+    section {
+      max-width: 100%;
+      padding: 20px;
+    }
+    .summary-row {
+      flex-direction: column;
+    }
+    .priority-list {
+      flex-direction: column;
+    }
+    .priority-box {
+      flex: 1 1 100%;
+    }
+  }
+</style>
+</head>
+<body>
+
+<nav class="sidebar" role="navigation" aria-label="Main menu">
+  <h2>Growing Cents</h2>
+  <a href="index.html">Dashboard</a>
+  <a href="assessment-start.html">Start Assessment</a>
+  <a href="question.html">Assessment Questions</a>
+  <a href="results.html" class="active" aria-current="page">Assessment Results</a>
+  <a href="history.html">Past Assessments</a>
+  <a href="club-profile.html">My Club Profile</a>
+  <a href="logout.html">Logout</a>
+</nav>
+
+<main class="content" role="main">
+  <header>
+    <h1>Assessment Results</h1>
+    <p>Detailed results and insights from your recent assessment.</p>
+  </header>
+
+  <!-- Title Area -->
+  <section aria-labelledby="title-area-heading">
+    <h2 id="title-area-heading">Assessment Overview</h2>
+    <p><strong>Club Name:</strong> Dummy Dummy Investment Club</p>
+    <p><strong>Assessment Date:</strong> July 12, 2023</p>
+    <p><strong>Assessment Report As At:</strong> July 12, 2023</p>
+  </section>
+
+  <!-- Executive Summary -->
+  <section aria-labelledby="executive-summary-heading">
+    <h2 id="executive-summary-heading">Executive Summary</h2>
+    <div class="summary-row">
+      <div class="summary-item">
+        <p>Status of Assessment:</p>
+        <strong>COMPLETED</strong>
+      </div>
+      <div class="summary-item" style="flex-grow: 2;">
+        <p>Overall Health & Maturity Score:</p>
+        <div class="score-bar" aria-label="Overall health and maturity score">
+          <div style="width: 48.6%;"></div>
+          <div class="score-label">48.6%</div>
+        </div>
+      </div>
+      <div class="summary-item">
+        <p>Overall Health & Maturity Level:</p>
+        <strong>2 of 5</strong>
+      </div>
+      <div class="summary-item">
+        <p>Overall Health & Maturity Stage:</p>
+        <strong>Forming Stage</strong>
+      </div>
+    </div>
+    <p style="margin-top: 20px; font-size: 0.9rem; color: #5d6d7e;">
+      <strong>Legend / Key:</strong> Level 1: Initial, Level 2: Forming, Level 3: Growing, Level 4: Established, Level 5: Mature
+    </p>
+  </section>
+
+  <!-- Executive Dashboard -->
+  <section aria-labelledby="exec-dashboard-heading">
+    <h2 id="exec-dashboard-heading">Executive Dashboard</h2>
+
+    <!-- Graphical summary: Simple bars -->
+    <div style="max-width: 800px;">
+      <p><strong>Assessment Area Results</strong></p>
+      <div>
+        <p>Financial Health</p>
+        <div class="score-bar" aria-label="Financial Health score">
+          <div style="width: 65%; background: #1abc9c;"></div>
+          <div class="score-label" style="color:#fff;">65%</div>
+        </div>
+      </div>
+      <div>
+        <p>Member Engagement</p>
+        <div class="score-bar" aria-label="Member Engagement score">
+          <div style="width: 40%; background: #e67e22;"></div>
+          <div class="score-label" style="color:#fff;">40%</div>
+        </div>
+      </div>
+      <div>
+        <p>Governance</p>
+        <div class="score-bar" aria-label="Governance score">
+          <div style="width: 50%; background: #9b59b6;"></div>
+          <div class="score-label" style="color:#fff;">50%</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabular summary -->
+    <table aria-label="Health and maturity assessment area results">
+      <thead>
+        <tr>
+          <th>Area</th>
+          <th>Score</th>
+          <th>Level</th>
+          <th>Stage</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Financial Health</td>
+          <td>65%</td>
+          <td>3</td>
+          <td>Growing</td>
+        </tr>
+        <tr>
+          <td>Member Engagement</td>
+          <td>40%</td>
+          <td>2</td>
+          <td>Forming</td>
+        </tr>
+        <tr>
+          <td>Governance</td>
+          <td>50%</td>
+          <td>2</td>
+          <td>Forming</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Priority Areas -->
+  <section aria-labelledby="priority-areas-heading">
+    <h2 id="priority-areas-heading">Priority Areas</h2>
+    <div class="priority-list">
+      <div class="priority-box" aria-label="Top 3 strongest scores">
+        <h3>Top 3 Strongest Scores</h3>
+        <ul>
+          <li>Financial Health - 65%</li>
+          <li>Governance - 50%</li>
+          <li>Member Engagement - 40%</li>
+        </ul>
+      </div>
+      <div class="priority-box" aria-label="Top 3 weakest scores">
+        <h3>Top 3 Weakest Scores</h3>
+        <ul>
+          <li>Member Engagement - 40%</li>
+          <li>Governance - 50%</li>
+          <li>Financial Health - 65%</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Detailed Dashboard -->
+  <section aria-labelledby="detailed-dashboard-heading">
+    <h2 id="detailed-dashboard-heading">Detailed Dashboard</h2>
+    <table aria-label="Detailed area and section results">
+      <thead>
+        <tr>
+          <th>Area</th>
+          <th>Section</th>
+          <th>Score</th>
+          <th>Maturity Level</th>
+          <th>Maturity Stage</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Financial Health</td>
+          <td>Revenue Stability</td>
+          <td>70%</td>
+          <td>3</td>
+          <td>Growing</td>
+        </tr>
+        <tr>
+          <td>Financial Health</td>
+          <td>Expense Management</td>
+          <td>60%</td>
+          <td>3</td>
+          <td>Growing</td>
+        </tr>
+        <tr>
+          <td>Member Engagement</td>
+          <td>Meeting Attendance</td>
+          <td>45%</td>
+          <td>2</td>
+          <td>Forming</td>
+        </tr>
+        <tr>
+          <td>Member Engagement</td>
+          <td>Member Participation</td>
+          <td>35%</td>
+          <td>2</td>
+          <td>Forming</td>
+        </tr>
+        <tr>
+          <td>Governance</td>
+          <td>Compliance</td>
+          <td>55%</td>
+          <td>2</td>
+          <td>Forming</td>
+        </tr>
+        <tr>
+          <td>Governance</td>
+          <td>Documentation</td>
+          <td>45%</td>
+          <td>2</td>
+          <td>Forming</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Maturity Stages Description -->
+  <section class="maturity-desc" aria-labelledby="maturity-desc-heading">
+    <h2 id="maturity-desc-heading">Maturity Stages Defined</h2>
+    <p><strong>Maturity of Sections:</strong> Descriptions explaining the maturity levels for sections go here.</p>
+    <p><strong>Maturity of Areas:</strong> Descriptions explaining the maturity levels for areas go here.</p>
+    <p><strong>Maturity of Club Overall:</strong> Description of overall maturity interpretation here.</p>
+  </section>
+
+</main>
+
+</body>
+</html>
