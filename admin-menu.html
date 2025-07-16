@@ -23,6 +23,7 @@
     color: var(--light-text);
   }
 
+  /* Sidebar base styles */
   nav.sidebar {
     width: 260px;
     background-color: var(--bg-dark);
@@ -34,6 +35,8 @@
     overflow-y: auto;
     height: 100vh;
     box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+    transition: transform 0.3s ease;
   }
 
   nav.sidebar h2 {
@@ -61,7 +64,8 @@
     font-weight: 600;
     font-size: 1.05rem;
     border-left: 4px solid transparent;
-    transition: background-color 0.25s ease;
+    transition: background-color 0.25s ease, border-color 0.25s ease;
+    cursor: pointer;
   }
 
   nav.sidebar a:hover,
@@ -86,12 +90,14 @@
     font-weight: 700;
     cursor: pointer;
     border-left: 4px solid transparent;
-    transition: background-color 0.25s ease;
+    transition: background-color 0.25s ease, border-color 0.25s ease;
   }
 
-  .menu-toggle:hover {
+  .menu-toggle:hover,
+  .menu-toggle:focus {
     background-color: rgba(255, 255, 255, 0.05);
     border-left-color: var(--accent-gold);
+    outline: none;
   }
 
   .submenu {
@@ -106,7 +112,7 @@
   }
 
   .submenu.show {
-    max-height: 800px;
+    max-height: 800px; /* Enough to show content */
   }
 
   .submenu li a {
@@ -120,45 +126,142 @@
     background-color: #155642;
   }
 
-  /* Responsive sidebar */
+  /* Hamburger button for mobile */
+  #hamburger-btn {
+    display: none;
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 1100;
+    background: var(--accent-gold);
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    color: var(--bg-dark);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  }
+
+  #hamburger-btn:focus {
+    outline: 2px solid var(--light-text);
+  }
+
+  /* Overlay behind sidebar on mobile */
+  #sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 999;
+  }
+
+  #sidebar-overlay.active {
+    display: block;
+  }
+
+  /* Responsive sidebar - mobile */
   @media (max-width: 900px) {
     body {
       flex-direction: column;
     }
 
     nav.sidebar {
-      width: 100%;
-      flex-direction: row;
-      flex-wrap: wrap;
-      height: auto;
-      overflow-y: visible;
-      padding: 10px;
-      border-bottom: 1px solid #ccc;
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      width: 260px;
+      box-shadow: 2px 0 8px rgba(0,0,0,0.7);
+      z-index: 1000;
+    }
+
+    nav.sidebar.open {
+      transform: translateX(0);
     }
 
     nav.sidebar h2,
     .user-info {
-      display: none;
+      display: block;
+      padding-left: 20px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
     }
 
     nav.sidebar a,
     .menu-toggle {
-      flex: 1 0 auto;
-      padding: 10px;
-      font-size: 0.95rem;
-      text-align: center;
+      padding: 15px 30px;
+      font-size: 1.1rem;
+      border-left: none;
+      text-align: left;
+      background-color: transparent;
+    }
+
+    nav.sidebar a:hover,
+    nav.sidebar a.active,
+    .menu-toggle:hover,
+    .menu-toggle:focus {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-left: none;
     }
 
     .submenu {
-      position: absolute;
-      background-color: var(--bg-dark);
-      width: 100%;
-      left: 0;
-      z-index: 100;
-      padding: 0;
+      max-height: none !important;
+      position: static;
+      background-color: var(--submenu-bg);
+      border-left: none;
+      padding-left: 0;
+    }
+
+    .submenu li a {
+      padding-left: 50px;
+    }
+
+    #hamburger-btn {
+      display: block;
+    }
+
+    #sidebar-overlay {
+      display: none;
+    }
+
+    #sidebar-overlay.active {
+      display: block;
     }
   }
 </style>
+
+<!-- Place this in your HTML body somewhere near the top -->
+<button id="hamburger-btn" aria-label="Toggle Menu">☰ Menu</button>
+<div id="sidebar-overlay"></div>
+
+<script>
+  const sidebar = document.querySelector('nav.sidebar');
+  const hamburger = document.getElementById('hamburger-btn');
+  const overlay = document.getElementById('sidebar-overlay');
+
+  hamburger.addEventListener('click', () => {
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('active');
+  });
+
+  overlay.addEventListener('click', () => {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('active');
+  });
+
+  // submenu toggles
+  document.querySelectorAll('.menu-toggle').forEach(button => {
+    button.addEventListener('click', () => {
+      const submenu = button.nextElementSibling;
+      submenu.classList.toggle('show');
+    });
+  });
+</script>
+
 
 <nav class="sidebar">
   <h2>Growing Cents</h2>
