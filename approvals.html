@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>User Approvals – Growing Cents</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet" />
+  <style>
+    /* ====== Variables & Reset ====== */
+    :root {
+      --bg-dark: #103125;
+      --accent-gold: #C39E3D;
+      --light-text: #ffffff;
+      --card-bg: #fefefe;
+      --text-dark: #2c3e50;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg-dark);
+      color: var(--light-text);
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ====== Sidebar container to hold dynamic menu ====== */
+    #sidebar-container {
+      flex-shrink: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    /* ====== Main content ====== */
+    main.content {
+      flex-grow: 1;
+      padding: 40px 50px;
+      overflow-y: auto;
+      background: var(--bg-dark);
+    }
+    main.content header h1 {
+      font-family: 'Marcellus', serif;
+      color: var(--accent-gold);
+      font-size: 2.2rem;
+      margin-bottom: 0.2em;
+    }
+    main.content header p {
+      margin-top: 0;
+      font-size: 1.1rem;
+      color: #ddd;
+      margin-bottom: 2rem;
+    }
+
+    /* ====== Section styling ====== */
+    section {
+      background: var(--card-bg);
+      border-radius: 10px;
+      padding: 20px;
+      color: var(--text-dark);
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+    section h2 {
+      margin-top: 0;
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+      color: var(--bg-dark);
+    }
+
+    /* ====== Table styling ====== */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 1rem;
+    }
+    th, td {
+      padding: 14px 18px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background-color: #e8f0ee;
+      color: #333;
+    }
+    tbody tr:hover {
+      background-color: #f9f9f9;
+      cursor: default;
+    }
+
+    /* ====== Buttons ====== */
+    .btn-approve, .btn-reject {
+      padding: 8px 14px;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      color: white;
+      margin-right: 6px;
+      transition: background-color 0.2s ease;
+    }
+    .btn-approve {
+      background-color: #2ecc71;
+    }
+    .btn-approve:hover {
+      background-color: #27ae60;
+    }
+    .btn-reject {
+      background-color: #e74c3c;
+    }
+    .btn-reject:hover {
+      background-color: #c0392b;
+    }
+
+    /* ====== Responsive ====== */
+    @media (max-width: 900px) {
+      body {
+        flex-direction: column;
+      }
+      #sidebar-container {
+        height: auto;
+        order: 1;
+      }
+      main.content {
+        padding: 20px;
+        order: 2;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="sidebar-container"></div>
+
+  <main class="content">
+    <header>
+      <h1>User Approvals</h1>
+      <p>Review and approve club member accounts and club creation requests.</p>
+    </header>
+
+    <section>
+      <h2>Pending User Approvals</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>User Name</th>
+            <th>Email</th>
+            <th>Requested Club</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Sarah N.</td>
+            <td>sarah@example.com</td>
+            <td>Green Harvest</td>
+            <td>
+              <button class="btn-approve">Approve</button>
+              <button class="btn-reject">Reject</button>
+            </td>
+          </tr>
+          <tr>
+            <td>David O.</td>
+            <td>david@example.com</td>
+            <td>Club not found</td>
+            <td>
+              <button class="btn-approve">Approve</button>
+              <button class="btn-reject">Reject</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+  </main>
+
+  <script>
+    // Load sidebar menu from external file
+    fetch('admin-menu.html')
+      .then(response => response.text())
+      .then(html => {
+        document.getElementById('sidebar-container').innerHTML = html;
+
+        // Initialize submenu toggles after loading menu
+        document.querySelectorAll('.menu-toggle').forEach(button => {
+          button.addEventListener('click', () => {
+            const submenu = button.nextElementSibling;
+            submenu.classList.toggle('show');
+          });
+        });
+      })
+      .catch(err => console.error('Failed to load menu:', err));
+  </script>
+</body>
+</html>

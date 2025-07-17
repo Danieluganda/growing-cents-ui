@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login Activity – Growing Cents</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-dark: #103125;
+      --accent-gold: #C39E3D;
+      --light-text: #ffffff;
+      --card-bg: #fefefe;
+      --text-dark: #2c3e50;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg-dark);
+      color: var(--light-text);
+      display: flex;
+      min-height: 100vh;
+    }
+
+    nav.sidebar {
+      width: 260px;
+      background-color: var(--bg-dark);
+      display: flex;
+      flex-direction: column;
+      padding-top: 20px;
+      box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
+      flex-shrink: 0;
+      overflow-y: auto;
+      height: 100vh;
+    }
+
+    nav.sidebar h2 {
+      font-family: 'Marcellus', serif;
+      font-size: 1.8rem;
+      padding: 0 30px 24px;
+      color: var(--accent-gold);
+      margin: 0;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    }
+
+    nav.sidebar a,
+    nav.sidebar .submenu a {
+      color: white;
+      text-decoration: none;
+      padding: 12px 30px;
+      font-weight: 600;
+      font-size: 1.05rem;
+      border-left: 4px solid transparent;
+      display: block;
+      transition: background-color 0.25s ease;
+    }
+
+    nav.sidebar a:hover,
+    nav.sidebar a.active,
+    .submenu a:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+      border-left-color: var(--accent-gold);
+    }
+
+    main.content {
+      flex-grow: 1;
+      padding: 40px 50px;
+      overflow-y: auto;
+      background: #fefefe;
+      color: var(--text-dark);
+      min-height: 100vh;
+    }
+
+    main.content header h1 {
+      font-family: 'Marcellus', serif;
+      color: var(--accent-gold);
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+    }
+
+    main.content header p {
+      margin-top: 0;
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 14px 18px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+      font-size: 1rem;
+    }
+
+    th {
+      background-color: #e8f0ee;
+      color: #333;
+    }
+
+    tr:hover {
+      background-color: #f9f9f9;
+    }
+
+    .status-success {
+      color: green;
+      font-weight: 600;
+    }
+
+    .status-failed {
+      color: red;
+      font-weight: 600;
+    }
+
+    @media (max-width: 900px) {
+      body {
+        flex-direction: column;
+      }
+
+      nav.sidebar {
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        height: auto;
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+      }
+
+      nav.sidebar h2 {
+        display: none;
+      }
+
+      nav.sidebar a,
+      .menu-toggle {
+        flex: 1 0 auto;
+        padding: 10px;
+        font-size: 1rem;
+        text-align: center;
+      }
+
+      main.content {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="sidebar" id="sidebar-container"></nav>
+
+  <main class="content">
+    <header>
+      <h1>Login Activity</h1>
+      <p>Review recent user login attempts and statuses for audit and security monitoring.</p>
+    </header>
+
+    <section>
+      <table>
+        <thead>
+          <tr>
+            <th>User Name</th>
+            <th>Email</th>
+            <th>Login Time</th>
+            <th>IP Address</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="login-activity-body">
+          <!-- Login activity rows inserted here dynamically or statically -->
+          <tr>
+            <td>Sarah N.</td>
+            <td>sarah@example.com</td>
+            <td>2025-07-16 08:45 AM</td>
+            <td>192.168.1.20</td>
+            <td class="status-success">Success</td>
+          </tr>
+          <tr>
+            <td>David O.</td>
+            <td>david@example.com</td>
+            <td>2025-07-15 06:22 PM</td>
+            <td>192.168.1.35</td>
+            <td class="status-failed">Failed</td>
+          </tr>
+          <tr>
+            <td>Mary K.</td>
+            <td>maryk@example.com</td>
+            <td>2025-07-15 09:12 AM</td>
+            <td>192.168.1.40</td>
+            <td class="status-success">Success</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <script>
+    // Load the admin menu dynamically
+    fetch('admin-menu.html')
+      .then(response => response.text())
+      .then(html => {
+        document.getElementById('sidebar-container').innerHTML = html;
+
+        // Attach toggle events for submenu after loading menu
+        document.querySelectorAll('.menu-toggle').forEach(button => {
+          button.addEventListener('click', () => {
+            const submenu = button.nextElementSibling;
+            submenu.classList.toggle('show');
+          });
+        });
+      })
+      .catch(err => console.error('Failed to load menu:', err));
+  </script>
+</body>
+</html>
