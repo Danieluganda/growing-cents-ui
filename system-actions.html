@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>System Actions Log – Growing Cents</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --dark-bg: #103125;
+      --light-bg: #fff;
+      --accent: #C39E3D;
+      --text-dark: #2c3e50;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      background: var(--dark-bg);
+      color: var(--text-dark);
+    }
+    nav.sidebar {
+      width: 260px;
+      background: var(--dark-bg);
+      padding-top: 20px;
+      color: white;
+      height: 100vh;
+      flex-shrink: 0;
+      overflow-y: auto;
+    }
+    main {
+      flex-grow: 1;
+      background: var(--light-bg);
+      padding: 40px 50px;
+      overflow-y: auto;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    header h1 {
+      font-family: 'Marcellus', serif;
+      color: var(--accent);
+      font-size: 2rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 30px;
+      font-size: 0.95rem;
+    }
+    th, td {
+      padding: 14px 10px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background-color: #f4f4f4;
+      font-weight: 600;
+    }
+    tr:hover {
+      background-color: #f0f8f5;
+    }
+    .tag {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      color: white;
+    }
+    .tag.login { background-color: #3498db; }
+    .tag.update { background-color: #f39c12; }
+    .tag.delete { background-color: #e74c3c; }
+    .tag.create { background-color: #2ecc71; }
+    .tag.payment { background-color: #9b59b6; }
+  </style>
+</head>
+<body>
+
+<nav class="sidebar" id="sidebar-container">
+  <!-- admin-menu.html will be loaded here -->
+</nav>
+
+<main>
+  <header>
+    <h1>System Actions Log</h1>
+    <p>View recent system-level actions across clubs and users.</p>
+  </header>
+
+  <table id="actions-table">
+    <thead>
+      <tr>
+        <th>Date/Time</th>
+        <th>User</th>
+        <th>Action Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Entries will be populated via JavaScript -->
+    </tbody>
+  </table>
+</main>
+
+<script>
+  // Load sidebar
+  fetch('admin-menu.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('sidebar-container').innerHTML = html;
+      document.querySelectorAll('.menu-toggle').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const submenu = btn.nextElementSibling;
+          submenu.classList.toggle('show');
+        });
+      });
+    });
+
+  const actions = [
+    {
+      datetime: "2025-07-17 08:15",
+      user: "Admin Jane",
+      type: "login",
+      desc: "Logged in from IP 102.25.56.10"
+    },
+    {
+      datetime: "2025-07-17 09:05",
+      user: "Club Lead - Bright Savers",
+      type: "create",
+      desc: "Created new assessment for Tier 2"
+    },
+    {
+      datetime: "2025-07-17 09:30",
+      user: "Admin Jane",
+      type: "update",
+      desc: "Changed subscription plan for Future Builders"
+    },
+    {
+      datetime: "2025-07-17 10:45",
+      user: "System",
+      type: "payment",
+      desc: "Received UGX 350,000 via Mobile Money (Club: Prosper Unity)"
+    },
+    {
+      datetime: "2025-07-17 11:00",
+      user: "Admin James",
+      type: "delete",
+      desc: "Deleted expired tier configuration (Tier 1 Legacy)"
+    }
+  ];
+
+  const tbody = document.querySelector('#actions-table tbody');
+
+  actions.forEach(action => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${action.datetime}</td>
+      <td>${action.user}</td>
+      <td><span class="tag ${action.type}">${action.type.toUpperCase()}</span></td>
+      <td>${action.desc}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+</script>
+
+</body>
+</html>

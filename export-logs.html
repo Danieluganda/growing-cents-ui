@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Export Logs – Growing Cents Admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --dark-bg: #103125;
+      --light-bg: #fff;
+      --accent: #C39E3D;
+      --text-dark: #2c3e50;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      background: var(--dark-bg);
+      color: var(--text-dark);
+    }
+    nav.sidebar {
+      width: 260px;
+      background: var(--dark-bg);
+      padding-top: 20px;
+      color: white;
+      height: 100vh;
+      flex-shrink: 0;
+      overflow-y: auto;
+    }
+    main {
+      flex-grow: 1;
+      background: var(--light-bg);
+      padding: 40px 50px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    header h1 {
+      font-family: 'Marcellus', serif;
+      color: var(--accent);
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    section {
+      background: #f9f9f9;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.05);
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    select, input[type="date"] {
+      padding: 8px;
+      width: 100%;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      margin-top: 25px;
+      padding: 12px 25px;
+      font-weight: bold;
+      background: var(--accent);
+      border: none;
+      border-radius: 6px;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #af892f;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="sidebar" id="sidebar-container">
+  <!-- admin-menu.html will load here -->
+</nav>
+
+<main>
+  <header>
+    <h1>Export Logs</h1>
+    <p>Select the type of logs and date range you want to export.</p>
+  </header>
+
+  <section>
+    <form id="exportForm">
+      <label for="logType">Log Type:</label>
+      <select id="logType" name="logType" required>
+        <option value="">-- Select --</option>
+        <option value="login">Login Activity</option>
+        <option value="audit">Audit Trail</option>
+        <option value="assessment">Assessment Submissions</option>
+        <option value="payment">Payment History</option>
+        <option value="system">System Actions</option>
+        <option value="search">Search/Filter Logs</option>
+      </select>
+
+      <label for="fromDate">From Date:</label>
+      <input type="date" id="fromDate" name="fromDate" required>
+
+      <label for="toDate">To Date:</label>
+      <input type="date" id="toDate" name="toDate" required>
+
+      <button type="submit">Download Logs</button>
+    </form>
+  </section>
+</main>
+
+<script>
+  // Load admin menu
+  fetch('admin-menu.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('sidebar-container').innerHTML = html;
+      document.querySelectorAll('.menu-toggle').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const submenu = btn.nextElementSibling;
+          submenu.classList.toggle('show');
+        });
+      });
+    });
+
+  // Dummy handler for download
+  document.getElementById('exportForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const type = document.getElementById('logType').value;
+    const from = document.getElementById('fromDate').value;
+    const to = document.getElementById('toDate').value;
+    alert(`Preparing download for ${type} logs from ${from} to ${to}... (this would trigger backend download)`);
+  });
+</script>
+
+</body>
+</html>

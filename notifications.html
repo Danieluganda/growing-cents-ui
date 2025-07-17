@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Notification Preferences – Growing Cents</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg-dark: #103125;
+    --accent-gold: #C39E3D;
+    --light-text: #ffffff;
+    --card-bg: #fefefe;
+    --text-dark: #2c3e50;
+    --input-border: #ccc;
+    --input-focus: var(--accent-gold);
+  }
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: var(--bg-dark);
+    color: var(--light-text);
+    display: flex;
+    min-height: 100vh;
+  }
+  nav.sidebar {
+    width: 260px;
+    background: var(--bg-dark);
+    padding-top: 20px;
+    flex-shrink: 0;
+    overflow-y: auto;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.3);
+    height: 100vh;
+  }
+  main.content {
+    flex-grow: 1;
+    padding: 40px 50px;
+    background: var(--card-bg);
+    color: var(--text-dark);
+    overflow-y: auto;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  header {
+    margin-bottom: 30px;
+  }
+  header h1 {
+    font-family: 'Marcellus', serif;
+    color: var(--accent-gold);
+    font-size: 2rem;
+    margin-bottom: 0.3em;
+  }
+  header p {
+    font-size: 1.1rem;
+    color: #666;
+    margin-top: 0;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+  .card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 25px 30px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-dark);
+    cursor: pointer;
+  }
+  .checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-dark);
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 15px;
+  }
+  .checkbox-label input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+    cursor: pointer;
+  }
+  select, input[type="time"] {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 1rem;
+    border: 1.5px solid var(--input-border);
+    border-radius: 8px;
+    font-family: inherit;
+    transition: border-color 0.3s ease;
+  }
+  select:focus, input[type="time"]:focus {
+    border-color: var(--input-focus);
+    outline: none;
+  }
+  button {
+    align-self: flex-start;
+    background-color: var(--accent-gold);
+    color: var(--bg-dark);
+    border: none;
+    padding: 14px 30px;
+    font-weight: 700;
+    font-size: 1.2rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+  }
+  button:hover {
+    background-color: #a57f21;
+  }
+  @media (max-width: 920px) {
+    main.content {
+      padding: 20px;
+      max-width: 100%;
+    }
+    nav.sidebar {
+      width: 100%;
+      height: auto;
+      padding: 10px;
+      border-bottom: 1px solid #ccc;
+    }
+  }
+</style>
+</head>
+<body>
+
+<nav class="sidebar" id="sidebar-container">
+  <!-- admin-menu.html loads here -->
+</nav>
+
+<main class="content">
+  <header>
+    <h1>Notification Preferences</h1>
+    <p>Manage how and when you receive notifications from Growing Cents.</p>
+  </header>
+
+  <form id="notification-form" novalidate>
+    <section class="card">
+      <label class="checkbox-label" for="enable-notifications">
+        <input type="checkbox" id="enable-notifications" name="enableNotifications" />
+        Enable Notifications
+      </label>
+
+      <fieldset>
+        <legend>Notification Channels</legend>
+        <label class="checkbox-label"><input type="checkbox" name="channels" value="email" /> Email</label>
+        <label class="checkbox-label"><input type="checkbox" name="channels" value="sms" /> SMS</label>
+        <label class="checkbox-label"><input type="checkbox" name="channels" value="push" /> Push Notifications</label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Events to Notify For</legend>
+        <label class="checkbox-label"><input type="checkbox" name="events" value="assessmentCompleted" /> Assessment Completed</label>
+        <label class="checkbox-label"><input type="checkbox" name="events" value="subscriptionRenewal" /> Subscription Renewal</label>
+        <label class="checkbox-label"><input type="checkbox" name="events" value="paymentFailed" /> Payment Failed</label>
+        <label class="checkbox-label"><input type="checkbox" name="events" value="newMessage" /> New Message / Announcement</label>
+      </fieldset>
+
+      <label for="quiet-hours-start">Quiet Hours Start</label>
+      <input type="time" id="quiet-hours-start" name="quietHoursStart" />
+
+      <label for="quiet-hours-end">Quiet Hours End</label>
+      <input type="time" id="quiet-hours-end" name="quietHoursEnd" />
+    </section>
+
+    <button type="submit">Save Preferences</button>
+  </form>
+</main>
+
+<script>
+  // Load sidebar menu
+  fetch('admin-menu.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('sidebar-container').innerHTML = html;
+      document.querySelectorAll('.menu-toggle').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const submenu = btn.nextElementSibling;
+          submenu.classList.toggle('show');
+        });
+      });
+    })
+    .catch(err => console.error('Failed to load menu:', err));
+
+  const form = document.getElementById('notification-form');
+
+  function loadSettings() {
+    const saved = JSON.parse(localStorage.getItem('notificationPreferences')) || {};
+    form.elements['enableNotifications'].checked = saved.enableNotifications || false;
+
+    if(Array.isArray(saved.channels)) {
+      document.querySelectorAll('input[name="channels"]').forEach(cb => {
+        cb.checked = saved.channels.includes(cb.value);
+      });
+    }
+
+    if(Array.isArray(saved.events)) {
+      document.querySelectorAll('input[name="events"]').forEach(cb => {
+        cb.checked = saved.events.includes(cb.value);
+      });
+    }
+
+    form.elements['quietHoursStart'].value = saved.quietHoursStart || '';
+    form.elements['quietHoursEnd'].value = saved.quietHoursEnd || '';
+  }
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    const data = {
+      enableNotifications: formData.get('enableNotifications') === 'on',
+      channels: formData.getAll('channels'),
+      events: formData.getAll('events'),
+      quietHoursStart: formData.get('quietHoursStart'),
+      quietHoursEnd: formData.get('quietHoursEnd'),
+    };
+
+    localStorage.setItem('notificationPreferences', JSON.stringify(data));
+    alert('Notification preferences saved successfully!');
+  });
+
+  loadSettings();
+</script>
+
+</body>
+</html>

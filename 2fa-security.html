@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>2FA / Security Settings – Growing Cents</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg-dark: #103125;
+    --accent-gold: #C39E3D;
+    --light-text: #ffffff;
+    --card-bg: #fefefe;
+    --text-dark: #2c3e50;
+    --input-border: #ccc;
+    --input-focus: var(--accent-gold);
+  }
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: var(--bg-dark);
+    color: var(--light-text);
+    display: flex;
+    min-height: 100vh;
+  }
+  nav.sidebar {
+    width: 260px;
+    background: var(--bg-dark);
+    padding-top: 20px;
+    flex-shrink: 0;
+    overflow-y: auto;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.3);
+    height: 100vh;
+  }
+  main.content {
+    flex-grow: 1;
+    padding: 40px 50px;
+    background: var(--card-bg);
+    color: var(--text-dark);
+    overflow-y: auto;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  header {
+    margin-bottom: 30px;
+  }
+  header h1 {
+    font-family: 'Marcellus', serif;
+    color: var(--accent-gold);
+    font-size: 2rem;
+    margin-bottom: 0.3em;
+  }
+  header p {
+    font-size: 1.1rem;
+    color: #666;
+    margin-top: 0;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+  .card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 25px 30px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-dark);
+    cursor: pointer;
+  }
+  select, input[type="text"], input[type="number"], input[type="password"] {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 1rem;
+    border: 1.5px solid var(--input-border);
+    border-radius: 8px;
+    font-family: inherit;
+    transition: border-color 0.3s ease;
+  }
+  select:focus, input[type="text"]:focus, input[type="number"]:focus, input[type="password"]:focus {
+    border-color: var(--input-focus);
+    outline: none;
+  }
+  .checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-dark);
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 15px;
+  }
+  .checkbox-label input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+    cursor: pointer;
+  }
+  button {
+    align-self: flex-start;
+    background-color: var(--accent-gold);
+    color: var(--bg-dark);
+    border: none;
+    padding: 14px 30px;
+    font-weight: 700;
+    font-size: 1.2rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+  }
+  button:hover {
+    background-color: #a57f21;
+  }
+  .backup-codes {
+    background: #f0f0f0;
+    border: 1px solid #ccc;
+    color: #333;
+    font-family: monospace;
+    padding: 10px;
+    border-radius: 6px;
+    margin-top: 10px;
+    user-select: all;
+  }
+  .info-text {
+    font-size: 0.9rem;
+    color: #555;
+    margin-top: 4px;
+  }
+  @media (max-width: 920px) {
+    main.content {
+      padding: 20px;
+      max-width: 100%;
+    }
+  }
+</style>
+</head>
+<body>
+
+<nav class="sidebar" id="sidebar-container">
+  <!-- admin-menu.html will load here -->
+</nav>
+
+<main class="content">
+  <header>
+    <h1>2FA / Security Settings</h1>
+    <p>Manage your two-factor authentication methods and security preferences.</p>
+  </header>
+
+  <form id="twofa-form" novalidate>
+    <div class="card">
+      <label class="checkbox-label" for="enable-2fa">
+        <input type="checkbox" id="enable-2fa" name="enable2fa" />
+        Enable Two-Factor Authentication (2FA)
+      </label>
+
+      <label for="method">Select 2FA Method</label>
+      <select id="method" name="method" disabled required>
+        <option value="" disabled selected>Select method</option>
+        <option value="authenticator">Authenticator App (TOTP)</option>
+        <option value="sms">SMS OTP</option>
+        <option value="email">Email OTP</option>
+        <option value="hardware">Hardware Token</option>
+      </select>
+
+      <label class="checkbox-label" for="use-biometric">
+        <input type="checkbox" id="use-biometric" name="useBiometric" disabled />
+        Enable Biometric Authentication (Fingerprint / Face ID)
+      </label>
+
+      <div id="backup-codes-container" style="display:none;">
+        <label>Backup Codes</label>
+        <div class="backup-codes" id="backup-codes" tabindex="0" aria-label="Backup codes for 2FA"></div>
+        <button type="button" id="generate-codes">Generate New Backup Codes</button>
+        <p class="info-text">Use these codes if you lose access to your 2FA device. Keep them safe and private.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <label for="enforcement-level">2FA Enforcement Level</label>
+      <select id="enforcement-level" name="enforcementLevel" required>
+        <option value="always">Require 2FA on every login</option>
+        <option value="sensitive">Require 2FA for sensitive actions only</option>
+        <option value="off">2FA Disabled</option>
+      </select>
+
+      <label for="lockout-threshold">Account Lockout Threshold (failed attempts)</label>
+      <input type="number" id="lockout-threshold" name="lockoutThreshold" min="1" max="10" placeholder="e.g., 5" required />
+
+      <label for="lockout-duration">Lockout Duration (minutes)</label>
+      <input type="number" id="lockout-duration" name="lockoutDuration" min="1" max="1440" placeholder="e.g., 30" required />
+
+      <label class="checkbox-label" for="remember-devices">
+        <input type="checkbox" id="remember-devices" name="rememberDevices" />
+        Remember trusted devices (skip 2FA on recognized devices)
+      </label>
+
+      <p class="info-text">
+        Recovery Options: If you lose your 2FA device, use backup codes or contact support to recover your account.
+      </p>
+    </div>
+
+    <button type="submit">Save 2FA Settings</button>
+  </form>
+</main>
+
+<script>
+  // Load admin menu
+  fetch('admin-menu.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('sidebar-container').innerHTML = html;
+      document.querySelectorAll('.menu-toggle').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const submenu = btn.nextElementSibling;
+          submenu.classList.toggle('show');
+        });
+      });
+    })
+    .catch(err => console.error('Failed to load menu:', err));
+
+  const form = document.getElementById('twofa-form');
+  const enable2faCheckbox = form.elements['enable2fa'];
+  const methodSelect = form.elements['method'];
+  const biometricCheckbox = form.elements['useBiometric'];
+  const backupCodesContainer = document.getElementById('backup-codes-container');
+  const backupCodesDisplay = document.getElementById('backup-codes');
+  const generateCodesBtn = document.getElementById('generate-codes');
+  const enforcementSelect = form.elements['enforcementLevel'];
+  const lockoutThresholdInput = form.elements['lockoutThreshold'];
+  const lockoutDurationInput = form.elements['lockoutDuration'];
+  const rememberDevicesCheckbox = form.elements['rememberDevices'];
+
+  // Enable or disable 2FA-related inputs depending on checkbox
+  function toggle2FAControls(enabled) {
+    methodSelect.disabled = !enabled;
+    biometricCheckbox.disabled = !enabled;
+    if (!enabled) {
+      backupCodesContainer.style.display = 'none';
+    } else {
+      // Show backup codes container if backup codes exist in storage
+      if (getBackupCodes()) {
+        backupCodesContainer.style.display = 'block';
+        displayBackupCodes();
+      } else {
+        backupCodesContainer.style.display = 'none';
+      }
+    }
+  }
+
+  // Generate random backup codes (8 codes, 8 chars each alphanumeric)
+  function generateBackupCodes() {
+    const codes = [];
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ23456789'; // Avoid confusing chars
+    for (let i = 0; i < 8; i++) {
+      let code = '';
+      for (let j = 0; j < 8; j++) {
+        code += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      codes.push(code);
+    }
+    return codes;
+  }
+
+  // Display backup codes in UI
+  function displayBackupCodes() {
+    const codes = getBackupCodes();
+    if (codes && codes.length) {
+      backupCodesDisplay.textContent = codes.join('  \n');
+    } else {
+      backupCodesDisplay.textContent = 'No backup codes generated.';
+    }
+  }
+
+  // Save backup codes to localStorage
+  function saveBackupCodes(codes) {
+    localStorage.setItem('2faBackupCodes', JSON.stringify(codes));
+  }
+
+  // Retrieve backup codes from localStorage
+  function getBackupCodes() {
+    try {
+      return JSON.parse(localStorage.getItem('2faBackupCodes')) || [];
+    } catch {
+      return [];
+    }
+  }
+
+  // Load saved settings
+  function loadSettings() {
+    try {
+      const saved = JSON.parse(localStorage.getItem('twofaSettings')) || {};
+
+      enable2faCheckbox.checked = !!saved.enable2fa;
+      toggle2FAControls(enable2faCheckbox.checked);
+
+      methodSelect.value = saved.method || '';
+      biometricCheckbox.checked = !!saved.useBiometric;
+
+      enforcementSelect.value = saved.enforcementLevel || 'off';
+      lockoutThresholdInput.value = saved.lockoutThreshold || '';
+      lockoutDurationInput.value = saved.lockoutDuration || '';
+      rememberDevicesCheckbox.checked = !!saved.rememberDevices;
+
+      if (enable2faCheckbox.checked) {
+        if (getBackupCodes().length) {
+          backupCodesContainer.style.display = 'block';
+          displayBackupCodes();
+        }
+      }
+    } catch {
+      // ignore errors
+    }
+  }
+
+  enable2faCheckbox.addEventListener('change', e => {
+    toggle2FAControls(e.target.checked);
+  });
+
+  generateCodesBtn.addEventListener('click', () => {
+    if (confirm('Generate new backup codes? This will invalidate old codes.')) {
+      const newCodes = generateBackupCodes();
+      saveBackupCodes(newCodes);
+      displayBackupCodes();
+      alert('Backup codes generated! Please save them securely.');
+    }
+  });
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+
+    // Validate required fields when 2FA enabled
+    if (enable2faCheckbox.checked && !methodSelect.value) {
+      alert('Please select a 2FA method.');
+      methodSelect.focus();
+      return;
+    }
+    if (enable2faCheckbox.checked && (lockoutThresholdInput.value === '' || lockoutDurationInput.value === '')) {
+      alert('Please set lockout threshold and duration.');
+      return;
+    }
+
+    const settings = {
+      enable2fa: enable2faCheckbox.checked,
+      method: methodSelect.value,
+      useBiometric: biometricCheckbox.checked,
+      enforcementLevel: enforcementSelect.value,
+      lockoutThreshold: parseInt(lockoutThresholdInput.value, 10) || null,
+      lockoutDuration: parseInt(lockoutDurationInput.value, 10) || null,
+      rememberDevices: rememberDevicesCheckbox.checked,
+    };
+
+    localStorage.setItem('twofaSettings', JSON.stringify(settings));
+    alert('2FA / Security settings saved successfully!');
+  });
+
+  loadSettings();
+</script>
+
+</body>
+</html>

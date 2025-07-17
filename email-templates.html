@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Email Templates – Growing Cents</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg-dark: #103125;
+    --accent-gold: #C39E3D;
+    --light-text: #ffffff;
+    --card-bg: #fefefe;
+    --text-dark: #2c3e50;
+    --input-border: #ccc;
+    --input-focus: var(--accent-gold);
+  }
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: var(--bg-dark);
+    color: var(--light-text);
+    display: flex;
+    min-height: 100vh;
+  }
+  nav.sidebar {
+    width: 260px;
+    background: var(--bg-dark);
+    padding-top: 20px;
+    flex-shrink: 0;
+    overflow-y: auto;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.3);
+    height: 100vh;
+  }
+  main.content {
+    flex-grow: 1;
+    padding: 40px 50px;
+    background: var(--card-bg);
+    color: var(--text-dark);
+    overflow-y: auto;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  header {
+    margin-bottom: 30px;
+  }
+  header h1 {
+    font-family: 'Marcellus', serif;
+    color: var(--accent-gold);
+    font-size: 2rem;
+    margin-bottom: 0.3em;
+  }
+  header p {
+    font-size: 1.1rem;
+    color: #666;
+    margin-top: 0;
+  }
+  .card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 25px 30px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+  }
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-dark);
+    cursor: pointer;
+  }
+  select, textarea {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 1rem;
+    border: 1.5px solid var(--input-border);
+    border-radius: 8px;
+    font-family: inherit;
+    transition: border-color 0.3s ease;
+    resize: vertical;
+    min-height: 120px;
+  }
+  select:focus, textarea:focus {
+    border-color: var(--input-focus);
+    outline: none;
+  }
+  button {
+    background-color: var(--accent-gold);
+    color: var(--bg-dark);
+    border: none;
+    padding: 14px 30px;
+    font-weight: 700;
+    font-size: 1.2rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+    margin-top: 10px;
+  }
+  button:hover {
+    background-color: #a57f21;
+  }
+  .preview {
+    background: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 15px;
+    color: #333;
+    white-space: pre-wrap;
+    font-family: Consolas, monospace;
+    min-height: 120px;
+  }
+  @media (max-width: 920px) {
+    main.content {
+      padding: 20px;
+      max-width: 100%;
+    }
+    nav.sidebar {
+      width: 100%;
+      height: auto;
+      padding: 10px;
+      border-bottom: 1px solid #ccc;
+    }
+  }
+</style>
+</head>
+<body>
+
+<nav class="sidebar" id="sidebar-container">
+  <!-- admin-menu.html loads here -->
+</nav>
+
+<main class="content">
+  <header>
+    <h1>Email Templates</h1>
+    <p>Manage and customize the email templates sent to users for various events.</p>
+  </header>
+
+  <section class="card">
+    <label for="template-select">Select Template</label>
+    <select id="template-select" aria-label="Select email template">
+      <option value="welcome">Welcome Email</option>
+      <option value="password-reset">Password Reset</option>
+      <option value="subscription-confirmation">Subscription Confirmation</option>
+      <option value="assessment-completion">Assessment Completion</option>
+      <option value="payment-receipt">Payment Receipt</option>
+      <option value="notification">General Notification</option>
+    </select>
+  </section>
+
+  <section class="card">
+    <label for="email-subject">Email Subject</label>
+    <input type="text" id="email-subject" placeholder="Subject line here..." />
+
+    <label for="email-body">Email Body (HTML allowed)</label>
+    <textarea id="email-body" placeholder="Write the email body here..."></textarea>
+
+    <button id="save-template-btn" type="button">Save Template</button>
+
+    <h3>Live Preview</h3>
+    <div class="preview" id="email-preview"></div>
+  </section>
+</main>
+
+<script>
+  // Load sidebar menu
+  fetch('admin-menu.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('sidebar-container').innerHTML = html;
+      document.querySelectorAll('.menu-toggle').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const submenu = btn.nextElementSibling;
+          submenu.classList.toggle('show');
+        });
+      });
+    })
+    .catch(err => console.error('Failed to load menu:', err));
+
+  const templatesKey = 'emailTemplates';
+  const select = document.getElementById('template-select');
+  const subjectInput = document.getElementById('email-subject');
+  const bodyTextarea = document.getElementById('email-body');
+  const previewDiv = document.getElementById('email-preview');
+  const saveBtn = document.getElementById('save-template-btn');
+
+  // Default templates for demo
+  const defaultTemplates = {
+    welcome: {
+      subject: 'Welcome to Growing Cents!',
+      body: 'Hello {{name}},\n\nThank you for joining Growing Cents. We’re excited to have you on board!\n\nBest regards,\nGrowing Cents Team'
+    },
+    'password-reset': {
+      subject: 'Password Reset Instructions',
+      body: 'Hello {{name}},\n\nClick the link below to reset your password:\n{{reset_link}}\n\nIf you did not request this, please ignore this email.'
+    },
+    'subscription-confirmation': {
+      subject: 'Subscription Confirmed',
+      body: 'Hello {{name}},\n\nYour subscription has been successfully activated. Thank you for choosing Growing Cents!'
+    },
+    'assessment-completion': {
+      subject: 'Assessment Completed',
+      body: 'Hello {{name}},\n\nYou have successfully completed your assessment. View your results here: {{results_link}}'
+    },
+    'payment-receipt': {
+      subject: 'Payment Receipt',
+      body: 'Hello {{name}},\n\nThank you for your payment. Your receipt number is {{receipt_number}}.'
+    },
+    notification: {
+      subject: 'Notification from Growing Cents',
+      body: 'Hello {{name}},\n\nThis is a general notification email.\n\nBest regards,\nGrowing Cents Team'
+    }
+  };
+
+  // Load templates from localStorage or defaults
+  function loadTemplates() {
+    const saved = JSON.parse(localStorage.getItem(templatesKey)) || defaultTemplates;
+    return saved;
+  }
+
+  // Save templates to localStorage
+  function saveTemplates(templates) {
+    localStorage.setItem(templatesKey, JSON.stringify(templates));
+  }
+
+  let templates = loadTemplates();
+
+  function updateForm(templateKey) {
+    const template = templates[templateKey];
+    if (!template) return;
+    subjectInput.value = template.subject;
+    bodyTextarea.value = template.body;
+    updatePreview();
+  }
+
+  // Update live preview
+  function updatePreview() {
+    let html = bodyTextarea.value
+      .replace(/{{name}}/g, '<strong>John Doe</strong>')
+      .replace(/{{reset_link}}/g, '<a href="#">Reset Password Link</a>')
+      .replace(/{{results_link}}/g, '<a href="#">View Results</a>')
+      .replace(/{{receipt_number}}/g, '<em>#123456</em>');
+
+    previewDiv.innerHTML = html || '<em>Preview will appear here as you type.</em>';
+  }
+
+  // On template change
+  select.addEventListener('change', () => {
+    updateForm(select.value);
+  });
+
+  // On input change update preview live
+  bodyTextarea.addEventListener('input', updatePreview);
+
+  // Save template changes
+  saveBtn.addEventListener('click', () => {
+    const key = select.value;
+    templates[key] = {
+      subject: subjectInput.value.trim(),
+      body: bodyTextarea.value.trim()
+    };
+    saveTemplates(templates);
+    alert('Template saved successfully!');
+  });
+
+  // Initialize form on page load
+  updateForm(select.value);
+</script>
+
+</body>
+</html>

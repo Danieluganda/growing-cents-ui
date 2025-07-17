@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Filter & Search Logs – Growing Cents</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --dark-bg: #103125;
+      --light-bg: #fff;
+      --accent: #C39E3D;
+      --text-dark: #2c3e50;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      background: var(--dark-bg);
+      color: var(--text-dark);
+    }
+    nav.sidebar {
+      width: 260px;
+      background: var(--dark-bg);
+      padding-top: 20px;
+      color: white;
+      height: 100vh;
+      flex-shrink: 0;
+      overflow-y: auto;
+    }
+    main {
+      flex-grow: 1;
+      background: var(--light-bg);
+      padding: 40px 50px;
+      overflow-y: auto;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    header h1 {
+      font-family: 'Marcellus', serif;
+      color: var(--accent);
+      font-size: 2rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 30px;
+      font-size: 0.95rem;
+    }
+    th, td {
+      padding: 12px 10px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background-color: #f4f4f4;
+      font-weight: 600;
+    }
+    tr:hover {
+      background-color: #f0f8f5;
+    }
+    .tag {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      color: white;
+      background-color: #3498db;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="sidebar" id="sidebar-container">
+  <!-- admin-menu.html will be loaded here -->
+</nav>
+
+<main>
+  <header>
+    <h1>Filter & Search Logs</h1>
+    <p>Monitor how users interact with filters and search functions across the platform.</p>
+  </header>
+
+  <table id="logs-table">
+    <thead>
+      <tr>
+        <th>Date/Time</th>
+        <th>User</th>
+        <th>Page</th>
+        <th>Search Term / Filter</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Logs will be injected dynamically -->
+    </tbody>
+  </table>
+</main>
+
+<script>
+  // Load the admin menu
+  fetch('admin-menu.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('sidebar-container').innerHTML = html;
+      document.querySelectorAll('.menu-toggle').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const submenu = btn.nextElementSibling;
+          submenu.classList.toggle('show');
+        });
+      });
+    });
+
+  // Sample log data
+  const logs = [
+    {
+      datetime: "2025-07-17 09:00",
+      user: "Admin Jane",
+      page: "All Clubs",
+      search: "Future Builders",
+      action: "Search"
+    },
+    {
+      datetime: "2025-07-17 09:05",
+      user: "Support Team",
+      page: "Club Memberships",
+      search: "Tier 2, Kampala Region",
+      action: "Filter"
+    },
+    {
+      datetime: "2025-07-17 09:30",
+      user: "Admin James",
+      page: "Assessment Reports",
+      search: "Progress > 80%",
+      action: "Filter"
+    },
+    {
+      datetime: "2025-07-17 10:00",
+      user: "Club Lead",
+      page: "Payment History",
+      search: "June 2025",
+      action: "Search"
+    }
+  ];
+
+  const tbody = document.querySelector('#logs-table tbody');
+  logs.forEach(log => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${log.datetime}</td>
+      <td>${log.user}</td>
+      <td>${log.page}</td>
+      <td>${log.search}</td>
+      <td><span class="tag">${log.action}</span></td>
+    `;
+    tbody.appendChild(tr);
+  });
+</script>
+
+</body>
+</html>

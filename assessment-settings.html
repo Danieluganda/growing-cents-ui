@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Assessment Settings – Growing Cents</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-dark: #103125;
+      --accent-gold: #C39E3D;
+      --light-text: #ffffff;
+      --card-bg: #fefefe;
+      --text-dark: #2c3e50;
+      --input-border: #ccc;
+      --input-focus: var(--accent-gold);
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--bg-dark);
+      color: var(--light-text);
+      display: flex;
+      min-height: 100vh;
+    }
+    nav.sidebar {
+      width: 260px;
+      background: var(--bg-dark);
+      padding-top: 20px;
+      flex-shrink: 0;
+      overflow-y: auto;
+      box-shadow: 2px 0 8px rgba(0,0,0,0.3);
+      height: 100vh;
+    }
+    main.content {
+      flex-grow: 1;
+      padding: 40px 50px;
+      background: var(--card-bg);
+      color: var(--text-dark);
+      max-width: 900px;
+      margin: 0 auto;
+      overflow-y: auto;
+    }
+    header h1 {
+      font-family: 'Marcellus', serif;
+      color: var(--accent-gold);
+      font-size: 2rem;
+      margin-bottom: 0.3em;
+    }
+    header p {
+      font-size: 1.1rem;
+      color: #666;
+      margin-bottom: 30px;
+    }
+    form {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 30px 40px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--text-dark);
+      cursor: pointer;
+    }
+    select, input[type="number"], input[type="text"] {
+      width: 100%;
+      padding: 10px 14px;
+      font-size: 1rem;
+      border: 1.5px solid var(--input-border);
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-family: inherit;
+      transition: border-color 0.3s ease;
+    }
+    select:focus, input[type="number"]:focus, input[type="text"]:focus {
+      border-color: var(--input-focus);
+      outline: none;
+    }
+    fieldset {
+      border: none;
+      margin: 0 0 20px 0;
+      padding: 0;
+    }
+    legend {
+      font-weight: 700;
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+      color: var(--text-dark);
+    }
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+      color: var(--text-dark);
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .checkbox-label input[type="checkbox"] {
+      width: auto;
+      cursor: pointer;
+      margin: 0;
+    }
+    button {
+      background-color: var(--accent-gold);
+      color: var(--bg-dark);
+      border: none;
+      padding: 14px 30px;
+      font-weight: 700;
+      font-size: 1.2rem;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.25s ease;
+      display: block;
+      margin-top: 20px;
+      width: 100%;
+      max-width: 300px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    button:hover {
+      background-color: #a57f21;
+    }
+    @media (max-width: 920px) {
+      main.content {
+        padding: 20px;
+        max-width: 100%;
+      }
+      form {
+        padding: 20px;
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="sidebar" id="sidebar-container">
+  <!-- admin-menu.html loaded here -->
+</nav>
+
+<main class="content">
+  <header>
+    <h1>Assessment Settings</h1>
+    <p>Configure key parameters for assessments, scoring, and report generation.</p>
+  </header>
+
+  <form id="assessment-settings-form" novalidate>
+    <label for="max-questions">Maximum Questions per Assessment</label>
+    <input type="number" id="max-questions" name="maxQuestions" min="1" max="100" placeholder="e.g. 50" required />
+
+    <label for="passing-score">Passing Score (%)</label>
+    <input type="number" id="passing-score" name="passingScore" min="0" max="100" placeholder="e.g. 70" required />
+
+    <label for="report-generation-delay">Report Generation Delay (minutes)</label>
+    <input type="number" id="report-generation-delay" name="reportGenerationDelay" min="0" placeholder="e.g. 5" required />
+
+    <fieldset>
+      <legend>Assessment Features</legend>
+      <label class="checkbox-label" for="enable-grace-period">
+        <input type="checkbox" id="enable-grace-period" name="enableGracePeriod" />
+        Enable 7-day Grace Period for Assessment Edits
+      </label>
+      <label class="checkbox-label" for="allow-retries">
+        <input type="checkbox" id="allow-retries" name="allowRetries" />
+        Allow Multiple Assessment Attempts
+      </label>
+      <label class="checkbox-label" for="show-scores-immediately">
+        <input type="checkbox" id="show-scores-immediately" name="showScoresImmediately" />
+        Show Scores Immediately After Completion
+      </label>
+    </fieldset>
+
+    <button type="submit">Save Settings</button>
+  </form>
+</main>
+
+<script>
+  // Load sidebar menu
+  fetch('admin-menu.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('sidebar-container').innerHTML = html;
+      document.querySelectorAll('.menu-toggle').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const submenu = btn.nextElementSibling;
+          submenu.classList.toggle('show');
+        });
+      });
+    })
+    .catch(err => console.error('Failed to load menu:', err));
+
+  // Load saved settings demo
+  function loadSettings() {
+    const saved = JSON.parse(localStorage.getItem('assessmentSettings')) || {};
+    if (saved.maxQuestions !== undefined) document.getElementById('max-questions').value = saved.maxQuestions;
+    if (saved.passingScore !== undefined) document.getElementById('passing-score').value = saved.passingScore;
+    if (saved.reportGenerationDelay !== undefined) document.getElementById('report-generation-delay').value = saved.reportGenerationDelay;
+    if (saved.enableGracePeriod !== undefined) document.getElementById('enable-grace-period').checked = saved.enableGracePeriod;
+    if (saved.allowRetries !== undefined) document.getElementById('allow-retries').checked = saved.allowRetries;
+    if (saved.showScoresImmediately !== undefined) document.getElementById('show-scores-immediately').checked = saved.showScoresImmediately;
+  }
+
+  document.getElementById('assessment-settings-form').addEventListener('submit', e => {
+    e.preventDefault();
+    const form = e.target;
+    const settings = {
+      maxQuestions: parseInt(form.maxQuestions.value, 10),
+      passingScore: parseInt(form.passingScore.value, 10),
+      reportGenerationDelay: parseInt(form.reportGenerationDelay.value, 10),
+      enableGracePeriod: form.enableGracePeriod.checked,
+      allowRetries: form.allowRetries.checked,
+      showScoresImmediately: form.showScoresImmediately.checked,
+    };
+    localStorage.setItem('assessmentSettings', JSON.stringify(settings));
+    alert('Assessment settings saved successfully!');
+  });
+
+  loadSettings();
+</script>
+
+</body>
+</html>
