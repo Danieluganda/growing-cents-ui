@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Subscription Settings – Growing Cents</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-dark: #103125;
+      --accent-gold: #C39E3D;
+      --light-text: #ffffff;
+      --card-bg: #fefefe;
+      --text-dark: #2c3e50;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--bg-dark);
+      color: var(--light-text);
+      display: flex;
+      min-height: 100vh;
+    }
+    nav.sidebar {
+      width: 260px;
+      background: var(--bg-dark);
+      padding-top: 20px;
+      flex-shrink: 0;
+      overflow-y: auto;
+    }
+    main.content {
+      flex-grow: 1;
+      padding: 40px 50px;
+    }
+    header h1 {
+      font-family: 'Marcellus', serif;
+      color: var(--accent-gold);
+      font-size: 2rem;
+      margin-bottom: 0.3em;
+    }
+    header p {
+      font-size: 1.1rem;
+      color: #ddd;
+      margin-bottom: 30px;
+    }
+    section {
+      background: var(--card-bg);
+      border-radius: 10px;
+      padding: 25px;
+      color: var(--text-dark);
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+    section h2 {
+      color: var(--bg-dark);
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 600;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    .checkbox-group label {
+      display: block;
+      font-weight: normal;
+    }
+    .checkbox-group input {
+      width: auto;
+      margin-right: 10px;
+    }
+    button {
+      background: var(--bg-dark);
+      color: var(--light-text);
+      padding: 12px 20px;
+      border: none;
+      margin-top: 20px;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    @media (max-width: 900px) {
+      body {
+        flex-direction: column;
+      }
+      nav.sidebar {
+        width: 100%;
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+      }
+      main.content {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div id="sidebar-container"></div>
+
+<main class="content">
+  <header>
+    <h1>Subscription Settings</h1>
+    <p>Manage system-wide settings for subscription tiers, billing, and permissions logic.</p>
+  </header>
+
+  <section>
+    <h2>Tier Access Configuration</h2>
+
+    <label for="assessment-access">Assessment Access (per Tier)</label>
+    <select id="assessment-access">
+      <option value="premium">Premium: Full Access</option>
+      <option value="standard">Standard: Limited Access</option>
+      <option value="basic">Basic: Restricted Access</option>
+    </select>
+
+    <label for="report-access">Report Access (for Paid Tiers)</label>
+    <select id="report-access">
+      <option value="paid-only">Only Paid Tiers</option>
+      <option value="all">All Users</option>
+    </select>
+
+    <label for="grace-period">Grace Period (in Days)</label>
+    <input type="number" id="grace-period" value="7" min="0" />
+
+    <label for="default-tier">Default Tier on Signup</label>
+    <select id="default-tier">
+      <option value="basic">Basic</option>
+      <option value="standard">Standard</option>
+      <option value="premium">Premium</option>
+    </select>
+  </section>
+
+  <section>
+    <h2>Payment Settings</h2>
+
+    <label for="billing-cycle">Default Billing Cycle</label>
+    <select id="billing-cycle">
+      <option value="monthly">Monthly</option>
+      <option value="quarterly">Quarterly</option>
+      <option value="annually">Annually</option>
+    </select>
+
+    <label>Accepted Payment Methods</label>
+    <div class="checkbox-group">
+      <label><input type="checkbox" checked /> Mobile Money</label>
+      <label><input type="checkbox" checked /> Bank Transfer</label>
+      <label><input type="checkbox" checked /> Card</label>
+      <label><input type="checkbox" /> PayPal</label>
+      <label><input type="checkbox" /> Voucher Codes</label>
+    </div>
+  </section>
+
+  <section>
+    <h2>Automation Rules (Backend)</h2>
+    <ul>
+      <li>Access to reports and assessments is tied to tier permissions.</li>
+      <li>Billing is triggered automatically after assessments are submitted.</li>
+      <li>Subscription expiry disables access until renewed.</li>
+      <li>Paused clubs retain data but lose access.</li>
+    </ul>
+  </section>
+
+  <button>Save Settings</button>
+</main>
+
+<script>
+  // Load sidebar menu
+  fetch('admin-menu.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('sidebar-container').innerHTML = html;
+      document.querySelectorAll('.menu-toggle').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const submenu = btn.nextElementSibling;
+          submenu.classList.toggle('show');
+        });
+      });
+    })
+    .catch(err => console.error('Failed to load menu:', err));
+</script>
+
+</body>
+</html>

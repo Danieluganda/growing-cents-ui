@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Club Payment History – Growing Cents</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-dark: #103125;
+      --accent-gold: #C39E3D;
+      --light-text: #ffffff;
+      --card-bg: #fefefe;
+      --text-dark: #2c3e50;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--bg-dark);
+      color: var(--light-text);
+      display: flex;
+      min-height: 100vh;
+    }
+    nav.sidebar {
+      width: 260px;
+      background: var(--bg-dark);
+      padding-top: 20px;
+      flex-shrink: 0;
+    }
+    main.content {
+      flex-grow: 1;
+      padding: 40px 50px;
+    }
+    header h1 {
+      font-family: 'Marcellus', serif;
+      color: var(--accent-gold);
+      font-size: 2rem;
+      margin-bottom: 0.3em;
+    }
+    header p {
+      font-size: 1.1rem;
+      color: #ddd;
+      margin-bottom: 30px;
+    }
+    section {
+      background: var(--card-bg);
+      border-radius: 10px;
+      padding: 20px;
+      color: var(--text-dark);
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    }
+    section h2 {
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+    }
+    .club-details {
+      margin-bottom: 20px;
+    }
+    .club-details strong {
+      color: var(--bg-dark);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background: #f1f8f6;
+      color: #333;
+    }
+    tr:hover {
+      background-color: #f7fbfa;
+    }
+    .status-paid {
+      color: green;
+      font-weight: bold;
+    }
+    .status-failed {
+      color: red;
+      font-weight: bold;
+    }
+    @media (max-width: 900px) {
+      body { flex-direction: column; }
+      nav.sidebar { width: 100%; }
+      main.content { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="sidebar-container"></div>
+
+<main class="content">
+  <header>
+    <h1>Club Payment History</h1>
+    <p>Review historical payments for this specific club.</p>
+  </header>
+
+  <section>
+    <div class="club-details">
+      <p><strong>Club Name:</strong> Women Rise Fund</p>
+      <p><strong>Tier:</strong> Premium</p>
+      <p><strong>Status:</strong> Active</p>
+    </div>
+
+    <h2>Payment Transactions</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Amount</th>
+          <th>Method</th>
+          <th>Status</th>
+          <th>Receipt</th>
+        </tr>
+      </thead>
+      <tbody id="club-payments-body">
+        <!-- Records loaded here -->
+      </tbody>
+    </table>
+  </section>
+</main>
+
+<script>
+  // Load admin menu
+  fetch('admin-menu.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('sidebar-container').innerHTML = html;
+      document.querySelectorAll('.menu-toggle').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const submenu = btn.nextElementSibling;
+          submenu.classList.toggle('show');
+        });
+      });
+    });
+
+  // Sample club payment history
+  const clubPayments = [
+    {
+      date: "2024-06-01",
+      amount: "$100",
+      method: "Mobile Money",
+      status: "Paid",
+      receipt: "#INV-00023"
+    },
+    {
+      date: "2023-12-01",
+      amount: "$100",
+      method: "Mobile Money",
+      status: "Paid",
+      receipt: "#INV-00015"
+    },
+    {
+      date: "2023-06-01",
+      amount: "$100",
+      method: "Card",
+      status: "Failed",
+      receipt: "-"
+    }
+  ];
+
+  const tbody = document.getElementById('club-payments-body');
+  clubPayments.forEach(row => {
+    const tr = document.createElement('tr');
+    const statusClass = row.status === 'Paid' ? 'status-paid' : 'status-failed';
+    tr.innerHTML = `
+      <td>${row.date}</td>
+      <td>${row.amount}</td>
+      <td>${row.method}</td>
+      <td class="${statusClass}">${row.status}</td>
+      <td>${row.receipt}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+</script>
+
+</body>
+</html>
