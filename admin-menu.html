@@ -4,13 +4,13 @@
   <meta charset="UTF-8" />
   <title>Growing Cents Admin Sidebar</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  
+
   <!-- Font Awesome CDN for icons -->
   <link
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     rel="stylesheet"
   />
-  
+
   <style>
     :root {
       --bg-dark: #103125;
@@ -50,6 +50,7 @@
       position: relative;
       transition: transform var(--transition-speed) ease;
       user-select: none;
+      transform: translateX(0);
     }
 
     nav.sidebar h2 {
@@ -133,7 +134,7 @@
       transition: transform var(--transition-speed) ease;
     }
 
-    /* Rotate arrow when submenu shown or expanded */
+    /* Rotate arrow when submenu shown */
     .menu-toggle[aria-expanded="true"] i.fa-chevron-down {
       transform: rotate(180deg);
     }
@@ -216,9 +217,6 @@
         width: 260px;
         box-shadow: 2px 0 8px rgba(0,0,0,0.7);
         z-index: 1000;
-        /* Allow vertical scroll for long menus */
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
       }
 
       nav.sidebar.open {
@@ -280,10 +278,8 @@
 <body>
 
   <!-- Hamburger for mobile -->
-  <button id="hamburger-btn" aria-label="Toggle Menu" aria-expanded="false">
-    <i class="fa fa-bars" aria-hidden="true"></i> Menu
-  </button>
-  <div id="sidebar-overlay" tabindex="-1"></div>
+  <button id="hamburger-btn" aria-label="Toggle Menu"><i class="fa fa-bars"></i> Menu</button>
+  <div id="sidebar-overlay"></div>
 
   <nav class="sidebar" role="navigation" aria-label="Main Sidebar Navigation">
     <h2><i class="fa fa-seedling"></i> Growing Cents</h2>
@@ -389,26 +385,21 @@
       const hamburger = document.getElementById('hamburger-btn');
       const overlay = document.getElementById('sidebar-overlay');
 
-      // Toggle sidebar open/close on hamburger click
       hamburger.addEventListener('click', () => {
-        const isOpen = sidebar.classList.toggle('open');
-        overlay.classList.toggle('active', isOpen);
-        hamburger.setAttribute('aria-expanded', isOpen);
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('active');
       });
 
-      // Clicking outside sidebar closes it
       overlay.addEventListener('click', () => {
         sidebar.classList.remove('open');
         overlay.classList.remove('active');
-        hamburger.setAttribute('aria-expanded', 'false');
       });
 
-      // Toggle submenu open/close and aria-expanded
       document.querySelectorAll('.menu-toggle').forEach(button => {
         button.addEventListener('click', () => {
           const submenu = button.nextElementSibling;
           const isExpanded = button.getAttribute('aria-expanded') === 'true';
-          button.setAttribute('aria-expanded', String(!isExpanded));
+          button.setAttribute('aria-expanded', !isExpanded);
           submenu.classList.toggle('show');
         });
       });
