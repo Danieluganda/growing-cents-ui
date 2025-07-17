@@ -2,371 +2,249 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Dashboard - Growing Cents</title>
-  <link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg-dark: #103125;
-    --accent-gold: #C39E3D;
-    --light-text: #ffffff;
-    --card-bg: #fefefe;
-    --hover-blue: #1d6fd6;
-    --submenu-bg: #134334;
-    --submenu-border: rgba(255, 255, 255, 0.1);
-  }
-
-  * {
-    box-sizing: border-box;
-  }
-
-  body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    display: flex;
-    min-height: 100vh;
-    background-color: var(--bg-dark);
-    color: var(--light-text);
-  }
-
-  nav.sidebar {
-    width: 260px;
-    background-color: var(--bg-dark);
-    color: var(--light-text);
-    display: flex;
-    flex-direction: column;
-    padding-top: 20px;
-    flex-shrink: 0;
-    overflow-y: auto;
-    height: 100vh;
-    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
-  }
-
-  nav.sidebar h2 {
-    font-family: 'Marcellus', serif;
-    font-size: 1.8rem;
-    font-weight: 700;
-    padding: 0 30px 24px;
-    margin: 0;
-    color: var(--accent-gold);
-    border-bottom: 2px solid rgba(255,255,255,0.2);
-  }
-
-  .user-info {
-    padding: 0 30px 20px;
-    font-size: 0.9rem;
-    border-bottom: 1px solid rgba(255,255,255,0.2);
-  }
-
-  nav.sidebar a,
-  nav.sidebar .submenu a {
-    color: white;
-    text-decoration: none;
-    display: block;
-    padding: 12px 30px;
-    font-weight: 600;
-    font-size: 1.05rem;
-    border-left: 4px solid transparent;
-    transition: background-color 0.25s ease;
-  }
-
-  nav.sidebar a:hover,
-  nav.sidebar a.active,
-  .submenu a:hover {
-    background-color: rgba(255, 255, 255, 0.05);
-    border-left-color: var(--accent-gold);
-  }
-
-  .menu-group {
-    margin-bottom: 8px;
-  }
-
-  .menu-toggle {
-    background: none;
-    border: none;
-    color: white;
-    padding: 12px 30px;
-    width: 100%;
-    text-align: left;
-    font-size: 1.05rem;
-    font-weight: 700;
-    cursor: pointer;
-    border-left: 4px solid transparent;
-    transition: background-color 0.25s ease;
-  }
-
-  .menu-toggle:hover {
-    background-color: rgba(255, 255, 255, 0.05);
-    border-left-color: var(--accent-gold);
-  }
-
-  .submenu {
-    list-style: none;
-    padding-left: 0;
-    margin: 0;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease;
-    background-color: var(--submenu-bg);
-    border-left: 2px solid var(--submenu-border);
-  }
-
-  .submenu.show {
-    max-height: 800px;
-  }
-
-  .submenu li a {
-    padding: 10px 40px;
-    font-size: 0.95rem;
-    font-weight: 500;
-  }
-
-  .submenu.nested-submenu {
-    padding-left: 10px;
-    background-color: #155642;
-  }
-
-  main.content {
-    flex-grow: 1;
-    padding: 40px 50px;
-    overflow-y: auto;
-  }
-
-  main.content header h1 {
-    font-size: 2.2rem;
-    color: var(--accent-gold);
-    font-family: 'Marcellus', serif;
-    margin-bottom: 0.5em;
-  }
-
-  /* Responsive sidebar */
-  @media (max-width: 900px) {
+  <title>Admin Dashboard – Growing Cents</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-dark: #103125;
+      --accent-gold: #C39E3D;
+      --light-text: #ffffff;
+      --card-bg: #ffffff;
+      --text-dark: #2c3e50;
+    }
+    * {
+      box-sizing: border-box;
+    }
     body {
-      flex-direction: column;
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--bg-dark);
+      color: var(--light-text);
+      display: flex;
+      min-height: 100vh;
     }
-
     nav.sidebar {
-      width: 100%;
-      flex-direction: row;
-      flex-wrap: wrap;
-      height: auto;
-      overflow-y: visible;
-      padding: 10px;
-      border-bottom: 1px solid #ccc;
+      width: 260px;
+      background: var(--bg-dark);
+      padding-top: 20px;
+      flex-shrink: 0;
+      overflow-y: auto;
+      height: 100vh;
+      box-shadow: 2px 0 8px rgba(0,0,0,0.3);
     }
-
-    nav.sidebar h2,
-    .user-info {
-      display: none;
-    }
-
-    nav.sidebar a,
-    .menu-toggle {
-      flex: 1 0 auto;
-      padding: 10px;
-      font-size: 0.95rem;
-      text-align: center;
-    }
-
-    .submenu {
-      position: absolute;
-      background-color: var(--bg-dark);
-      width: 100%;
-      left: 0;
-      z-index: 100;
-      padding: 0;
-    }
-
     main.content {
-      padding: 20px;
+      flex-grow: 1;
+      padding: 40px;
+      background: #f4f6f8;
+      overflow-y: auto;
+      color: var(--text-dark);
     }
-  }
-</style>
-
+    header h1 {
+      font-family: 'Marcellus', serif;
+      font-size: 2rem;
+      color: var(--accent-gold);
+      margin-bottom: 10px;
+    }
+    header p {
+      font-size: 1.1rem;
+      margin-top: 0;
+      margin-bottom: 30px;
+      color: #444;
+    }
+    h2.section-title {
+      color: #103125;
+      margin-top: 40px;
+      margin-bottom: 15px;
+      font-family: 'Marcellus', serif;
+      font-weight: 600;
+      font-size: 1.4rem;
+    }
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px 25px;
+      margin-top: 0;
+    }
+    .kpi-card {
+      background: var(--card-bg);
+      border-radius: 10px;
+      padding: 25px 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      color: var(--text-dark);
+      min-height: 120px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .kpi-title {
+      font-size: 0.95rem;
+      color: #666;
+      user-select: none;
+    }
+    .kpi-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--bg-dark);
+      margin-top: 8px;
+      user-select: text;
+    }
+    @media (max-width: 768px) {
+      main.content {
+        padding: 20px;
+      }
+      .kpi-grid {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      }
+    }
+  </style>
 </head>
 <body>
 
-<nav class="sidebar">
-  <h2>Growing Cents</h2>
-  <div class="user-info">
-    <p><strong>Super Admin Name</strong></p>
-    <p>admin@example.com</p>
-  </div>
-  
-  <a href="admin-dashboard.html" class="active">Dashboard</a>
-  
-  <div class="menu-group">
-    <button class="menu-toggle">User Management ▼</button>
-    <ul class="submenu">
-      <li><a href="approvals.html">User Approvals</a></li>
-      <li><a href="users.html">All Users</a></li>
-      <li><a href="roles.html">Roles & Permissions</a></li>
-      <li><a href="user-groups.html">User Groups</a></li>
-      <li><a href="login-activity.html">Login Activity</a></li>
-    </ul>
-  </div>
-  
-  <div class="menu-group">
-    <button class="menu-toggle">Clubs ▼</button>
-    <ul class="submenu">
-      <li><a href="clubs.html">All Clubs</a></li>
-      <li><a href="club-profiles.html">Club Profiles</a></li>
-      <li><a href="club-admins.html">Club Administrators</a></li>
-      <li><a href="club-memberships.html">Club Memberships</a></li>
-    </ul>
-  </div>
-  
-  <div class="menu-group">
-    <button class="menu-toggle">Subscriptions ▼</button>
-    <ul class="submenu">
-      <li><a href="tiers.html">Tiers</a></li>
-      <li><a href="discounts.html">Discounts</a></li>
-      <li><a href="pause-resume.html">Pause/Resume Tier</a></li>
-      <li>
-        Expiry Management
-        <ul class="submenu nested-submenu">
-          <li><a href="expired.html">Expired</a></li>
-          <li><a href="about-to-expire.html">About to Expire</a></li>
-          <li><a href="active.html">Active</a></li>
-        </ul>
-      </li>
-      <li><a href="payment-history.html">Payment History</a></li>
-      <li><a href="subscription-settings.html">Subscription Settings</a></li>
-    </ul>
-  </div>
-  
-  <div class="menu-group">
-    <button class="menu-toggle">Assessments ▼</button>
-    <ul class="submenu">
-      <li><a href="assessment-questions.html">Assessment Questions</a></li>
-      <li><a href="past-assessments.html">Past Assessments</a></li>
-      <li><a href="assessment-logic.html">Assessment Logic</a></li>
-      <li><a href="reports.html">Reports</a></li>
-      <li><a href="assessment-settings.html">Assessment Settings</a></li>
-    </ul>
-  </div>
-  
-  <div class="menu-group">
-    <button class="menu-toggle">Settings ▼</button>
-    <ul class="submenu">
-      <li><a href="2fa-security.html">2FA / Security Settings</a></li>
-      <li><a href="system-config.html">System Configurations</a></li>
-      <li><a href="email-templates.html">Email Templates</a></li>
-      <li><a href="backup-restore.html">Backup & Restore</a></li>
-      <li><a href="notifications.html">Notification Preferences</a></li>
-      <li><a href="audit-trail-settings.html">Audit Trail Settings</a></li>
-    </ul>
-  </div>
-  
-  <div class="menu-group">
-    <button class="menu-toggle">Audit & Logs ▼</button>
-    <ul class="submenu">
-      <li><a href="system-actions.html">System Actions Log</a></li>
-      <li><a href="filter-logs.html">Filter & Search Logs</a></li>
-      <li><a href="export-logs.html">Export Logs</a></li>
-    </ul>
-  </div>
+  <nav class="sidebar" id="sidebar-container">
+    <!-- admin-menu.html gets injected here -->
+  </nav>
 
-  <a href="logout.html">Logout</a>
-</nav>
+  <main class="content">
+    <header>
+      <h1>Admin Dashboard</h1>
+      <p>Analytics and insights on club performance and assessments.</p>
+    </header>
 
-<script>
-  document.querySelectorAll('.menu-toggle').forEach(button => {
-    button.addEventListener('click', () => {
-      const submenu = button.nextElementSibling;
-      submenu.classList.toggle('show');
-    });
-  });
-</script>
+    <h2 class="section-title">System Metrics</h2>
+    <section class="kpi-grid" aria-label="System Key Performance Indicators">
+      <div class="kpi-card">
+        <div class="kpi-title">Total Registered Users</div>
+        <div class="kpi-value" id="total-users">0</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Assessments Completed</div>
+        <div class="kpi-value" id="assessments-done">0</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Pending User Approvals</div>
+        <div class="kpi-value" id="pending-approvals">0</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Active Subscriptions</div>
+        <div class="kpi-value" id="active-subscriptions">0</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">2FA Enabled Users</div>
+        <div class="kpi-value" id="twofa-users">0</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">System Alerts (Last 24h)</div>
+        <div class="kpi-value" id="system-alerts">0</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Backups Completed</div>
+        <div class="kpi-value" id="backups-completed">0</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Failed Login Attempts</div>
+        <div class="kpi-value" id="login-failures">0</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Logs Captured (7 days)</div>
+        <div class="kpi-value" id="logs-count">0</div>
+      </div>
+    </section>
 
-<main style="flex-grow:1; padding:40px 50px; overflow-y:auto; color:#fff;">
-  <header>
-    <h1 style="font-size:2.2rem; color:#C39E3D; font-family:'Marcellus', serif; margin-bottom:0.5em;">
-      Admin Dashboard
-    </h1>
-    <p style="font-size:1.1rem;">Analytics and insights on club performance and assessments.</p>
-  </header>
+    <h2 class="section-title">Club Performance Metrics</h2>
+    <section class="kpi-grid" aria-label="Club Performance Key Performance Indicators">
+      <div class="kpi-card">
+        <div class="kpi-title">Total Clubs</div>
+        <div class="kpi-value" id="total-clubs">124</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Active Subscriptions</div>
+        <div class="kpi-value" id="club-active-subscriptions">98</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Expired Subscriptions</div>
+        <div class="kpi-value" id="expired-subscriptions">12</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Assessments Pending</div>
+        <div class="kpi-value" id="assessments-pending">24</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Incomplete Assessments</div>
+        <div class="kpi-value" id="incomplete-assessments">16</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Average Maturity Score</div>
+        <div class="kpi-value" id="avg-maturity-score">52.4%</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Clubs in Critical Health</div>
+        <div class="kpi-value" id="clubs-critical-health">7</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Most Active Region</div>
+        <div class="kpi-value" id="most-active-region">Central Uganda</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Trigger Nudges</div>
+        <div class="kpi-value" id="trigger-nudges">On</div>
+      </div>
+    </section>
+  </main>
 
-  <!-- Filters -->
-  <section style="display:flex; flex-wrap:wrap; gap:20px; margin-bottom:30px;">
-    <div style="display:flex; flex-direction:column;">
-      <label for="filter-country" style="margin-bottom:5px; font-weight:600;">Country</label>
-      <select id="filter-country" style="padding:10px; border-radius:6px; border:none; font-size:1rem;">
-        <option value="">All</option>
-        <option>Uganda</option>
-        <option>Kenya</option>
-      </select>
-    </div>
-    <div style="display:flex; flex-direction:column;">
-      <label for="filter-tier" style="margin-bottom:5px; font-weight:600;">Club Tier</label>
-      <select id="filter-tier" style="padding:10px; border-radius:6px; border:none; font-size:1rem;">
-        <option value="">All</option>
-        <option>Tier 1</option>
-        <option>Tier 2</option>
-        <option>Tier 3</option>
-      </select>
-    </div>
-    <div style="display:flex; flex-direction:column;">
-      <label for="filter-status" style="margin-bottom:5px; font-weight:600;">Status</label>
-      <select id="filter-status" style="padding:10px; border-radius:6px; border:none; font-size:1rem;">
-        <option value="">All</option>
-        <option>Completed</option>
-        <option>Incomplete</option>
-      </select>
-    </div>
-  </section>
+  <script>
+    // Load sidebar menu from external file
+    fetch('admin-menu.html')
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('sidebar-container').innerHTML = html;
+      })
+      .catch(err => console.error('Error loading sidebar menu:', err));
 
-  <!-- Dashboard Cards -->
-  <section style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:20px; margin-bottom:30px;">
-    <div style="background:#fff; color:#333; padding:20px; border-radius:10px; box-shadow:0 3px 6px rgba(0,0,0,0.1);">
-      <h3 style="margin:0; font-size:1.4rem; color:#103125;">Total Clubs</h3>
-      <p style="font-size:1.1rem; margin-top:10px;">124</p>
-    </div>
-    <div style="background:#fff; color:#333; padding:20px; border-radius:10px; box-shadow:0 3px 6px rgba(0,0,0,0.1);">
-      <h3 style="margin:0; font-size:1.4rem; color:#103125;">Active Subscriptions</h3>
-      <p style="font-size:1.1rem; margin-top:10px;">98</p>
-    </div>
-    <div style="background:#fff; color:#333; padding:20px; border-radius:10px; box-shadow:0 3px 6px rgba(0,0,0,0.1);">
-      <h3 style="margin:0; font-size:1.4rem; color:#103125;">Expired Subscriptions</h3>
-      <p style="font-size:1.1rem; margin-top:10px;">12</p>
-    </div>
-    <div style="background:#fff; color:#333; padding:20px; border-radius:10px; box-shadow:0 3px 6px rgba(0,0,0,0.1);">
-      <h3 style="margin:0; font-size:1.4rem; color:#103125;">Assessments Pending</h3>
-      <p style="font-size:1.1rem; margin-top:10px;">24</p>
-    </div>
-    <div style="background:#fff; color:#333; padding:20px; border-radius:10px; box-shadow:0 3px 6px rgba(0,0,0,0.1);">
-      <h3 style="margin:0; font-size:1.4rem; color:#103125;">Average Maturity Score</h3>
-      <p style="font-size:1.1rem; margin-top:10px;">52.4%</p>
-    </div>
-    <div style="background:#fff; color:#333; padding:20px; border-radius:10px; box-shadow:0 3px 6px rgba(0,0,0,0.1);">
-      <h3 style="margin:0; font-size:1.4rem; color:#103125;">Clubs in Critical Health</h3>
-      <p style="font-size:1.1rem; margin-top:10px;">7</p>
-    </div>
-    <div style="background:#fff; color:#333; padding:20px; border-radius:10px; box-shadow:0 3px 6px rgba(0,0,0,0.1);">
-      <h3 style="margin:0; font-size:1.4rem; color:#103125;">Most Active Region</h3>
-      <p style="font-size:1.1rem; margin-top:10px;">Central Uganda</p>
-    </div>
-    <div style="background:#fff; color:#333; padding:20px; border-radius:10px; box-shadow:0 3px 6px rgba(0,0,0,0.1);">
-      <h3 style="margin:0; font-size:1.4rem; color:#103125;">Incomplete Assessments</h3>
-      <p style="font-size:1.1rem; margin-top:10px;">16</p>
-    </div>
-  </section>
+    // Mock metrics data (replace with real data source/API)
+    const metricsData = {
+      totalUsers: 1824,
+      assessmentsDone: 743,
+      pendingApprovals: 12,
+      activeSubscriptions: 326,
+      twofaUsers: 218,
+      systemAlerts: 3,
+      backupsCompleted: 21,
+      loginFailures: 17,
+      logsCount: 1556,
 
-  <!-- Nudge Trigger -->
-  <section style="background:#fff; border-radius:10px; padding:20px; color:#333; max-width:400px;">
-    <h3 style="margin-top:0; color:#103125;">Trigger Nudges</h3>
-    <label for="nudge-delay" style="margin-top:10px; display:block;">Select Inactivity Period:</label>
-    <select id="nudge-delay" style="padding:8px; width:100%; margin:10px 0; border-radius:6px;">
-      <option>3 days</option>
-      <option>7 days</option>
-      <option>14 days</option>
-      <option>30 days</option>
-    </select>
-    <button onclick="alert('Nudge triggered!')" style="background:#C39E3D; border:none; color:#103125; padding:12px 20px; font-weight:bold; border-radius:6px; cursor:pointer; width:100%;">Send Nudge to Inactive Clubs</button>
-  </section>
-</main>
+      totalClubs: 124,
+      clubActiveSubscriptions: 98,
+      expiredSubscriptions: 12,
+      assessmentsPending: 24,
+      incompleteAssessments: 16,
+      avgMaturityScore: '52.4%',
+      clubsCriticalHealth: 7,
+      mostActiveRegion: 'Central Uganda',
+      triggerNudges: 'On'
+    };
 
+    // Populate the KPI values dynamically
+    document.getElementById('total-users').textContent = metricsData.totalUsers;
+    document.getElementById('assessments-done').textContent = metricsData.assessmentsDone;
+    document.getElementById('pending-approvals').textContent = metricsData.pendingApprovals;
+    document.getElementById('active-subscriptions').textContent = metricsData.activeSubscriptions;
+    document.getElementById('twofa-users').textContent = metricsData.twofaUsers;
+    document.getElementById('system-alerts').textContent = metricsData.systemAlerts;
+    document.getElementById('backups-completed').textContent = metricsData.backupsCompleted;
+    document.getElementById('login-failures').textContent = metricsData.loginFailures;
+    document.getElementById('logs-count').textContent = metricsData.logsCount;
+
+    document.getElementById('total-clubs').textContent = metricsData.totalClubs;
+    document.getElementById('club-active-subscriptions').textContent = metricsData.clubActiveSubscriptions;
+    document.getElementById('expired-subscriptions').textContent = metricsData.expiredSubscriptions;
+    document.getElementById('assessments-pending').textContent = metricsData.assessmentsPending;
+    document.getElementById('incomplete-assessments').textContent = metricsData.incompleteAssessments;
+    document.getElementById('avg-maturity-score').textContent = metricsData.avgMaturityScore;
+    document.getElementById('clubs-critical-health').textContent = metricsData.clubsCriticalHealth;
+    document.getElementById('most-active-region').textContent = metricsData.mostActiveRegion;
+    document.getElementById('trigger-nudges').textContent = metricsData.triggerNudges;
+  </script>
 
 </body>
 </html>
