@@ -1,271 +1,154 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Growing Cents - Dashboard</title>
-<style>
-  /* Reset */
-  * {
-    box-sizing: border-box;
-  }
-  body {
-    margin: 0; padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #f4f7fa;
-    color: #2c3e50;
-    display: flex;
-    min-height: 100vh;
-  }
+  <meta charset="UTF-8" />
+  <title>Login – Growing Cents</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #103125;
+      --accent-gold: #C39E3D;
+      --light: #ffffff;
+    }
 
-  /* Sidebar */
-  nav.sidebar {
-    width: 260px;
-    background: #2a9df4;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    padding-top: 30px;
-    flex-shrink: 0;
-    box-shadow: 2px 0 8px rgba(42,157,244,0.4);
-  }
+    * {
+      box-sizing: border-box;
+    }
 
-  nav.sidebar h2 {
-    font-size: 1.8rem;
-    font-weight: 700;
-    padding: 0 30px 24px 30px;
-    margin: 0;
-    border-bottom: 2px solid rgba(255,255,255,0.3);
-  }
-
-  nav.sidebar a {
-    color: white;
-    text-decoration: none;
-    padding: 15px 30px;
-    font-weight: 600;
-    font-size: 1.1rem;
-    transition: background-color 0.25s ease;
-    border-left: 4px solid transparent;
-  }
-  nav.sidebar a:hover {
-    background-color: #1d6fd6;
-    border-left-color: #f2a365;
-  }
-  nav.sidebar a.active {
-    background-color: #1d6fd6;
-    border-left-color: #f2a365;
-  }
-
-  /* Main content */
-  main.content {
-    flex-grow: 1;
-    padding: 40px 50px;
-    max-width: 100%;
-    overflow-y: auto;
-  }
-
-  main.content header {
-    margin-bottom: 40px;
-  }
-  main.content header h1 {
-    margin: 0 0 6px 0;
-    font-weight: 700;
-    font-size: 2.4rem;
-    color: #34495e;
-  }
-  main.content header p {
-    margin: 0;
-    font-size: 1.2rem;
-    color: #5d6d7e;
-  }
-
-  section {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
-    margin-bottom: 32px;
-    padding: 28px 36px;
-  }
-
-  section h2 {
-    font-weight: 700;
-    font-size: 1.6rem;
-    margin-bottom: 20px;
-    border-left: 5px solid #2a9df4;
-    padding-left: 14px;
-    color: #2a9df4;
-  }
-
-  .status-summary p, .last-assessment p {
-    font-size: 1.1rem;
-    margin: 10px 0;
-    color: #34495e;
-  }
-
-  .status-summary strong, .last-assessment strong {
-    color: #1f618d;
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 1rem;
-  }
-  thead {
-    background-color: #e3f2fd;
-  }
-  th, td {
-    padding: 14px 20px;
-    text-align: left;
-    border-bottom: 1px solid #d6dbe1;
-  }
-  tbody tr:hover {
-    background-color: #f1f9ff;
-  }
-
-  .download-links {
-    margin-bottom: 24px;
-  }
-  .download-links a {
-    display: inline-block;
-    margin-right: 18px;
-    color: #2a9df4;
-    font-weight: 600;
-    text-decoration: none;
-    font-size: 1.05rem;
-    border-bottom: 2px solid transparent;
-    transition: border-color 0.3s ease;
-  }
-  .download-links a:hover {
-    border-bottom: 2px solid #2a9df4;
-  }
-
-  button.primary-btn {
-    background-color: #2a9df4;
-    color: white;
-    padding: 14px 32px;
-    font-size: 1.2rem;
-    font-weight: 700;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(42,157,244,0.4);
-    transition: background-color 0.3s ease;
-  }
-  button.primary-btn:hover {
-    background-color: #1d6fd6;
-  }
-
-  /* Responsive sidebar */
-  @media (max-width: 900px) {
     body {
-      flex-direction: column;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
     }
-    nav.sidebar {
+
+    .login-container {
+      background: #ffffff;
+      padding: 40px;
+      border-radius: 12px;
       width: 100%;
-      flex-direction: row;
-      padding: 10px 0;
-      overflow-x: auto;
-      box-shadow: none;
-      border-bottom: 1px solid #ccc;
+      max-width: 420px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      color: var(--bg-dark);
     }
-    nav.sidebar h2 {
-      display: none;
-    }
-    nav.sidebar a {
-      flex: 1 0 auto;
-      padding: 15px 12px;
-      font-size: 1rem;
-      border-left: none;
+
+    .login-container h1 {
+      font-family: 'Marcellus', serif;
+      font-size: 2rem;
+      color: var(--accent-gold);
+      margin-bottom: 10px;
       text-align: center;
     }
-    nav.sidebar a.active {
-      border-left: none;
-      border-bottom: 3px solid #f2a365;
-      background-color: transparent;
+
+    .login-container p {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 1rem;
     }
-    main.content {
-      padding: 20px;
+
+    form label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: #2c3e50;
     }
-  }
-</style>
+
+    form input, form select {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+
+    .btn-login {
+      background-color: var(--accent-gold);
+      color: var(--bg-dark);
+      padding: 12px;
+      width: 100%;
+      border: none;
+      border-radius: 6px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-login:hover {
+      background-color: #b18c33;
+    }
+
+    .extra-links {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
+    .extra-links a {
+      color: var(--accent-gold);
+      text-decoration: none;
+    }
+
+    .extra-links a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 480px) {
+      .login-container {
+        padding: 30px 20px;
+      }
+    }
+  </style>
 </head>
 <body>
 
-<nav class="sidebar" role="navigation" aria-label="Main menu">
-  <h2>Growing Cents</h2>
-  <a href="index.html" class="active" aria-current="page">Dashboard</a>
-  <a href="assessment-start.html">Start Assessment</a>
-  <a href="history.html">Past Assessments</a>
-  <a href="club-profile.html">My Club Profile</a>
-  <a href="logout.html">Logout</a>
-</nav>
+<div class="login-container">
+  <h1>Welcome Back</h1>
+  <p>Log in to your Growing Cents account</p>
+  <form onsubmit="handleLogin(event)">
+    <label for="email">Email Address</label>
+    <input type="email" id="email" name="email" required />
 
-<main class="content" role="main">
-  <header>
-    <h1>Welcome back, Emmanuel!</h1>
-    <p>You are logged-in to <strong>Dummy Dummy Investment Club</strong>.</p>
-  </header>
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" required />
 
-  <section class="status-summary" aria-labelledby="club-status-heading">
-    <h2 id="club-status-heading">Your Club Status</h2>
-    <p>Assessment Status: <strong>Active</strong></p>
-    <p>Subscription Status: <strong>Paid - Valid until Dec 31, 2025</strong></p>
-    <p>Account Standing: <strong>Good</strong></p>
-  </section>
+    <label for="role">Role</label>
+    <select id="role" name="role" required>
+      <option value="">Select Role</option>
+      <option value="club">Investment Club User</option>
+      <option value="admin">Super Admin / Analyst</option>
+    </select>
 
-  <section class="last-assessment" aria-labelledby="last-assessment-heading">
-    <h2 id="last-assessment-heading">Last Assessment Summary</h2>
-    <p>Your last assessment was completed on <strong>July 12, 2023</strong>.</p>
-    <p>Maturity Score: <strong>48.6%</strong></p>
-    <p>Level: <strong>2 of 5</strong></p>
-    <p>Stage: <strong>Forming</strong></p>
-  </section>
+    <button type="submit" class="btn-login">Log In</button>
+  </form>
 
-  <section class="history" aria-labelledby="history-heading">
-    <h2 id="history-heading">Historical Assessment Tracking</h2>
-    <table>
-      <thead>
-        <tr>
-          <th scope="col">Assessment Date</th>
-          <th scope="col">Maturity Score</th>
-          <th scope="col">Level</th>
-          <th scope="col">Stage</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>July 12, 2023</td>
-          <td>48.6%</td>
-          <td>2</td>
-          <td>Forming</td>
-        </tr>
-        <tr>
-          <td>March 5, 2023</td>
-          <td>42.1%</td>
-          <td>1</td>
-          <td>Forming</td>
-        </tr>
-        <tr>
-          <td>December 10, 2022</td>
-          <td>38.9%</td>
-          <td>1</td>
-          <td>Forming</td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
+  <div class="extra-links">
+    <p><a href="forgot-password.html">Forgot your password?</a></p>
+    <p>Don’t have an account? <a href="register.html">Register here</a></p>
+  </div>
+</div>
 
-  <section class="actions" aria-label="Download and start assessment">
-    <h2>Download Previous Assessments</h2>
-    <div class="download-links">
-      <a href="#">Download PDF</a>
-      <a href="#">Download Excel</a>
-      <a href="mailto:?subject=Assessment Report&body=Please find attached the assessment report.">Email Report</a>
-    </div>
-    <button class="primary-btn" onclick="location.href='assessment-start.html'">Start New Assessment</button>
-  </section>
-</main>
+<script>
+  function handleLogin(event) {
+    event.preventDefault();
+    const role = document.getElementById('role').value;
+
+    if (role === "admin") {
+      window.location.href = "admin-dashboard.html";
+    } else if (role === "club") {
+      window.location.href = "index.html";
+    } else {
+      alert("Please select a valid role.");
+    }
+  }
+</script>
 
 </body>
 </html>
