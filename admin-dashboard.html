@@ -1,10 +1,12 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin Dashboard – Growing Cents</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     :root {
       --bg-dark: #103125;
@@ -12,38 +14,31 @@
       --light-text: #ffffff;
       --card-bg: #ffffff;
       --text-dark: #2c3e50;
-      --submenu-bg: #134334;
-      --submenu-border: rgba(255, 255, 255, 0.1);
-      --hover-bg: rgba(255, 255, 255, 0.05);
     }
     * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
     body {
-      margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: var(--bg-dark);
-      color: var(--light-text);
       display: flex;
       min-height: 100vh;
+      background: var(--bg-dark);
     }
     nav.sidebar {
       width: 260px;
       background: var(--bg-dark);
-      padding-top: 20px;
+      color: var(--light-text);
+      padding: 20px 0;
       flex-shrink: 0;
-      overflow-y: auto;
       height: 100vh;
-      box-shadow: 2px 0 8px rgba(0,0,0,0.3);
-      position: relative;
-      transition: transform 0.3s ease;
+      overflow-y: auto;
     }
     main.content {
       flex-grow: 1;
       padding: 40px;
       background: #f4f6f8;
-      overflow-y: auto;
-      color: var(--text-dark);
     }
     header h1 {
       font-family: 'Marcellus', serif;
@@ -51,401 +46,86 @@
       color: var(--accent-gold);
       margin-bottom: 10px;
     }
-    header p {
-      font-size: 1.1rem;
-      margin-top: 0;
-      margin-bottom: 30px;
-      color: #444;
-    }
-    h2.section-title {
-      color: #103125;
-      margin-top: 40px;
-      margin-bottom: 15px;
-      font-family: 'Marcellus', serif;
-      font-weight: 600;
-      font-size: 1.4rem;
-    }
     .kpi-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px 25px;
-      margin-top: 0;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
     }
     .kpi-card {
       background: var(--card-bg);
       border-radius: 10px;
-      padding: 25px 20px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      color: var(--text-dark);
-      min-height: 120px;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
       display: flex;
       flex-direction: column;
       justify-content: center;
+      align-items: flex-start;
+    }
+    .kpi-icon {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      color: var(--bg-dark);
     }
     .kpi-title {
       font-size: 0.95rem;
       color: #666;
-      user-select: none;
     }
     .kpi-value {
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--bg-dark);
-      margin-top: 8px;
-      user-select: text;
-    }
-
-    /* Sidebar menu styles */
-    nav.sidebar h2 {
-      font-family: 'Marcellus', serif;
       font-size: 1.8rem;
-      font-weight: 700;
-      padding: 0 30px 24px;
-      margin: 0;
-      color: var(--accent-gold);
-      border-bottom: 2px solid rgba(255,255,255,0.2);
-    }
-    .user-info {
-      padding: 0 30px 20px;
-      font-size: 0.9rem;
-      border-bottom: 1px solid rgba(255,255,255,0.2);
-    }
-    nav.sidebar a,
-    nav.sidebar .submenu a {
-      color: white;
-      text-decoration: none;
-      display: block;
-      padding: 12px 30px;
-      font-weight: 600;
-      font-size: 1.05rem;
-      border-left: 4px solid transparent;
-      transition: background-color 0.25s ease, border-color 0.25s ease;
-      cursor: pointer;
-    }
-    nav.sidebar a:hover,
-    nav.sidebar a.active,
-    .submenu a:hover {
-      background-color: var(--hover-bg);
-      border-left-color: var(--accent-gold);
-    }
-    .menu-group {
-      margin-bottom: 8px;
-    }
-    .menu-toggle {
-      background: none;
-      border: none;
-      color: white;
-      padding: 12px 30px;
-      width: 100%;
-      text-align: left;
-      font-size: 1.05rem;
-      font-weight: 700;
-      cursor: pointer;
-      border-left: 4px solid transparent;
-      transition: background-color 0.25s ease, border-color 0.25s ease;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      user-select: none;
-    }
-    .menu-toggle:hover,
-    .menu-toggle:focus {
-      background-color: var(--hover-bg);
-      border-left-color: var(--accent-gold);
-      outline: none;
-    }
-    .submenu {
-      list-style: none;
-      padding-left: 0;
-      margin: 0;
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease;
-      background-color: var(--submenu-bg);
-      border-left: 2px solid var(--submenu-border);
-    }
-    .submenu.show {
-      max-height: 1000px; /* Enough to show content */
-    }
-    .submenu li a {
-      padding: 10px 40px;
-      font-size: 0.95rem;
-      font-weight: 500;
-    }
-    .submenu.nested-submenu {
-      padding-left: 10px;
-      background-color: #155642;
-    }
-
-    /* Hamburger for mobile */
-    #hamburger-btn {
-      display: none;
-      position: fixed;
-      top: 15px;
-      left: 15px;
-      z-index: 1100;
-      background: var(--accent-gold);
-      border: none;
-      padding: 10px 15px;
-      border-radius: 6px;
-      cursor: pointer;
       font-weight: bold;
-      color: var(--bg-dark);
-      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+      color: var(--text-dark);
+      margin-top: 5px;
     }
-    #hamburger-btn:focus {
-      outline: 2px solid var(--light-text);
-    }
-    #sidebar-overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.5);
-      z-index: 999;
-    }
-    #sidebar-overlay.active {
-      display: block;
-    }
-
-    /* Responsive */
-    @media (max-width: 900px) {
-      body {
-        flex-direction: column;
-      }
+    @media (max-width: 768px) {
       nav.sidebar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 100vh;
-        transform: translateX(-100%);
-        transition: transform 0.3s ease;
-        width: 260px;
-        box-shadow: 2px 0 8px rgba(0,0,0,0.7);
-        z-index: 1000;
-      }
-      nav.sidebar.open {
-        transform: translateX(0);
-      }
-      nav.sidebar h2,
-      .user-info {
-        display: block;
-        padding-left: 20px;
-        padding-top: 10px;
-        padding-bottom: 10px;
-        border-bottom: 1px solid rgba(255,255,255,0.2);
-      }
-      nav.sidebar a,
-      .menu-toggle {
-        padding: 15px 30px;
-        font-size: 1.1rem;
-        border-left: none;
-        text-align: left;
-        background-color: transparent;
-      }
-      nav.sidebar a:hover,
-      nav.sidebar a.active,
-      .menu-toggle:hover,
-      .menu-toggle:focus {
-        background-color: rgba(255, 255, 255, 0.1);
-        border-left: none;
-      }
-      .submenu {
-        max-height: none !important;
-        position: static;
-        background-color: var(--submenu-bg);
-        border-left: none;
-        padding-left: 0;
-      }
-      .submenu li a {
-        padding-left: 50px;
-      }
-      #hamburger-btn {
-        display: block;
-      }
-      #sidebar-overlay {
         display: none;
       }
-      #sidebar-overlay.active {
-        display: block;
+      main.content {
+        padding: 20px;
       }
     }
   </style>
 </head>
 <body>
 
-  <button id="hamburger-btn" aria-label="Toggle Menu">☰ Menu</button>
-  <div id="sidebar-overlay"></div>
-
   <nav class="sidebar" id="sidebar-container">
-    <!-- Sidebar injected here -->
+    <!-- Sidebar menu will be injected here -->
   </nav>
 
   <main class="content">
     <header>
       <h1>Admin Dashboard</h1>
-      <p>Analytics and insights on club performance and assessments.</p>
+      <p>Welcome back, Admin! Here’s a full snapshot of system and club analytics.</p>
     </header>
 
-    <h2 class="section-title">System Metrics</h2>
-    <section class="kpi-grid" aria-label="System Key Performance Indicators">
-      <div class="kpi-card">
-        <div class="kpi-title">Total Registered Users</div>
-        <div class="kpi-value" id="total-users">0</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-title">Assessments Completed</div>
-        <div class="kpi-value" id="assessments-done">0</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-title">Pending User Approvals</div>
-        <div class="kpi-value" id="pending-approvals">0</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-title">Active Subscriptions</div>
-        <div class="kpi-value" id="active-subscriptions">0</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-title">2FA Enabled Users</div>
-        <div class="kpi-value" id="twofa-users">0</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-title">System Alerts (Last 24h)</div>
-        <div class="kpi-value" id="system-alerts">0</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-title">Backups Completed</div>
-        <div class="kpi-value" id="backups-completed">0</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-title">Failed Login Attempts</div>
-        <div class="kpi-value" id="login-failures">0</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-title">Logs Captured (7 days)</div>
-        <div class="kpi-value" id="logs-count">0</div>
-      </div>
-    </section>
-
-    <h2 class="section-title">Club Performance Metrics</h2>
-    <section class="kpi-grid" aria-label="Club Performance Key Performance Indicators">
-      <div class="kpi-card">
-        <div class="kpi-title">Total Clubs</div>
-        <div class="kpi-value" id="total-clubs">124</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-title">Active Subscriptions</div>
-        <div class="kpi-value" id="club-active-subscriptions">98</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-title">Expired Subscriptions</div>
-        <div class="kpi-value" id="expired-subscriptions">12</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-title">Assessments Pending</div>
-        <div class="kpi-value" id="assessments-pending">24</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-title">Incomplete Assessments</div>
-        <div class="kpi-value" id="incomplete-assessments">16</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-title">Average Maturity Score</div>
-        <div class="kpi-value" id="avg-maturity-score">52.4%</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-title">Clubs in Critical Health</div>
-        <div class="kpi-value" id="clubs-critical-health">7</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-title">Most Active Region</div>
-        <div class="kpi-value" id="most-active-region">Central Uganda</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-title">Trigger Nudges</div>
-        <div class="kpi-value" id="trigger-nudges">On</div>
-      </div>
+    <section class="kpi-grid">
+      <div class="kpi-card"><i class="fa fa-users kpi-icon"></i><div class="kpi-title">Total Clubs</div><div class="kpi-value">124</div></div>
+      <div class="kpi-card"><i class="fa fa-check-circle kpi-icon"></i><div class="kpi-title">Active Subscriptions</div><div class="kpi-value">98</div></div>
+      <div class="kpi-card"><i class="fa fa-times-circle kpi-icon"></i><div class="kpi-title">Expired Subscriptions</div><div class="kpi-value">12</div></div>
+      <div class="kpi-card"><i class="fa fa-spinner kpi-icon"></i><div class="kpi-title">Assessments Pending</div><div class="kpi-value">24</div></div>
+      <div class="kpi-card"><i class="fa fa-chart-line kpi-icon"></i><div class="kpi-title">Average Maturity Score</div><div class="kpi-value">52.4%</div></div>
+      <div class="kpi-card"><i class="fa fa-heartbeat kpi-icon"></i><div class="kpi-title">Clubs in Critical Health</div><div class="kpi-value">7</div></div>
+      <div class="kpi-card"><i class="fa fa-map-marker-alt kpi-icon"></i><div class="kpi-title">Most Active Region</div><div class="kpi-value">Central Uganda</div></div>
+      <div class="kpi-card"><i class="fa fa-exclamation-triangle kpi-icon"></i><div class="kpi-title">Incomplete Assessments</div><div class="kpi-value">16</div></div>
+      <div class="kpi-card"><i class="fa fa-bell kpi-icon"></i><div class="kpi-title">Trigger Nudges</div><div class="kpi-value">3</div></div>
+      <div class="kpi-card"><i class="fa fa-user-shield kpi-icon"></i><div class="kpi-title">2FA Enabled Users</div><div class="kpi-value">218</div></div>
+      <div class="kpi-card"><i class="fa fa-database kpi-icon"></i><div class="kpi-title">Backups Completed</div><div class="kpi-value">21</div></div>
+      <div class="kpi-card"><i class="fa fa-sign-in-alt kpi-icon"></i><div class="kpi-title">Failed Login Attempts</div><div class="kpi-value">17</div></div>
+      <div class="kpi-card"><i class="fa fa-exclamation-circle kpi-icon"></i><div class="kpi-title">System Alerts (24h)</div><div class="kpi-value">3</div></div>
+      <div class="kpi-card"><i class="fa fa-user-plus kpi-icon"></i><div class="kpi-title">Pending Approvals</div><div class="kpi-value">12</div></div>
+      <div class="kpi-card"><i class="fa fa-file-alt kpi-icon"></i><div class="kpi-title">Logs Captured (7d)</div><div class="kpi-value">1556</div></div>
+      <div class="kpi-card"><i class="fa fa-list-alt kpi-icon"></i><div class="kpi-title">Assessments Completed</div><div class="kpi-value">743</div></div>
+      <div class="kpi-card"><i class="fa fa-envelope kpi-icon"></i><div class="kpi-title">Total Messages Sent</div><div class="kpi-value">672</div></div>
+      <div class="kpi-card"><i class="fa fa-user-friends kpi-icon"></i><div class="kpi-title">Total Registered Users</div><div class="kpi-value">1824</div></div>
     </section>
   </main>
 
   <script>
-    // Load sidebar menu from external file and then attach toggle listeners
+    // Inject sidebar
     fetch('admin-menu.html')
       .then(res => res.text())
-      .then(html => {
-        document.getElementById('sidebar-container').innerHTML = html;
-
-        // Attach submenu toggle handlers AFTER sidebar is loaded
-        document.querySelectorAll('.menu-toggle').forEach(button => {
-          // Set initial aria-expanded attribute
-          button.setAttribute('aria-expanded', 'false');
-          button.addEventListener('click', () => {
-            const submenu = button.nextElementSibling;
-            const isExpanded = button.getAttribute('aria-expanded') === 'true';
-            button.setAttribute('aria-expanded', !isExpanded);
-            submenu.classList.toggle('show');
-          });
-        });
-      })
-      .catch(err => console.error('Error loading sidebar menu:', err));
-
-    // Hamburger menu toggle
-    const sidebar = document.getElementById('sidebar-container');
-    const hamburger = document.getElementById('hamburger-btn');
-    const overlay = document.getElementById('sidebar-overlay');
-
-    hamburger.addEventListener('click', () => {
-      document.querySelector('nav.sidebar').classList.toggle('open');
-      overlay.classList.toggle('active');
-    });
-
-    overlay.addEventListener('click', () => {
-      document.querySelector('nav.sidebar').classList.remove('open');
-      overlay.classList.remove('active');
-    });
-
-    // Mock metrics data (replace with real data source/API)
-    const metricsData = {
-      totalUsers: 1824,
-      assessmentsDone: 743,
-      pendingApprovals: 12,
-      activeSubscriptions: 326,
-      twofaUsers: 218,
-      systemAlerts: 3,
-      backupsCompleted: 21,
-      loginFailures: 17,
-      logsCount: 1556,
-
-      totalClubs: 124,
-      clubActiveSubscriptions: 98,
-      expiredSubscriptions: 12,
-      assessmentsPending: 24,
-      incompleteAssessments: 16,
-      avgMaturityScore: '52.4%',
-      clubsCriticalHealth: 7,
-      mostActiveRegion: 'Central Uganda',
-      triggerNudges: 'On'
-    };
-
-    // Populate the KPI values dynamically
-    document.getElementById('total-users').textContent = metricsData.totalUsers;
-    document.getElementById('assessments-done').textContent = metricsData.assessmentsDone;
-    document.getElementById('pending-approvals').textContent = metricsData.pendingApprovals;
-    document.getElementById('active-subscriptions').textContent = metricsData.activeSubscriptions;
-    document.getElementById('twofa-users').textContent = metricsData.twofaUsers;
-    document.getElementById('system-alerts').textContent = metricsData.systemAlerts;
-    document.getElementById('backups-completed').textContent = metricsData.backupsCompleted;
-    document.getElementById('login-failures').textContent = metricsData.loginFailures;
-    document.getElementById('logs-count').textContent = metricsData.logsCount;
-
-    document.getElementById('total-clubs').textContent = metricsData.totalClubs;
-    document.getElementById('club-active-subscriptions').textContent = metricsData.clubActiveSubscriptions;
-    document.getElementById('expired-subscriptions').textContent = metricsData.expiredSubscriptions;
-    document.getElementById('assessments-pending').textContent = metricsData.assessmentsPending;
-    document.getElementById('incomplete-assessments').textContent = metricsData.incompleteAssessments;
-    document.getElementById('avg-maturity-score').textContent = metricsData.avgMaturityScore;
-    document.getElementById('clubs-critical-health').textContent = metricsData.clubsCriticalHealth;
-    document.getElementById('most-active-region').textContent = metricsData.mostActiveRegion;
-    document.getElementById('trigger-nudges').textContent = metricsData.triggerNudges;
+      .then(html => document.getElementById('sidebar-container').innerHTML = html);
   </script>
 
 </body>
