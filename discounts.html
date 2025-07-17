@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Discounts – Growing Cents</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-dark: #103125;
+      --accent-gold: #C39E3D;
+      --light-text: #ffffff;
+      --card-bg: #fefefe;
+      --text-dark: #2c3e50;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg-dark);
+      color: var(--light-text);
+      display: flex;
+      min-height: 100vh;
+    }
+    nav.sidebar {
+      width: 260px;
+      background-color: var(--bg-dark);
+      display: flex;
+      flex-direction: column;
+      padding-top: 20px;
+      box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
+      flex-shrink: 0;
+      overflow-y: auto;
+      height: 100vh;
+    }
+    main.content {
+      flex-grow: 1;
+      padding: 40px 50px;
+      overflow-y: auto;
+    }
+    header h1 {
+      font-family: 'Marcellus', serif;
+      color: var(--accent-gold);
+      font-size: 2.2rem;
+      margin-bottom: 0.3em;
+    }
+    header p {
+      margin-top: 0;
+      font-size: 1.1rem;
+      color: #ddd;
+      margin-bottom: 30px;
+    }
+    section {
+      background: var(--card-bg);
+      border-radius: 10px;
+      padding: 20px;
+      color: var(--text-dark);
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+    section h2 {
+      margin-top: 0;
+      color: var(--bg-dark);
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background-color: #e8f0ee;
+      color: #333;
+    }
+    tr:hover {
+      background-color: #f5f9f7;
+    }
+    button {
+      padding: 8px 16px;
+      background: var(--accent-gold);
+      border: none;
+      border-radius: 6px;
+      color: var(--bg-dark);
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background: #a37d27;
+    }
+    .btn-edit {
+      background: #2d89ef;
+      color: white;
+      margin-right: 8px;
+    }
+    .btn-edit:hover {
+      background: #1b5eae;
+    }
+    .btn-delete {
+      background: #e74c3c;
+      color: white;
+    }
+    .btn-delete:hover {
+      background: #b32e1e;
+    }
+    form input, form select {
+      padding: 10px;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      width: 180px;
+    }
+    form {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+    }
+    @media (max-width: 900px) {
+      body {
+        flex-direction: column;
+      }
+      nav.sidebar {
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        height: auto;
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+      }
+      nav.sidebar h2, .user-info {
+        display: none;
+      }
+      nav.sidebar a, .menu-toggle {
+        flex: 1 0 auto;
+        padding: 10px;
+        font-size: 1rem;
+        text-align: center;
+      }
+      main.content {
+        padding: 20px;
+      }
+      form input, form select {
+        width: 100%;
+        margin-right: 0;
+      }
+      form {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div id="sidebar-container"></div>
+
+<main class="content">
+  <header>
+    <h1>Discounts</h1>
+    <p>Manage discount codes offered to clubs for subscriptions and services.</p>
+  </header>
+
+  <section>
+    <h2>Existing Discounts</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Code</th>
+          <th>Description</th>
+          <th>Percentage</th>
+          <th>Expires On</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="discounts-table-body">
+        <!-- Discount rows will be injected here -->
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Add New Discount</h2>
+    <form id="add-discount-form">
+      <input type="text" id="code" placeholder="Discount Code" required />
+      <input type="text" id="description" placeholder="Description" required />
+      <input type="number" id="percentage" placeholder="Percentage %" min="1" max="100" required />
+      <input type="date" id="expiry" placeholder="Expiry Date" required />
+      <button type="submit">Add Discount</button>
+    </form>
+  </section>
+</main>
+
+<script>
+  // Load admin menu
+  fetch('admin-menu.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('sidebar-container').innerHTML = html;
+      // Rebind menu toggle buttons here if needed
+      document.querySelectorAll('.menu-toggle').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const submenu = btn.nextElementSibling;
+          submenu.classList.toggle('show');
+        });
+      });
+    })
+    .catch(err => console.error('Failed to load menu:', err));
+
+  // Sample discounts data (could be fetched from backend)
+  let discounts = [
+    { code: 'WELCOME10', description: '10% off first subscription', percentage: 10, expiry: '2025-12-31', status: 'Active' },
+    { code: 'SUMMER15', description: '15% summer discount', percentage: 15, expiry: '2025-08-31', status: 'Active' },
+    { code: 'EXPIRED5', description: 'Expired discount', percentage: 5, expiry: '2023-12-31', status: 'Expired' }
+  ];
+
+  const tableBody = document.getElementById('discounts-table-body');
+
+  function renderDiscounts() {
+    tableBody.innerHTML = '';
+    discounts.forEach((d, i) => {
+      const tr = document.createElement('tr');
+
+      const expiryDate = new Date(d.expiry);
+      const today = new Date();
+      const isExpired = expiryDate < today;
+      d.status = isExpired ? 'Expired' : 'Active';
+
+      tr.innerHTML = `
+        <td>${d.code}</td>
+        <td>${d.description}</td>
+        <td>${d.percentage}%</td>
+        <td>${d.expiry}</td>
+        <td>${d.status}</td>
+        <td>
+          <button class="btn-edit" data-index="${i}">Edit</button>
+          <button class="btn-delete" data-index="${i}">Delete</button>
+        </td>
+      `;
+      tableBody.appendChild(tr);
+    });
+    bindActionButtons();
+  }
+
+  function bindActionButtons() {
+    document.querySelectorAll('.btn-delete').forEach(btn => {
+      btn.onclick = () => {
+        const index = btn.getAttribute('data-index');
+        if(confirm(`Delete discount code "${discounts[index].code}"?`)) {
+          discounts.splice(index, 1);
+          renderDiscounts();
+        }
+      }
+    });
+
+    document.querySelectorAll('.btn-edit').forEach(btn => {
+      btn.onclick = () => {
+        const index = btn.getAttribute('data-index');
+        const d = discounts[index];
+        // For simplicity, prompt-based edit (can be upgraded to a modal)
+        const newDesc = prompt("Edit Description:", d.description);
+        if(newDesc !== null) d.description = newDesc;
+        const newPerc = prompt("Edit Percentage (%):", d.percentage);
+        if(newPerc !== null && !isNaN(newPerc) && newPerc > 0 && newPerc <= 100) d.percentage = Number(newPerc);
+        const newExpiry = prompt("Edit Expiry (YYYY-MM-DD):", d.expiry);
+        if(newExpiry !== null) d.expiry = newExpiry;
+        renderDiscounts();
+      }
+    });
+  }
+
+  document.getElementById('add-discount-form').addEventListener('submit', e => {
+    e.preventDefault();
+    const newDiscount = {
+      code: document.getElementById('code').value.trim().toUpperCase(),
+      description: document.getElementById('description').value.trim(),
+      percentage: Number(document.getElementById('percentage').value),
+      expiry: document.getElementById('expiry').value,
+      status: 'Active',
+    };
+    discounts.push(newDiscount);
+    e.target.reset();
+    renderDiscounts();
+  });
+
+  renderDiscounts();
+</script>
+</body>
+</html>

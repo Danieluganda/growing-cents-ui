@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pause/Resume Tier – Growing Cents</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-dark: #103125;
+      --accent-gold: #C39E3D;
+      --light-text: #ffffff;
+      --card-bg: #fefefe;
+      --text-dark: #2c3e50;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg-dark);
+      color: var(--light-text);
+      display: flex;
+      min-height: 100vh;
+    }
+    nav.sidebar {
+      width: 260px;
+      background-color: var(--bg-dark);
+      display: flex;
+      flex-direction: column;
+      padding-top: 20px;
+      box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
+      flex-shrink: 0;
+      overflow-y: auto;
+      height: 100vh;
+    }
+    main.content {
+      flex-grow: 1;
+      padding: 40px 50px;
+      overflow-y: auto;
+    }
+    header h1 {
+      font-family: 'Marcellus', serif;
+      color: var(--accent-gold);
+      font-size: 2.2rem;
+      margin-bottom: 0.3em;
+    }
+    header p {
+      margin-top: 0;
+      font-size: 1.1rem;
+      color: #ddd;
+      margin-bottom: 30px;
+    }
+    section {
+      background: var(--card-bg);
+      border-radius: 10px;
+      padding: 20px;
+      color: var(--text-dark);
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+    section h2 {
+      margin-top: 0;
+      color: var(--bg-dark);
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background-color: #e8f0ee;
+      color: #333;
+    }
+    tr:hover {
+      background-color: #f5f9f7;
+    }
+    button {
+      padding: 8px 14px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .btn-pause {
+      background-color: #e74c3c;
+      color: white;
+      margin-right: 8px;
+    }
+    .btn-pause:hover {
+      background-color: #b32e1e;
+    }
+    .btn-resume {
+      background-color: #2ecc71;
+      color: white;
+    }
+    .btn-resume:hover {
+      background-color: #1f7a2e;
+    }
+    @media (max-width: 900px) {
+      body {
+        flex-direction: column;
+      }
+      nav.sidebar {
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        height: auto;
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+      }
+      nav.sidebar h2,
+      .user-info {
+        display: none;
+      }
+      nav.sidebar a,
+      .menu-toggle {
+        flex: 1 0 auto;
+        padding: 10px;
+        font-size: 1rem;
+        text-align: center;
+      }
+      main.content {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div id="sidebar-container"></div>
+
+<main class="content">
+  <header>
+    <h1>Pause/Resume Subscription Tiers</h1>
+    <p>Manage the active status of subscription tiers. Pause or resume tiers as needed.</p>
+  </header>
+
+  <section>
+    <h2>Subscription Tiers</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Tier Name</th>
+          <th>Description</th>
+          <th>Price (USD)</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="tiers-table-body">
+        <!-- Tiers will be rendered here -->
+      </tbody>
+    </table>
+  </section>
+</main>
+
+<script>
+  // Load admin menu
+  fetch('admin-menu.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('sidebar-container').innerHTML = html;
+      document.querySelectorAll('.menu-toggle').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const submenu = btn.nextElementSibling;
+          submenu.classList.toggle('show');
+        });
+      });
+    })
+    .catch(err => console.error('Failed to load menu:', err));
+
+  // Example tiers data
+  let tiers = [
+    { name: 'Basic', description: 'Entry-level tier with limited features', price: 10, active: true },
+    { name: 'Standard', description: 'Most popular tier with full features', price: 25, active: true },
+    { name: 'Premium', description: 'Top-tier with priority support', price: 50, active: false },
+  ];
+
+  const tbody = document.getElementById('tiers-table-body');
+
+  function renderTiers() {
+    tbody.innerHTML = '';
+    tiers.forEach((tier, i) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${tier.name}</td>
+        <td>${tier.description}</td>
+        <td>$${tier.price.toFixed(2)}</td>
+        <td>${tier.active ? 'Active' : 'Paused'}</td>
+        <td>
+          ${tier.active ? 
+            `<button class="btn-pause" data-index="${i}">Pause</button>` :
+            `<button class="btn-resume" data-index="${i}">Resume</button>`
+          }
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+    bindButtons();
+  }
+
+  function bindButtons() {
+    document.querySelectorAll('.btn-pause').forEach(btn => {
+      btn.onclick = () => {
+        const index = btn.getAttribute('data-index');
+        if(confirm(`Pause the "${tiers[index].name}" tier?`)) {
+          tiers[index].active = false;
+          renderTiers();
+        }
+      }
+    });
+    document.querySelectorAll('.btn-resume').forEach(btn => {
+      btn.onclick = () => {
+        const index = btn.getAttribute('data-index');
+        if(confirm(`Resume the "${tiers[index].name}" tier?`)) {
+          tiers[index].active = true;
+          renderTiers();
+        }
+      }
+    });
+  }
+
+  renderTiers();
+</script>
+
+</body>
+</html>
