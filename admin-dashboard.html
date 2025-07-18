@@ -33,20 +33,6 @@
       flex-shrink: 0;
       height: 100vh;
       overflow-y: auto;
-      transition: transform 0.3s ease;
-    }
-    nav.sidebar.hidden {
-      transform: translateX(-100%);
-    }
-    .menu-toggle-btn {
-      display: none;
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      background: none;
-      border: none;
-      color: var(--accent-gold);
-      font-size: 1.5rem;
       z-index: 1000;
     }
     main.content {
@@ -93,19 +79,46 @@
       margin-top: 5px;
     }
 
+    /* Hamburger button */
+    .hamburger {
+      display: none;
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      font-size: 1.5rem;
+      color: var(--accent-gold);
+      background: none;
+      border: none;
+      z-index: 1100;
+    }
+
+    /* Overlay */
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.4);
+      z-index: 900;
+    }
+
     @media (max-width: 768px) {
+      .hamburger {
+        display: block;
+      }
       nav.sidebar {
         position: fixed;
-        z-index: 999;
+        left: -100%;
         top: 0;
-        left: 0;
         height: 100%;
-        transform: translateX(-100%);
+        transition: left 0.3s ease;
       }
-      nav.sidebar.active {
-        transform: translateX(0);
+      nav.sidebar.open {
+        left: 0;
       }
-      .menu-toggle-btn {
+      .overlay.show {
         display: block;
       }
       main.content {
@@ -116,15 +129,18 @@
 </head>
 <body>
 
-  <!-- Mobile menu toggle button -->
-  <button class="menu-toggle-btn" id="menuToggle"><i class="fas fa-bars"></i></button>
+  <!-- Hamburger Button -->
+  <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+
+  <!-- Overlay -->
+  <div class="overlay" id="overlay"></div>
 
   <!-- Sidebar -->
   <nav class="sidebar" id="sidebar-container">
-    <!-- Sidebar will be injected here -->
+    <!-- Sidebar content will be injected here -->
   </nav>
 
-  <!-- Main content -->
+  <!-- Main Dashboard Content -->
   <main class="content">
     <header>
       <h1>Admin Dashboard</h1>
@@ -153,28 +169,37 @@
     </section>
   </main>
 
-  <!-- Sidebar Injection Script -->
+  <!-- Script to inject and activate menu -->
   <script>
     fetch('admin-menu.html')
       .then(res => res.text())
       .then(html => {
-        const sidebar = document.getElementById('sidebar-container');
-        sidebar.innerHTML = html;
+        document.getElementById('sidebar-container').innerHTML = html;
 
-        // Enable menu toggle after loading sidebar
-        const toggleBtn = document.getElementById('menuToggle');
-        toggleBtn.addEventListener('click', () => {
-          sidebar.classList.toggle('active');
-        });
+        // Activate sidebar behaviors after injection
+        const toggle = document.querySelector('.menu-toggle');
+        const submenu = document.querySelector('.submenu');
+        const hamburger = document.getElementById('hamburger');
+        const sidebar = document.querySelector('.sidebar');
+        const overlay = document.getElementById('overlay');
 
-        // Also handle submenu toggles if any
-        const toggles = sidebar.querySelectorAll('.menu-toggle');
-        toggles.forEach(button => {
-          button.addEventListener('click', () => {
-            const submenu = button.nextElementSibling;
-            if (submenu) submenu.classList.toggle('open');
+        if (toggle && submenu) {
+          toggle.addEventListener('click', () => {
+            submenu.classList.toggle('open');
           });
-        });
+        }
+
+        if (hamburger && sidebar && overlay) {
+          hamburger.addEventListener('click', () => {
+            sidebar.classList.add('open');
+            overlay.classList.add('show');
+          });
+
+          overlay.addEventListener('click', () => {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('show');
+          });
+        }
       });
   </script>
 
