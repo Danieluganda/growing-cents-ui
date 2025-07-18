@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,11 +33,27 @@
       flex-shrink: 0;
       height: 100vh;
       overflow-y: auto;
+      transition: transform 0.3s ease;
+    }
+    nav.sidebar.hidden {
+      transform: translateX(-100%);
+    }
+    .menu-toggle-btn {
+      display: none;
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: none;
+      border: none;
+      color: var(--accent-gold);
+      font-size: 1.5rem;
+      z-index: 1000;
     }
     main.content {
       flex-grow: 1;
       padding: 40px;
       background: #f4f6f8;
+      width: 100%;
     }
     header h1 {
       font-family: 'Marcellus', serif;
@@ -77,9 +92,21 @@
       color: var(--text-dark);
       margin-top: 5px;
     }
+
     @media (max-width: 768px) {
       nav.sidebar {
-        display: none;
+        position: fixed;
+        z-index: 999;
+        top: 0;
+        left: 0;
+        height: 100%;
+        transform: translateX(-100%);
+      }
+      nav.sidebar.active {
+        transform: translateX(0);
+      }
+      .menu-toggle-btn {
+        display: block;
       }
       main.content {
         padding: 20px;
@@ -89,10 +116,15 @@
 </head>
 <body>
 
+  <!-- Mobile menu toggle button -->
+  <button class="menu-toggle-btn" id="menuToggle"><i class="fas fa-bars"></i></button>
+
+  <!-- Sidebar -->
   <nav class="sidebar" id="sidebar-container">
-    <!-- Sidebar menu will be injected here -->
+    <!-- Sidebar will be injected here -->
   </nav>
 
+  <!-- Main content -->
   <main class="content">
     <header>
       <h1>Admin Dashboard</h1>
@@ -121,11 +153,29 @@
     </section>
   </main>
 
+  <!-- Sidebar Injection Script -->
   <script>
-    // Inject sidebar
     fetch('admin-menu.html')
       .then(res => res.text())
-      .then(html => document.getElementById('sidebar-container').innerHTML = html);
+      .then(html => {
+        const sidebar = document.getElementById('sidebar-container');
+        sidebar.innerHTML = html;
+
+        // Enable menu toggle after loading sidebar
+        const toggleBtn = document.getElementById('menuToggle');
+        toggleBtn.addEventListener('click', () => {
+          sidebar.classList.toggle('active');
+        });
+
+        // Also handle submenu toggles if any
+        const toggles = sidebar.querySelectorAll('.menu-toggle');
+        toggles.forEach(button => {
+          button.addEventListener('click', () => {
+            const submenu = button.nextElementSibling;
+            if (submenu) submenu.classList.toggle('open');
+          });
+        });
+      });
   </script>
 
 </body>
