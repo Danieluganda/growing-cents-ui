@@ -385,17 +385,18 @@
 
 </script>
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
     fetch('admin-menu.html')
-      .then(response => {
-        if (!response.ok) throw new Error("Menu load failed");
-        return response.text();
-      })
+      .then(response => response.text())
       .then(html => {
         document.getElementById('sidebar-container').innerHTML = html;
+        document.querySelectorAll('.menu-toggle').forEach(button => {
+          button.addEventListener('click', () => {
+            const submenu = button.nextElementSibling;
+            submenu.classList.toggle('show');
+          });
+        });
       })
-      .catch(error => console.error("Sidebar menu load error:", error));
-  });
+      .catch(err => console.error('Failed to load menu:', err));
 </script>
 
 </body>
