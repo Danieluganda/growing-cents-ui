@@ -203,36 +203,19 @@
 
   <!-- Script to inject and activate menu -->
   <script>
-    fetch('admin-menu.html')
-      .then(res => res.text())
+       fetch('admin-menu.html')
+      .then(response => response.text())
       .then(html => {
         document.getElementById('sidebar-container').innerHTML = html;
-
-        // Activate sidebar behaviors after injection
-        const toggle = document.querySelector('.menu-toggle');
-        const submenu = document.querySelector('.submenu');
-        const hamburger = document.getElementById('hamburger');
-        const sidebar = document.querySelector('.sidebar');
-        const overlay = document.getElementById('overlay');
-
-        if (toggle && submenu) {
-          toggle.addEventListener('click', () => {
-            submenu.classList.toggle('open');
+        document.querySelectorAll('.menu-toggle').forEach(button => {
+          button.addEventListener('click', () => {
+            const submenu = button.nextElementSibling;
+            submenu.classList.toggle('show');
           });
-        }
-
-        if (hamburger && sidebar && overlay) {
-          hamburger.addEventListener('click', () => {
-            sidebar.classList.add('open');
-            overlay.classList.add('show');
-          });
-
-          overlay.addEventListener('click', () => {
-            sidebar.classList.remove('open');
-            overlay.classList.remove('show');
-          });
-        }
-      });
+        });
+      })
+      .catch(err => console.error('Failed to load menu:', err));
+  
   </script>
 
 </body>
