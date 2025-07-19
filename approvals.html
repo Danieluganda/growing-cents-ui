@@ -5,6 +5,15 @@
   <title>User Approvals – Growing Cents</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet" />
+  <!-- FontAwesome for icons -->
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    rel="stylesheet"
+  />
+  <!-- jsPDF and autoTable for PDF export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+
   <style>
     /* ====== Variables & Reset ====== */
     :root {
@@ -13,8 +22,6 @@
       --light-text: #ffffff;
       --card-bg: #fefefe;
       --text-dark: #2c3e50;
-      --modal-bg: rgba(0,0,0,0.6);
-      --modal-content-bg: #fff;
     }
     * {
       box-sizing: border-box;
@@ -27,14 +34,17 @@
       color: var(--light-text);
       display: flex;
       min-height: 100vh;
-      flex-direction: column;
+      flex-direction: row;
     }
 
-    /* Sidebar placeholder */
+    /* Sidebar container */
     #sidebar-container {
       flex-shrink: 0;
       height: 100vh;
       overflow-y: auto;
+      width: 260px;
+      background-color: var(--bg-dark);
+      box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
     }
 
     /* Main content */
@@ -43,6 +53,7 @@
       padding: 40px 50px;
       overflow-y: auto;
       background: var(--bg-dark);
+      min-width: 0; /* prevent overflow */
     }
     main.content header h1 {
       font-family: 'Marcellus', serif;
@@ -57,6 +68,7 @@
       margin-bottom: 2rem;
     }
 
+    /* Section styling */
     section {
       background: var(--card-bg);
       border-radius: 10px;
@@ -68,37 +80,31 @@
     section h2 {
       margin-top: 0;
       font-size: 1.4rem;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
       color: var(--bg-dark);
     }
 
-    /* Search input */
-    #user-search {
+    /* Search box styling */
+    #search-input {
       width: 100%;
-      padding: 10px 14px;
-      margin-bottom: 15px;
-      font-size: 1rem;
+      max-width: 300px;
+      padding: 10px 15px;
+      margin-bottom: 20px;
       border-radius: 6px;
       border: 1px solid #ccc;
-      box-sizing: border-box;
-      font-family: inherit;
+      font-size: 1rem;
     }
 
     /* Table styling */
-    .table-responsive {
-      overflow-x: auto;
-    }
     table {
       width: 100%;
       border-collapse: collapse;
       font-size: 1rem;
-      min-width: 600px;
     }
     th, td {
       padding: 14px 18px;
       border-bottom: 1px solid #ddd;
       text-align: left;
-      white-space: nowrap;
     }
     th {
       background-color: #e8f0ee;
@@ -108,18 +114,20 @@
       background-color: #f9f9f9;
       cursor: default;
     }
-    /* Make user name a clickable link */
-    td.user-name {
+
+    /* User name clickable style */
+    .user-name {
       color: var(--accent-gold);
       cursor: pointer;
+      font-weight: 600;
       text-decoration: underline;
     }
-    td.user-name:hover {
-      color: #a37824;
+    .user-name:hover {
+      color: #a67c1a;
     }
 
     /* Buttons */
-    .btn-approve, .btn-reject {
+    .btn-approve, .btn-reject, #export-pdf-btn {
       padding: 8px 14px;
       font-weight: bold;
       border: none;
@@ -128,7 +136,7 @@
       color: white;
       margin-right: 6px;
       transition: background-color 0.2s ease;
-      font-family: inherit;
+      font-size: 0.9rem;
     }
     .btn-approve {
       background-color: #2ecc71;
@@ -142,79 +150,119 @@
     .btn-reject:hover {
       background-color: #c0392b;
     }
+    #export-pdf-btn {
+      background-color: var(--accent-gold);
+      color: var(--bg-dark);
+      margin-bottom: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    #export-pdf-btn:hover {
+      background-color: #a67c1a;
+    }
+
+    /* Modal styling */
+    .modal-overlay {
+      position: fixed;
+      top:0; left:0; right:0; bottom:0;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    .modal-overlay.active {
+      display: flex;
+    }
+    .modal {
+      background: var(--card-bg);
+      border-radius: 10px;
+      padding: 25px 30px;
+      max-width: 480px;
+      width: 90%;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      color: var(--text-dark);
+      position: relative;
+    }
+    .modal h3 {
+      margin-top: 0;
+      margin-bottom: 15px;
+      color: var(--bg-dark);
+      font-family: 'Marcellus', serif;
+    }
+    .modal p {
+      margin: 6px 0;
+      font-size: 1rem;
+    }
+    .modal button.close-modal {
+      position: absolute;
+      top: 12px;
+      right: 15px;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--bg-dark);
+      font-weight: bold;
+      line-height: 1;
+    }
+    .modal button.close-modal:hover {
+      color: var(--accent-gold);
+    }
 
     /* Responsive */
     @media (max-width: 900px) {
+      body {
+        flex-direction: column;
+      }
+      #sidebar-container {
+        height: auto;
+        width: 100%;
+        order: 1;
+        box-shadow: none;
+      }
       main.content {
         padding: 20px;
+        order: 2;
       }
-      table {
-        min-width: 100%;
+      table, thead, tbody, th, td, tr {
+        display: block;
       }
-      th, td {
-        white-space: normal;
+      thead tr {
+        display: none;
       }
-    }
-
-    /* Modal styles */
-    #user-details-modal {
-      display: none;
-      position: fixed;
-      z-index: 1500;
-      left: 0; top: 0;
-      width: 100%; height: 100%;
-      background-color: var(--modal-bg);
-      justify-content: center;
-      align-items: center;
-      overflow: auto;
-    }
-    #user-details-modal.active {
-      display: flex;
-    }
-    #user-details-modal .modal-content {
-      background-color: var(--modal-content-bg);
-      padding: 20px 30px;
-      border-radius: 8px;
-      max-width: 500px;
-      width: 90%;
-      color: var(--text-dark);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-      position: relative;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    #user-details-modal .modal-content h3 {
-      margin-top: 0;
-      margin-bottom: 15px;
-      font-family: 'Marcellus', serif;
-      color: var(--accent-gold);
-    }
-    #user-details-modal .close-btn {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: #555;
-      cursor: pointer;
-      user-select: none;
-    }
-    #user-details-modal .close-btn:hover {
-      color: #000;
-    }
-    #user-details-modal dl {
-      display: grid;
-      grid-template-columns: max-content 1fr;
-      gap: 8px 15px;
-      font-size: 1rem;
-    }
-    #user-details-modal dt {
-      font-weight: 700;
-      color: #444;
-    }
-    #user-details-modal dd {
-      margin: 0;
-      color: #666;
-      word-wrap: break-word;
+      tbody tr {
+        margin-bottom: 1.5em;
+        background: var(--card-bg);
+        border-radius: 8px;
+        padding: 15px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      }
+      tbody tr td {
+        padding: 8px 10px;
+        border: none;
+        text-align: right;
+        position: relative;
+        padding-left: 50%;
+        font-size: 0.95rem;
+      }
+      tbody tr td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-weight: 700;
+        color: var(--bg-dark);
+        white-space: nowrap;
+      }
+      tbody tr td:last-child {
+        padding-left: 15px;
+        text-align: center;
+      }
+      .btn-approve, .btn-reject {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+      }
     }
   </style>
 </head>
@@ -229,59 +277,63 @@
     </header>
 
     <section>
-      <h2>Pending User Approvals</h2>
+      <button id="export-pdf-btn" aria-label="Export user approvals list to PDF">
+        <i class="fa fa-file-pdf"></i> Export to PDF
+      </button>
 
       <input
         type="search"
-        id="user-search"
-        placeholder="Search by name, email, or club..."
+        id="search-input"
+        placeholder="Search user approvals..."
         aria-label="Search user approvals"
       />
 
-      <div class="table-responsive">
-        <table id="user-approvals-table" aria-describedby="user-approvals-desc">
-          <caption id="user-approvals-desc" class="sr-only">Table listing users pending approval</caption>
-          <thead>
-            <tr>
-              <th scope="col">Full User Name</th>
-              <th scope="col">Email</th>
-              <th scope="col">Requested Club</th>
-              <th scope="col">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr data-user='{"name":"Sarah Nuwandinda","email":"sarah@example.com","club":"Green Harvest","phone":"+256 700 123456","role":"Member"}'>
-              <td class="user-name" tabindex="0">Sarah Nuwandinda</td>
-              <td>sarah@example.com</td>
-              <td>Green Harvest</td>
-              <td>
-                <button class="btn-approve">Approve</button>
-                <button class="btn-reject">Reject</button>
-              </td>
-            </tr>
-            <tr data-user='{"name":"David Okello","email":"david@example.com","club":"Club not found","phone":"+256 712 654321","role":"Admin"}'>
-              <td class="user-name" tabindex="0">David Okello</td>
-              <td>david@example.com</td>
-              <td>Club not found</td>
-              <td>
-                <button class="btn-approve">Approve</button>
-                <button class="btn-reject">Reject</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <h2>Pending User Approvals</h2>
+      <table id="approvals-table" aria-describedby="user-approvals-description" role="table">
+        <thead>
+          <tr>
+            <th scope="col">Full Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Requested Club</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-label="Full Name"><span class="user-name" tabindex="0" role="button" aria-pressed="false">Sarah Nuwandinda</span></td>
+            <td data-label="Email">sarah@example.com</td>
+            <td data-label="Requested Club">Green Harvest</td>
+            <td data-label="Actions">
+              <button class="btn-approve">Approve</button>
+              <button class="btn-reject">Reject</button>
+            </td>
+          </tr>
+          <tr>
+            <td data-label="Full Name"><span class="user-name" tabindex="0" role="button" aria-pressed="false">David Okello</span></td>
+            <td data-label="Email">david@example.com</td>
+            <td data-label="Requested Club">Club not found</td>
+            <td data-label="Actions">
+              <button class="btn-approve">Approve</button>
+              <button class="btn-reject">Reject</button>
+            </td>
+          </tr>
+          <!-- Add more rows as needed -->
+        </tbody>
+      </table>
     </section>
   </main>
 
   <!-- User Details Modal -->
-  <div id="user-details-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1">
-    <div class="modal-content">
-      <button class="close-btn" aria-label="Close modal">&times;</button>
+  <div class="modal-overlay" id="user-details-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-desc">
+    <div class="modal">
+      <button class="close-modal" aria-label="Close user details modal">&times;</button>
       <h3 id="modal-title">User Details</h3>
-      <dl id="user-details-list">
-        <!-- Details will be inserted here -->
-      </dl>
+      <div id="modal-desc">
+        <p><strong>Full Name:</strong> <span id="detail-fullname"></span></p>
+        <p><strong>Email:</strong> <span id="detail-email"></span></p>
+        <p><strong>Requested Club:</strong> <span id="detail-club"></span></p>
+        <p><strong>Additional Info:</strong> <span id="detail-additional">No additional details available.</span></p>
+      </div>
     </div>
   </div>
 
@@ -302,90 +354,156 @@
       })
       .catch(err => console.error('Failed to load menu:', err));
 
-    // Search filter for user approvals table
-    document.getElementById('user-search').addEventListener('input', function () {
-      const filter = this.value.toLowerCase();
-      const rows = document.querySelectorAll('#user-approvals-table tbody tr');
+    // Search/filter functionality
+    const searchInput = document.getElementById('search-input');
+    const table = document.getElementById('approvals-table');
+    const tbody = table.querySelector('tbody');
 
-      rows.forEach(row => {
-        const userName = row.cells[0].textContent.toLowerCase();
-        const email = row.cells[1].textContent.toLowerCase();
-        const club = row.cells[2].textContent.toLowerCase();
+    searchInput.addEventListener('input', () => {
+      const filter = searchInput.value.toLowerCase();
+      [...tbody.rows].forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(filter) ? '' : 'none';
+      });
+    });
 
-        if (
-          userName.includes(filter) ||
-          email.includes(filter) ||
-          club.includes(filter)
-        ) {
-          row.style.display = '';
-        } else {
-          row.style.display = 'none';
+    // User details modal handling
+    const modal = document.getElementById('user-details-modal');
+    const detailFullName = document.getElementById('detail-fullname');
+    const detailEmail = document.getElementById('detail-email');
+    const detailClub = document.getElementById('detail-club');
+    const detailAdditional = document.getElementById('detail-additional');
+    const closeModalBtn = modal.querySelector('.close-modal');
+
+    // Mock additional user data for demo purposes (replace with real data or API call)
+    const userDetailsData = {
+      "Sarah Nuwandinda": {
+        email: "sarah@example.com",
+        club: "Green Harvest",
+        additional: "Member since 2023, pending approval for premium tier."
+      },
+      "David Okello": {
+        email: "david@example.com",
+        club: "Club not found",
+        additional: "Requested club creation, awaiting verification."
+      }
+    };
+
+    // Open modal on clicking user name
+    document.querySelectorAll('.user-name').forEach(elem => {
+      elem.addEventListener('click', () => {
+        const name = elem.textContent.trim();
+        const data = userDetailsData[name] || {};
+        detailFullName.textContent = name;
+        detailEmail.textContent = data.email || 'N/A';
+        detailClub.textContent = data.club || 'N/A';
+        detailAdditional.textContent = data.additional || 'No additional details available.';
+        modal.classList.add('active');
+        elem.setAttribute('aria-pressed', 'true');
+        // Set focus inside modal for accessibility
+        closeModalBtn.focus();
+      });
+      // Keyboard accessibility: open modal on Enter or Space
+      elem.addEventListener('keydown', e => {
+        if(e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          elem.click();
         }
       });
     });
 
-    // Modal functionality
-    const modal = document.getElementById('user-details-modal');
-    const modalCloseBtn = modal.querySelector('.close-btn');
-    const userDetailsList = document.getElementById('user-details-list');
+    // Close modal
+    closeModalBtn.addEventListener('click', () => {
+      modal.classList.remove('active');
+      // Restore focus to last focused user name
+      document.querySelector('.user-name[aria-pressed="true"]').focus();
+      document.querySelector('.user-name[aria-pressed="true"]').setAttribute('aria-pressed', 'false');
+    });
 
-    // Function to open modal with user details
-    function openUserModal(userData) {
-      userDetailsList.innerHTML = '';
-      for (const key in userData) {
-        if (userData.hasOwnProperty(key)) {
-          const dt = document.createElement('dt');
-          dt.textContent = key.charAt(0).toUpperCase() + key.slice(1);
-          const dd = document.createElement('dd');
-          dd.textContent = userData[key];
-          userDetailsList.appendChild(dt);
-          userDetailsList.appendChild(dd);
-        }
+    // Close modal on clicking outside modal content
+    modal.addEventListener('click', e => {
+      if(e.target === modal) {
+        closeModalBtn.click();
       }
-      modal.classList.add('active');
-      modal.focus();
+    });
+
+    // Export to PDF function
+    function exportToPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({
+        orientation: 'landscape',
+        unit: 'pt',
+        format: 'a4'
+      });
+
+      const gold = '#C39E3D';
+      const dark = '#103125';
+
+      // Placeholder logo base64 (replace with actual company logo base64 or URL)
+      const logoBase64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAOwwAADsMBx2+oZAAAABl0RVh0U29mdHdhcmUAUGFpbnQuTkVUIHYzLjM2qefiJQAAAH5JREFUWIXt1zEOgCAMBFD/fzOq09qQIjJbq+MxVnpk6IoMAtQIodBI6QF5H3n5QuMYUSXn4r1DnAVHlTi6NGicvmPQlSCoUyEMwgkgJQyAySMuEPOv3A9KX/6zqOfvH9fXpCqEbdlhg1fVxTQG6yChAqHkVbqFGDk2PxVkQ60Fr1Q7Gk6QY56pYxJo2pNjrGwJ6uWslvP3pVWwAAAABJRU5ErkJggg==';
+
+      doc.addImage(logoBase64, 'PNG', 40, 20, 40, 40);
+
+      // Header
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(26);
+      doc.setTextColor(gold);
+      doc.text('Growing Cents', 90, 50);
+
+      doc.setFontSize(14);
+      doc.setTextColor(dark);
+      doc.text('Pending User Approvals Report', 90, 70);
+
+      // Collect table data
+      const tableRows = [];
+      const rows = document.querySelectorAll('#approvals-table tbody tr');
+      rows.forEach(row => {
+        if(row.style.display === 'none') return; // skip hidden rows by search filter
+        const cols = row.querySelectorAll('td');
+        if (cols.length >= 3) {
+          tableRows.push([
+            cols[0].textContent.trim(),
+            cols[1].textContent.trim(),
+            cols[2].textContent.trim(),
+          ]);
+        }
+      });
+
+      doc.autoTable({
+        startY: 100,
+        head: [['Full Name', 'Email', 'Requested Club']],
+        body: tableRows,
+        theme: 'grid',
+        styles: {
+          font: 'helvetica',
+          fontSize: 11,
+          cellPadding: 5,
+          textColor: dark,
+          lineColor: gold,
+          lineWidth: 0.5,
+        },
+        headStyles: {
+          fillColor: gold,
+          textColor: 255,
+          fontStyle: 'bold',
+          halign: 'center',
+        },
+        alternateRowStyles: {
+          fillColor: '#f9f5e7',
+        },
+        margin: { left: 40, right: 40 },
+        didDrawPage: function (data) {
+          let str = 'Page ' + doc.internal.getNumberOfPages();
+          doc.setFontSize(10);
+          doc.setTextColor(dark);
+          doc.text(str, data.settings.margin.left, doc.internal.pageSize.height - 20);
+        },
+      });
+
+      doc.save('GrowingCents_UserApprovals_Report.pdf');
     }
 
-    // Close modal handler
-    modalCloseBtn.addEventListener('click', () => {
-      modal.classList.remove('active');
-    });
-
-    // Close modal on outside click
-    modal.addEventListener('click', e => {
-      if (e.target === modal) {
-        modal.classList.remove('active');
-      }
-    });
-
-    // Keyboard accessibility: close modal on ESC
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape' && modal.classList.contains('active')) {
-        modal.classList.remove('active');
-      }
-    });
-
-    // Click handler on user name cells to open modal
-    document.addEventListener('click', e => {
-      if (e.target.classList.contains('user-name')) {
-        const tr = e.target.closest('tr');
-        const userData = JSON.parse(tr.getAttribute('data-user'));
-        openUserModal(userData);
-      }
-    });
-
-    // Keyboard accessibility: open modal on Enter key for focused user names
-    document.addEventListener('keydown', e => {
-      if (
-        e.target.classList.contains('user-name') &&
-        (e.key === 'Enter' || e.key === ' ')
-      ) {
-        e.preventDefault();
-        const tr = e.target.closest('tr');
-        const userData = JSON.parse(tr.getAttribute('data-user'));
-        openUserModal(userData);
-      }
-    });
+    document.getElementById('export-pdf-btn').addEventListener('click', exportToPDF);
   </script>
 </body>
 </html>
