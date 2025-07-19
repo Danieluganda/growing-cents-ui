@@ -147,26 +147,58 @@
       <p>Welcome back, Admin! Here’s a full snapshot of system and club analytics.</p>
     </header>
 
-    <section class="kpi-grid">
-      <div class="kpi-card"><i class="fa fa-users kpi-icon"></i><div class="kpi-title">Total Clubs</div><div class="kpi-value">124</div></div>
-      <div class="kpi-card"><i class="fa fa-check-circle kpi-icon"></i><div class="kpi-title">Active Subscriptions</div><div class="kpi-value">98</div></div>
-      <div class="kpi-card"><i class="fa fa-times-circle kpi-icon"></i><div class="kpi-title">Expired Subscriptions</div><div class="kpi-value">12</div></div>
+  <section style="display: flex; flex-direction: column; gap: 40px; margin-top: 30px; padding: 0 10px;">
+
+  <!-- Section Group Template -->
+  <div style="background: #ffffff; padding: 20px 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+    <h2 style="color: #103125; font-size: 1.2rem; margin-bottom: 20px; border-left: 4px solid #C39E3D; padding-left: 10px;">Assessments</h2>
+    <div class="kpi-grid">
       <div class="kpi-card"><i class="fa fa-spinner kpi-icon"></i><div class="kpi-title">Assessments Pending</div><div class="kpi-value">24</div></div>
-      <div class="kpi-card"><i class="fa fa-chart-line kpi-icon"></i><div class="kpi-title">Average Maturity Score</div><div class="kpi-value">52.4%</div></div>
+      <div class="kpi-card"><i class="fa fa-exclamation-triangle kpi-icon"></i><div class="kpi-title">Incomplete Assessments</div><div class="kpi-value">16</div></div>
+      <div class="kpi-card"><i class="fa fa-list-alt kpi-icon"></i><div class="kpi-title">Assessments Completed</div><div class="kpi-value">743</div></div>
+    </div>
+  </div>
+
+  <div style="background: #ffffff; padding: 20px 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+    <h2 style="color: #103125; font-size: 1.2rem; margin-bottom: 20px; border-left: 4px solid #C39E3D; padding-left: 10px;">Users</h2>
+    <div class="kpi-grid">
+      <div class="kpi-card"><i class="fa fa-user-friends kpi-icon"></i><div class="kpi-title">Total Registered Users</div><div class="kpi-value">1824</div></div>
+      <div class="kpi-card"><i class="fa fa-user-shield kpi-icon"></i><div class="kpi-title">2FA Enabled Users</div><div class="kpi-value">218</div></div>
+    </div>
+  </div>
+
+  <div style="background: #ffffff; padding: 20px 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+    <h2 style="color: #103125; font-size: 1.2rem; margin-bottom: 20px; border-left: 4px solid #C39E3D; padding-left: 10px;">Clubs</h2>
+    <div class="kpi-grid">
+      <div class="kpi-card"><i class="fa fa-users kpi-icon"></i><div class="kpi-title">Total Clubs</div><div class="kpi-value">124</div></div>
       <div class="kpi-card"><i class="fa fa-heartbeat kpi-icon"></i><div class="kpi-title">Clubs in Critical Health</div><div class="kpi-value">7</div></div>
       <div class="kpi-card"><i class="fa fa-map-marker-alt kpi-icon"></i><div class="kpi-title">Most Active Region</div><div class="kpi-value">Central Uganda</div></div>
-      <div class="kpi-card"><i class="fa fa-exclamation-triangle kpi-icon"></i><div class="kpi-title">Incomplete Assessments</div><div class="kpi-value">16</div></div>
-      <div class="kpi-card"><i class="fa fa-bell kpi-icon"></i><div class="kpi-title">Trigger Nudges</div><div class="kpi-value">3</div></div>
-      <div class="kpi-card"><i class="fa fa-user-shield kpi-icon"></i><div class="kpi-title">2FA Enabled Users</div><div class="kpi-value">218</div></div>
+    </div>
+  </div>
+
+  <div style="background: #ffffff; padding: 20px 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+    <h2 style="color: #103125; font-size: 1.2rem; margin-bottom: 20px; border-left: 4px solid #C39E3D; padding-left: 10px;">Subscriptions</h2>
+    <div class="kpi-grid">
+      <div class="kpi-card"><i class="fa fa-check-circle kpi-icon"></i><div class="kpi-title">Active Subscriptions</div><div class="kpi-value">98</div></div>
+      <div class="kpi-card"><i class="fa fa-times-circle kpi-icon"></i><div class="kpi-title">Expired Subscriptions</div><div class="kpi-value">12</div></div>
+      <div class="kpi-card"><i class="fa fa-user-plus kpi-icon"></i><div class="kpi-title">Pending Approvals</div><div class="kpi-value">12</div></div>
+    </div>
+  </div>
+
+  <div style="background: #ffffff; padding: 20px 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+    <h2 style="color: #103125; font-size: 1.2rem; margin-bottom: 20px; border-left: 4px solid #C39E3D; padding-left: 10px;">System Monitoring</h2>
+    <div class="kpi-grid">
+      <div class="kpi-card"><i class="fa fa-chart-line kpi-icon"></i><div class="kpi-title">Average Maturity Score</div><div class="kpi-value">52.4%</div></div>
       <div class="kpi-card"><i class="fa fa-database kpi-icon"></i><div class="kpi-title">Backups Completed</div><div class="kpi-value">21</div></div>
       <div class="kpi-card"><i class="fa fa-sign-in-alt kpi-icon"></i><div class="kpi-title">Failed Login Attempts</div><div class="kpi-value">17</div></div>
       <div class="kpi-card"><i class="fa fa-exclamation-circle kpi-icon"></i><div class="kpi-title">System Alerts (24h)</div><div class="kpi-value">3</div></div>
-      <div class="kpi-card"><i class="fa fa-user-plus kpi-icon"></i><div class="kpi-title">Pending Approvals</div><div class="kpi-value">12</div></div>
       <div class="kpi-card"><i class="fa fa-file-alt kpi-icon"></i><div class="kpi-title">Logs Captured (7d)</div><div class="kpi-value">1556</div></div>
-      <div class="kpi-card"><i class="fa fa-list-alt kpi-icon"></i><div class="kpi-title">Assessments Completed</div><div class="kpi-value">743</div></div>
+      <div class="kpi-card"><i class="fa fa-bell kpi-icon"></i><div class="kpi-title">Trigger Nudges</div><div class="kpi-value">3</div></div>
       <div class="kpi-card"><i class="fa fa-envelope kpi-icon"></i><div class="kpi-title">Total Messages Sent</div><div class="kpi-value">672</div></div>
-      <div class="kpi-card"><i class="fa fa-user-friends kpi-icon"></i><div class="kpi-title">Total Registered Users</div><div class="kpi-value">1824</div></div>
-    </section>
+    </div>
+  </div>
+</section>
+
   </main>
 
   <!-- Script to inject and activate menu -->

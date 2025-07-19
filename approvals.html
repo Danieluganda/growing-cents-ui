@@ -13,6 +13,8 @@
       --light-text: #ffffff;
       --card-bg: #fefefe;
       --text-dark: #2c3e50;
+      --modal-bg: rgba(0,0,0,0.6);
+      --modal-content-bg: #fff;
     }
     * {
       box-sizing: border-box;
@@ -25,16 +27,17 @@
       color: var(--light-text);
       display: flex;
       min-height: 100vh;
+      flex-direction: column;
     }
 
-    /* ====== Sidebar container to hold dynamic menu ====== */
+    /* Sidebar placeholder */
     #sidebar-container {
       flex-shrink: 0;
       height: 100vh;
       overflow-y: auto;
     }
 
-    /* ====== Main content ====== */
+    /* Main content */
     main.content {
       flex-grow: 1;
       padding: 40px 50px;
@@ -54,7 +57,6 @@
       margin-bottom: 2rem;
     }
 
-    /* ====== Section styling ====== */
     section {
       background: var(--card-bg);
       border-radius: 10px;
@@ -66,20 +68,37 @@
     section h2 {
       margin-top: 0;
       font-size: 1.4rem;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
       color: var(--bg-dark);
     }
 
-    /* ====== Table styling ====== */
+    /* Search input */
+    #user-search {
+      width: 100%;
+      padding: 10px 14px;
+      margin-bottom: 15px;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      font-family: inherit;
+    }
+
+    /* Table styling */
+    .table-responsive {
+      overflow-x: auto;
+    }
     table {
       width: 100%;
       border-collapse: collapse;
       font-size: 1rem;
+      min-width: 600px;
     }
     th, td {
       padding: 14px 18px;
       border-bottom: 1px solid #ddd;
       text-align: left;
+      white-space: nowrap;
     }
     th {
       background-color: #e8f0ee;
@@ -89,8 +108,17 @@
       background-color: #f9f9f9;
       cursor: default;
     }
+    /* Make user name a clickable link */
+    td.user-name {
+      color: var(--accent-gold);
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    td.user-name:hover {
+      color: #a37824;
+    }
 
-    /* ====== Buttons ====== */
+    /* Buttons */
     .btn-approve, .btn-reject {
       padding: 8px 14px;
       font-weight: bold;
@@ -100,6 +128,7 @@
       color: white;
       margin-right: 6px;
       transition: background-color 0.2s ease;
+      font-family: inherit;
     }
     .btn-approve {
       background-color: #2ecc71;
@@ -114,19 +143,78 @@
       background-color: #c0392b;
     }
 
-    /* ====== Responsive ====== */
+    /* Responsive */
     @media (max-width: 900px) {
-      body {
-        flex-direction: column;
-      }
-      #sidebar-container {
-        height: auto;
-        order: 1;
-      }
       main.content {
         padding: 20px;
-        order: 2;
       }
+      table {
+        min-width: 100%;
+      }
+      th, td {
+        white-space: normal;
+      }
+    }
+
+    /* Modal styles */
+    #user-details-modal {
+      display: none;
+      position: fixed;
+      z-index: 1500;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background-color: var(--modal-bg);
+      justify-content: center;
+      align-items: center;
+      overflow: auto;
+    }
+    #user-details-modal.active {
+      display: flex;
+    }
+    #user-details-modal .modal-content {
+      background-color: var(--modal-content-bg);
+      padding: 20px 30px;
+      border-radius: 8px;
+      max-width: 500px;
+      width: 90%;
+      color: var(--text-dark);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      position: relative;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    #user-details-modal .modal-content h3 {
+      margin-top: 0;
+      margin-bottom: 15px;
+      font-family: 'Marcellus', serif;
+      color: var(--accent-gold);
+    }
+    #user-details-modal .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #555;
+      cursor: pointer;
+      user-select: none;
+    }
+    #user-details-modal .close-btn:hover {
+      color: #000;
+    }
+    #user-details-modal dl {
+      display: grid;
+      grid-template-columns: max-content 1fr;
+      gap: 8px 15px;
+      font-size: 1rem;
+    }
+    #user-details-modal dt {
+      font-weight: 700;
+      color: #444;
+    }
+    #user-details-modal dd {
+      margin: 0;
+      color: #666;
+      word-wrap: break-word;
     }
   </style>
 </head>
@@ -142,39 +230,60 @@
 
     <section>
       <h2>Pending User Approvals</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>User Name</th>
-            <th>Email</th>
-            <th>Requested Club</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Sarah N.</td>
-            <td>sarah@example.com</td>
-            <td>Green Harvest</td>
-            <td>
-              <button class="btn-approve">Approve</button>
-              <button class="btn-reject">Reject</button>
-            </td>
-          </tr>
-          <tr>
-            <td>David O.</td>
-            <td>david@example.com</td>
-            <td>Club not found</td>
-            <td>
-              <button class="btn-approve">Approve</button>
-              <button class="btn-reject">Reject</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
 
+      <input
+        type="search"
+        id="user-search"
+        placeholder="Search by name, email, or club..."
+        aria-label="Search user approvals"
+      />
+
+      <div class="table-responsive">
+        <table id="user-approvals-table" aria-describedby="user-approvals-desc">
+          <caption id="user-approvals-desc" class="sr-only">Table listing users pending approval</caption>
+          <thead>
+            <tr>
+              <th scope="col">Full User Name</th>
+              <th scope="col">Email</th>
+              <th scope="col">Requested Club</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-user='{"name":"Sarah Nuwandinda","email":"sarah@example.com","club":"Green Harvest","phone":"+256 700 123456","role":"Member"}'>
+              <td class="user-name" tabindex="0">Sarah Nuwandinda</td>
+              <td>sarah@example.com</td>
+              <td>Green Harvest</td>
+              <td>
+                <button class="btn-approve">Approve</button>
+                <button class="btn-reject">Reject</button>
+              </td>
+            </tr>
+            <tr data-user='{"name":"David Okello","email":"david@example.com","club":"Club not found","phone":"+256 712 654321","role":"Admin"}'>
+              <td class="user-name" tabindex="0">David Okello</td>
+              <td>david@example.com</td>
+              <td>Club not found</td>
+              <td>
+                <button class="btn-approve">Approve</button>
+                <button class="btn-reject">Reject</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
   </main>
+
+  <!-- User Details Modal -->
+  <div id="user-details-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1">
+    <div class="modal-content">
+      <button class="close-btn" aria-label="Close modal">&times;</button>
+      <h3 id="modal-title">User Details</h3>
+      <dl id="user-details-list">
+        <!-- Details will be inserted here -->
+      </dl>
+    </div>
+  </div>
 
   <script>
     // Load sidebar menu from external file
@@ -192,6 +301,91 @@
         });
       })
       .catch(err => console.error('Failed to load menu:', err));
+
+    // Search filter for user approvals table
+    document.getElementById('user-search').addEventListener('input', function () {
+      const filter = this.value.toLowerCase();
+      const rows = document.querySelectorAll('#user-approvals-table tbody tr');
+
+      rows.forEach(row => {
+        const userName = row.cells[0].textContent.toLowerCase();
+        const email = row.cells[1].textContent.toLowerCase();
+        const club = row.cells[2].textContent.toLowerCase();
+
+        if (
+          userName.includes(filter) ||
+          email.includes(filter) ||
+          club.includes(filter)
+        ) {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+    });
+
+    // Modal functionality
+    const modal = document.getElementById('user-details-modal');
+    const modalCloseBtn = modal.querySelector('.close-btn');
+    const userDetailsList = document.getElementById('user-details-list');
+
+    // Function to open modal with user details
+    function openUserModal(userData) {
+      userDetailsList.innerHTML = '';
+      for (const key in userData) {
+        if (userData.hasOwnProperty(key)) {
+          const dt = document.createElement('dt');
+          dt.textContent = key.charAt(0).toUpperCase() + key.slice(1);
+          const dd = document.createElement('dd');
+          dd.textContent = userData[key];
+          userDetailsList.appendChild(dt);
+          userDetailsList.appendChild(dd);
+        }
+      }
+      modal.classList.add('active');
+      modal.focus();
+    }
+
+    // Close modal handler
+    modalCloseBtn.addEventListener('click', () => {
+      modal.classList.remove('active');
+    });
+
+    // Close modal on outside click
+    modal.addEventListener('click', e => {
+      if (e.target === modal) {
+        modal.classList.remove('active');
+      }
+    });
+
+    // Keyboard accessibility: close modal on ESC
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && modal.classList.contains('active')) {
+        modal.classList.remove('active');
+      }
+    });
+
+    // Click handler on user name cells to open modal
+    document.addEventListener('click', e => {
+      if (e.target.classList.contains('user-name')) {
+        const tr = e.target.closest('tr');
+        const userData = JSON.parse(tr.getAttribute('data-user'));
+        openUserModal(userData);
+      }
+    });
+
+    // Keyboard accessibility: open modal on Enter key for focused user names
+    document.addEventListener('keydown', e => {
+      if (
+        e.target.classList.contains('user-name') &&
+        (e.key === 'Enter' || e.key === ' ')
+      ) {
+        e.preventDefault();
+        const tr = e.target.closest('tr');
+        const userData = JSON.parse(tr.getAttribute('data-user'));
+        openUserModal(userData);
+      }
+    });
   </script>
 </body>
 </html>

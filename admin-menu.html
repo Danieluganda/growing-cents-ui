@@ -12,379 +12,371 @@
   />
 
   <style>
-    :root {
-      --bg-dark: #103125;
-      --accent-gold: #C39E3D;
-      --light-text: #ffffff;
-      --card-bg: #fefefe;
-      --hover-blue: #1d6fd6;
-      --submenu-bg: #134334;
-      --submenu-border: rgba(255, 255, 255, 0.1);
-      --transition-speed: 0.3s;
-    }
+   :root {
+  --bg-dark: #103125;
+  --accent-gold: #C39E3D;
+  --light-text: #ffffff;
+  --card-bg: #fefefe;
+  --hover-blue: #1d6fd6;
+  --submenu-bg: #134334;
+  --submenu-border: rgba(255, 255, 255, 0.1);
+  --transition-speed: 0.3s;
+}
 
-    * {
-      box-sizing: border-box;
-    }
+* {
+  box-sizing: border-box;
+}
 
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      display: flex;
-      min-height: 100vh;
-      background-color: var(--bg-dark);
-      color: var(--light-text);
-    }
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--bg-dark);
+  color: var(--light-text);
+}
 
-    nav.sidebar {
-      width: 260px;
-      background-color: var(--bg-dark);
-      color: var(--light-text);
-      display: flex;
-      flex-direction: column;
-      padding-top: 20px;
-      flex-shrink: 0;
-      overflow-y: auto;
-      height: 100vh;
-      box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
-      position: relative;
-      transition: transform var(--transition-speed) ease;
-      user-select: none;
-      transform: translateX(0);
-    }
+nav.sidebar {
+  width: 260px;
+  background-color: var(--bg-dark);
+  color: var(--light-text);
+  display: flex;
+  flex-direction: column;
+  padding-top: 20px;
+  flex-shrink: 0;
+  overflow-y: auto;
+  height: 100vh;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+  transition: transform var(--transition-speed) ease;
+  user-select: none;
+  transform: translateX(0);
+}
 
-    nav.sidebar h2 {
-      font-family: 'Marcellus', serif;
-      font-size: 1.8rem;
-      font-weight: 700;
-      padding: 0 30px 24px;
-      margin: 0;
-      color: var(--accent-gold);
-      border-bottom: 2px solid rgba(255, 255, 255, 0.2);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+nav.sidebar h2 {
+  font-family: 'Marcellus', serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  padding: 0 30px 24px;
+  margin: 0;
+  color: var(--accent-gold);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
-    nav.sidebar h2 i {
-      color: var(--accent-gold);
-      font-size: 1.8rem;
-    }
+nav.sidebar h2 i {
+  color: var(--accent-gold);
+  font-size: 1.8rem;
+}
 
-    .user-info {
-      padding: 0 30px 20px;
-      font-size: 0.9rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-      user-select: text;
-    }
+.user-info {
+  padding: 0 30px 20px;
+  font-size: 0.9rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  user-select: text;
+}
 
-    nav.sidebar a,
-    nav.sidebar .submenu a {
-      color: white;
-      text-decoration: none;
-      display: block;
-      padding: 12px 30px;
-      font-weight: 600;
-      font-size: 1.05rem;
-      border-left: 4px solid transparent;
-      transition: background-color 0.25s ease, border-color 0.25s ease;
-      cursor: pointer;
-      white-space: nowrap;
-    }
+nav.sidebar a,
+nav.sidebar .submenu a {
+  color: white;
+  text-decoration: none;
+  display: block;
+  padding: 12px 30px;
+  font-weight: 600;
+  font-size: 1.05rem;
+  border-left: 4px solid transparent;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+  cursor: pointer;
+  white-space: nowrap;
+}
 
-    nav.sidebar a:hover,
-    nav.sidebar a.active,
-    .submenu a:hover {
-      background-color: rgba(255, 255, 255, 0.07);
-      border-left-color: var(--accent-gold);
-    }
+nav.sidebar a:hover,
+nav.sidebar a.active,
+.submenu a:hover {
+  background-color: rgba(255, 255, 255, 0.07);
+  border-left-color: var(--accent-gold);
+}
 
-    .menu-group {
-      margin-bottom: 8px;
-    }
+.menu-group {
+  margin-bottom: 8px;
+}
 
-    /* Menu toggle buttons */
-    .menu-toggle {
-      background: none;
-      border: none;
-      color: white;
-      padding: 12px 30px;
-      width: 100%;
-      text-align: left;
-      font-size: 1.05rem;
-      font-weight: 700;
-      cursor: pointer;
-      border-left: 4px solid transparent;
-      transition: background-color 0.25s ease, border-color 0.25s ease;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      user-select: none;
-    }
+/* Menu toggle buttons */
+.menu-toggle {
+  background: none;
+  border: none;
+  color: white;
+  padding: 12px 30px;
+  width: 100%;
+  text-align: left;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  border-left: 4px solid transparent;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+}
 
-    .menu-toggle:hover,
-    .menu-toggle:focus {
-      background-color: rgba(255, 255, 255, 0.07);
-      border-left-color: var(--accent-gold);
-      outline: none;
-    }
+.menu-toggle:hover,
+.menu-toggle:focus {
+  background-color: rgba(255, 255, 255, 0.07);
+  border-left-color: var(--accent-gold);
+  outline: none;
+}
 
-    /* Arrow icon for toggles */
-    .menu-toggle i.fa-chevron-down {
-      transition: transform var(--transition-speed) ease;
-    }
+/* Arrow icon for toggles */
+.menu-toggle i.fa-chevron-down {
+  transition: transform var(--transition-speed) ease;
+}
 
-    /* Rotate arrow when submenu shown */
-    .menu-toggle[aria-expanded="true"] i.fa-chevron-down {
-      transform: rotate(180deg);
-    }
+/* Rotate arrow when submenu shown */
+.menu-toggle[aria-expanded="true"] i.fa-chevron-down {
+  transform: rotate(180deg);
+}
 
-    .submenu {
-      list-style: none;
-      padding-left: 0;
-      margin: 0;
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height var(--transition-speed) ease;
-      background-color: var(--submenu-bg);
-      border-left: 2px solid var(--submenu-border);
-      user-select: none;
-    }
+.submenu {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height var(--transition-speed) ease;
+  background-color: var(--submenu-bg);
+  border-left: 2px solid var(--submenu-border);
+  user-select: none;
+}
 
-    .submenu.show {
-      max-height: 1000px; /* large enough */
-    }
+.submenu.show {
+  max-height: 500px; /* reasonable max height for smooth animation */
+  overflow: visible;
+}
 
-    .submenu li a {
-      padding: 10px 45px;
-      font-size: 0.95rem;
-      font-weight: 500;
-      white-space: nowrap;
-    }
+.submenu li a {
+  padding: 10px 45px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
 
-    .submenu.nested-submenu {
-      padding-left: 10px;
-      background-color: #155642;
-    }
+.submenu.nested-submenu {
+  padding-left: 10px;
+  background-color: #155642;
+}
 
-    /* Hamburger button for mobile */
-    #hamburger-btn {
-      display: none;
-      position: fixed;
-      top: 15px;
-      left: 15px;
-      z-index: 1100;
-      background: var(--accent-gold);
-      border: none;
-      padding: 10px 15px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-      color: var(--bg-dark);
-      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-      user-select: none;
-    }
+/* Hamburger button for mobile */
+#hamburger-btn {
+  display: none;
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 1100;
+  background: var(--accent-gold);
+  border: none;
+  padding: 10px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  color: var(--bg-dark);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  user-select: none;
+}
 
-    #hamburger-btn:focus {
-      outline: 2px solid var(--light-text);
-    }
+#hamburger-btn:focus {
+  outline: 2px solid var(--light-text);
+}
 
-    /* Overlay behind sidebar on mobile */
-    #sidebar-overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.5);
-      z-index: 999;
-    }
+/* Overlay behind sidebar on mobile */
+#sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 999;
+}
 
-    #sidebar-overlay.active {
-      display: block;
-    }
+#sidebar-overlay.active {
+  display: block;
+}
 
-    /* Responsive sidebar - mobile */
-    @media (max-width: 900px) {
-      body {
-        flex-direction: column;
-      }
+/* Responsive sidebar - mobile */
+@media (max-width: 900px) {
+  body {
+    flex-direction: column;
+  }
 
-      nav.sidebar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 100vh;
-        transform: translateX(-100%);
-        width: 260px;
-        box-shadow: 2px 0 8px rgba(0,0,0,0.7);
-        z-index: 1000;
-      }
+  nav.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    transform: translateX(-100%);
+    width: 260px;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.7);
+    z-index: 1000;
+  }
 
-      nav.sidebar.open {
-        transform: translateX(0);
-      }
+  nav.sidebar.open {
+    transform: translateX(0);
+  }
 
-      nav.sidebar h2,
-      .user-info {
-        display: block;
-        padding-left: 20px;
-        padding-top: 10px;
-        padding-bottom: 10px;
-        border-bottom: 1px solid rgba(255,255,255,0.2);
-      }
+  nav.sidebar h2,
+  .user-info {
+    display: block;
+    padding-left: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+  }
 
-      nav.sidebar a,
-      .menu-toggle {
-        padding: 15px 30px;
-        font-size: 1.1rem;
-        border-left: none;
-        text-align: left;
-        background-color: transparent;
-      }
+  nav.sidebar a,
+  .menu-toggle {
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    border-left: none;
+    text-align: left;
+    background-color: transparent;
+  }
 
-      nav.sidebar a:hover,
-      nav.sidebar a.active,
-      .menu-toggle:hover,
-      .menu-toggle:focus {
-        background-color: rgba(255, 255, 255, 0.1);
-        border-left: none;
-      }
+  nav.sidebar a:hover,
+  nav.sidebar a.active,
+  .menu-toggle:hover,
+  .menu-toggle:focus {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-left: none;
+  }
 
-      .submenu {
-        max-height: none !important;
-        position: static;
-        background-color: var(--submenu-bg);
-        border-left: none;
-        padding-left: 0;
-      }
+  .submenu {
+    max-height: none !important; /* always open */
+    overflow: visible !important;
+    position: static;
+    border-left: none;
+    padding-left: 0;
+    transition: none !important;
+  }
 
-      .submenu li a {
-        padding-left: 50px;
-      }
+  .submenu li a {
+    padding-left: 50px;
+  }
 
-      #hamburger-btn {
-        display: block;
-      }
+  #hamburger-btn {
+    display: block;
+  }
 
-      #sidebar-overlay {
-        display: none;
-      }
+  #sidebar-overlay {
+    display: none;
+  }
 
-      #sidebar-overlay.active {
-        display: block;
-      }
-    }
+  #sidebar-overlay.active {
+    display: block;
+  }
+}
+
   </style>
 </head>
 <body>
 
   <!-- Hamburger for mobile -->
-  <button id="hamburger-btn" aria-label="Toggle Menu"><i class="fa fa-bars"></i> Menu</button>
-  <div id="sidebar-overlay"></div>
+<button id="hamburger-btn" aria-label="Toggle Menu"><i class="fa fa-bars"></i> Menu</button>
+<div id="sidebar-overlay"></div>
 
-  <nav class="sidebar" role="navigation" aria-label="Main Sidebar Navigation">
-    <h2><i class="fa fa-seedling"></i> Growing Cents</h2>
-    <div class="user-info" aria-live="polite">
-      <p><strong>Super Admin Name</strong></p>
-      <p>admin@example.com</p>
-    </div>
+<nav class="sidebar" role="navigation" aria-label="Main Sidebar Navigation">
+  <h2><i class="fa fa-seedling"></i> Growing Cents</h2>
 
-    <a href="admin-dashboard.html" class="active"><i class="fa fa-tachometer-alt"></i> Dashboard</a>
+  <div class="user-info" aria-live="polite">
+    <p><strong>Super Admin Name</strong></p>
+    <p>admin@example.com</p>
+  </div>
 
-    <div class="menu-group">
-      <button class="menu-toggle" aria-expanded="false">
-        <span><i class="fa fa-users"></i> User Management</span>
-        <i class="fa fa-chevron-down"></i>
-      </button>
-      <ul class="submenu" aria-label="User Management submenu">
-        <li><a href="approvals.html"><i class="fa fa-user-check"></i> User Approvals</a></li>
-        <li><a href="users.html"><i class="fa fa-user"></i> All Users</a></li>
-        <li><a href="roles.html"><i class="fa fa-user-shield"></i> Roles & Permissions</a></li>
-        <li><a href="user-groups.html"><i class="fa fa-users-cog"></i> User Groups</a></li>
-        <li><a href="login-activity.html"><i class="fa fa-sign-in-alt"></i> Login Activity</a></li>
-      </ul>
-    </div>
+  <a href="admin-dashboard.html" class="active"><i class="fa fa-tachometer-alt"></i> Dashboard</a>
 
-    <div class="menu-group">
-      <button class="menu-toggle" aria-expanded="false">
-        <span><i class="fa fa-handshake"></i> Clubs</span>
-        <i class="fa fa-chevron-down"></i>
-      </button>
-      <ul class="submenu" aria-label="Clubs submenu">
-        <li><a href="clubs.html"><i class="fa fa-list"></i> All Clubs</a></li>
-        <li><a href="club-profiles1.html"><i class="fa fa-id-card"></i> Club Profiles</a></li>
-        <li><a href="club-admins.html"><i class="fa fa-user-tie"></i> Club Administrators</a></li>
-        <li><a href="club-memberships.html"><i class="fa fa-address-book"></i> Club Memberships</a></li>
-      </ul>
-    </div>
+  <!-- User Management -->
+  <div class="menu-group">
+    <button class="menu-toggle"><span><i class="fa fa-users"></i> User Management</span><i class="fa fa-chevron-down"></i></button>
+    <ul class="submenu">
+      <li><a href="approvals.html"><i class="fa fa-user-check"></i> Approvals</a></li>
+      <li><a href="users.html"><i class="fa fa-user"></i> All Users</a></li>
+      <li><a href="roles.html"><i class="fa fa-user-shield"></i> Roles & Access</a></li>
+      <li><a href="user-groups.html"><i class="fa fa-users-cog"></i> Groups</a></li>
+      <li><a href="login-activity.html"><i class="fa fa-sign-in-alt"></i> Login Activity</a></li>
+    </ul>
+  </div>
 
-    <div class="menu-group">
-      <button class="menu-toggle" aria-expanded="false">
-        <span><i class="fa fa-credit-card"></i> Subscriptions</span>
-        <i class="fa fa-chevron-down"></i>
-      </button>
-      <ul class="submenu" aria-label="Subscriptions submenu">
-        <li><a href="tiers.html"><i class="fa fa-layer-group"></i> Tiers setup</a></li>
-        <li><a href="discounts.html"><i class="fa fa-tags"></i> Discounts</a></li>
-        <li><a href="pause-resume.html"><i class="fa fa-pause-circle"></i> Pause/Resume</a></li>
-        <li><a href="club-tiers.html"><i class="fa fa-users"></i> Club tiers report</a></li>
-        <li><a href="expired.html"><i class="fa fa-exclamation-circle"></i> Expired</a></li>
-        <li><a href="about-to-expire.html"><i class="fa fa-hourglass-half"></i> About to Expire</a></li>
-        <li><a href="active.html"><i class="fa fa-check-circle"></i> Active</a></li>
-        <li><a href="payment-history.html"><i class="fa fa-receipt"></i> Payment History</a></li>
-        <li><a href="subscription-settings.html"><i class="fa fa-cogs"></i> Subscription Settings</a></li>
-      </ul>
-    </div>
+  <!-- Clubs -->
+  <div class="menu-group">
+    <button class="menu-toggle"><span><i class="fa fa-handshake"></i> Clubs</span><i class="fa fa-chevron-down"></i></button>
+    <ul class="submenu">
+      <li><a href="clubs.html"><i class="fa fa-list"></i> All Clubs</a></li>
+      <li><a href="club-profiles1.html"><i class="fa fa-id-card"></i> Club Health Profiles</a></li>
+      <li><a href="club-admins.html"><i class="fa fa-user-tie"></i> Administrators</a></li>
+      <li><a href="club-memberships.html"><i class="fa fa-address-book"></i> Memberships</a></li>
+    </ul>
+  </div>
 
-    <div class="menu-group">
-      <button class="menu-toggle" aria-expanded="false">
-        <span><i class="fa fa-clipboard-list"></i> Assessments</span>
-        <i class="fa fa-chevron-down"></i>
-      </button>
-      <ul class="submenu" aria-label="Assessments submenu">
-        <li><a href="assessment-questions.html"><i class="fa fa-question-circle"></i> Assessment Questions</a></li>
-        <li><a href="past-assessments.html"><i class="fa fa-history"></i> Past Assessments</a></li>
-        <li><a href="assessment-logic.html"><i class="fa fa-brain"></i> Assessment Logic</a></li>
-        <li><a href="reports.html"><i class="fa fa-chart-bar"></i> Reports</a></li>
-        <li><a href="assessment-settings.html"><i class="fa fa-sliders-h"></i> Assessment Settings</a></li>
-      </ul>
-    </div>
+  <!-- Subscriptions -->
+  <div class="menu-group">
+    <button class="menu-toggle"><span><i class="fa fa-credit-card"></i> Subscriptions</span><i class="fa fa-chevron-down"></i></button>
+    <ul class="submenu">
+      <li><a href="tiers.html"><i class="fa fa-layer-group"></i> Subscription Tiers</a></li>
+      <li><a href="discounts.html"><i class="fa fa-tags"></i> Discounts</a></li>
+      <li><a href="pause-resume.html"><i class="fa fa-pause-circle"></i> Manage Status</a></li>
+      <li><a href="club-tiers.html"><i class="fa fa-users"></i> Club Tier Summary</a></li>
+      <li><a href="expired.html"><i class="fa fa-exclamation-circle"></i> Expired</a></li>
+      <li><a href="about-to-expire.html"><i class="fa fa-hourglass-half"></i> Expiring Soon</a></li>
+      <li><a href="active.html"><i class="fa fa-check-circle"></i> Active Clubs</a></li>
+      <li><a href="payment-history.html"><i class="fa fa-receipt"></i> Payment History</a></li>
+      <li><a href="subscription-settings.html"><i class="fa fa-cogs"></i> Subscription Settings</a></li>
+    </ul>
+  </div>
 
-    <div class="menu-group">
-      <button class="menu-toggle" aria-expanded="false">
-        <span><i class="fa fa-cog"></i> Settings</span>
-        <i class="fa fa-chevron-down"></i>
-      </button>
-      <ul class="submenu" aria-label="Settings submenu">
-        <li><a href="2fa-security.html"><i class="fa fa-shield-alt"></i> 2FA / Security Settings</a></li>
-        <li><a href="system-config.html"><i class="fa fa-sliders-h"></i> System Configurations</a></li>
-        <li><a href="email-templates.html"><i class="fa fa-envelope"></i> Email Templates</a></li>
-        <li><a href="backup-restore.html"><i class="fa fa-database"></i> Backup & Restore</a></li>
-        <li><a href="notifications.html"><i class="fa fa-bell"></i> Notification Preferences</a></li>
-        <li><a href="audit-trail-settings.html"><i class="fa fa-clipboard-check"></i> Audit Trail Settings</a></li>
-      </ul>
-    </div>
+  <!-- Assessments -->
+  <div class="menu-group">
+    <button class="menu-toggle"><span><i class="fa fa-clipboard-list"></i> Assessments</span><i class="fa fa-chevron-down"></i></button>
+    <ul class="submenu">
+      <li><a href="assessment-questions.html"><i class="fa fa-question-circle"></i> Questions</a></li>
+      <li><a href="past-assessments.html"><i class="fa fa-history"></i> Past Results</a></li>
+      <li><a href="assessment-logic.html"><i class="fa fa-brain"></i> Maturity Logic</a></li>
+      <li><a href="reports.html"><i class="fa fa-chart-bar"></i> Insights & Reports</a></li>
+      <li><a href="assessment-settings.html"><i class="fa fa-sliders-h"></i> Assessment Settings</a></li>
+    </ul>
+  </div>
 
-    <div class="menu-group">
-      <button class="menu-toggle" aria-expanded="false">
-        <span><i class="fa fa-file-alt"></i> Audit & Logs</span>
-        <i class="fa fa-chevron-down"></i>
-      </button>
-      <ul class="submenu" aria-label="Audit & Logs submenu">
-        <li><a href="system-actions.html"><i class="fa fa-tasks"></i> System Actions Log</a></li>
-        <li><a href="filter-logs.html"><i class="fa fa-filter"></i> Filter & Search Logs</a></li>
-        <li><a href="export-logs.html"><i class="fa fa-file-export"></i> Export Logs</a></li>
-      </ul>
-    </div>
+  <!-- Settings -->
+  <div class="menu-group">
+    <button class="menu-toggle"><span><i class="fa fa-cog"></i> System Settings</span><i class="fa fa-chevron-down"></i></button>
+    <ul class="submenu">
+      <li><a href="2fa-security.html"><i class="fa fa-shield-alt"></i> Security</a></li>
+      <li><a href="system-config.html"><i class="fa fa-sliders-h"></i> Configurations</a></li>
+      <li><a href="email-templates.html"><i class="fa fa-envelope"></i> Email Templates</a></li>
+      <li><a href="backup-restore.html"><i class="fa fa-database"></i> Backups</a></li>
+      <li><a href="notifications.html"><i class="fa fa-bell"></i> Notifications</a></li>
+      <li><a href="audit-trail-settings.html"><i class="fa fa-clipboard-check"></i> Audit Settings</a></li>
+    </ul>
+  </div>
 
-    <a href="logout.html"><i class="fa fa-sign-out-alt"></i> Logout</a>
-  </nav>
+  <!-- Logs -->
+  <div class="menu-group">
+    <button class="menu-toggle"><span><i class="fa fa-file-alt"></i> Logs</span><i class="fa fa-chevron-down"></i></button>
+    <ul class="submenu">
+      <li><a href="system-actions.html"><i class="fa fa-tasks"></i> System Activity</a></li>
+      <li><a href="filter-logs.html"><i class="fa fa-filter"></i> Filter Logs</a></li>
+      <li><a href="export-logs.html"><i class="fa fa-file-export"></i> Export Logs</a></li>
+    </ul>
+  </div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const sidebar = document.querySelector('nav.sidebar');
-      const hamburger = document.getElementById('hamburger-btn');
-      const overlay = document.getElementById('sidebar-overlay');
+  <a href="logout.html"><i class="fa fa-sign-out-alt"></i> Logout</a>
+</nav>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const sidebar = document.querySelector('nav.sidebar');
+    const hamburger = document.getElementById('hamburger-btn');
+    const overlay = document.getElementById('sidebar-overlay');
 
+    if (hamburger && sidebar && overlay) {
       hamburger.addEventListener('click', () => {
         sidebar.classList.toggle('open');
         overlay.classList.toggle('active');
@@ -394,16 +386,28 @@
         sidebar.classList.remove('open');
         overlay.classList.remove('active');
       });
+    }
 
-      document.querySelectorAll('.menu-toggle').forEach(button => {
-        button.addEventListener('click', () => {
-          const submenu = button.nextElementSibling;
-          const isExpanded = button.getAttribute('aria-expanded') === 'true';
-          button.setAttribute('aria-expanded', !isExpanded);
-          submenu.classList.toggle('show');
-        });
+    document.querySelectorAll('.menu-toggle').forEach(button => {
+      button.addEventListener('click', () => {
+        const submenu = button.nextElementSibling;
+        if (!submenu) return;
+
+        const isExpanded = button.getAttribute('aria-expanded') === 'true';
+        button.setAttribute('aria-expanded', isExpanded ? 'false' : 'true');
+
+        // Toggle submenu visibility with smooth animation
+        if (submenu.classList.contains('show')) {
+          submenu.style.maxHeight = null;
+          submenu.classList.remove('show');
+        } else {
+          submenu.classList.add('show');
+          submenu.style.maxHeight = submenu.scrollHeight + "px";
+        }
       });
     });
-  </script>
+  });
+</script>
+
 </body>
 </html>
