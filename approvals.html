@@ -268,8 +268,6 @@
   <!-- jsPDF and autoTable for PDF export -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
 
@@ -337,192 +335,149 @@
     </div>
   </div>
 
- <script>
-  // Sidebar load
-  fetch('admin-menu.html')
-    .then(response => response.text())
-    .then(html => {
-      document.getElementById('sidebar-container').innerHTML = html;
-      document.querySelectorAll('.menu-toggle').forEach(button => {
-        button.addEventListener('click', () => {
-          const submenu = button.nextElementSibling;
-          submenu.classList.toggle('show');
+  <script>
+    // Sidebar load
+    fetch('admin-menu.html')
+      .then(response => response.text())
+      .then(html => {
+        document.getElementById('sidebar-container').innerHTML = html;
+        document.querySelectorAll('.menu-toggle').forEach(button => {
+          button.addEventListener('click', () => {
+            const submenu = button.nextElementSibling;
+            submenu.classList.toggle('show');
+          });
         });
+      })
+      .catch(err => console.error('Failed to load menu:', err));
+
+    // Search filter
+    const searchInput = document.getElementById('search-input');
+    const table = document.getElementById('approvals-table');
+    const tbody = table.tBodies[0];
+
+    searchInput.addEventListener('input', () => {
+      const filter = searchInput.value.toLowerCase();
+      Array.from(tbody.rows).forEach(row => {
+        const name = row.cells[0].textContent.toLowerCase();
+        const email = row.cells[1].textContent.toLowerCase();
+        const club = row.cells[2].textContent.toLowerCase();
+        row.style.display = (name.includes(filter) || email.includes(filter) || club.includes(filter)) ? '' : 'none';
       });
-    })
-    .catch(err => console.error('Failed to load menu:', err));
-
-  // Search filter
-  const searchInput = document.getElementById('search-input');
-  const table = document.getElementById('approvals-table');
-  const tbody = table.tBodies[0];
-
-  searchInput.addEventListener('input', () => {
-    const filter = searchInput.value.toLowerCase();
-    Array.from(tbody.rows).forEach(row => {
-      const name = row.cells[0].textContent.toLowerCase();
-      const email = row.cells[1].textContent.toLowerCase();
-      const club = row.cells[2].textContent.toLowerCase();
-      row.style.display = (name.includes(filter) || email.includes(filter) || club.includes(filter)) ? '' : 'none';
     });
-  });
 
-  // Modal elements
-  const modal = document.getElementById('user-modal');
-  const modalName = document.getElementById('detail-name');
-  const modalEmail = document.getElementById('detail-email');
-  const modalClub = document.getElementById('detail-club');
-  const modalInfo = document.getElementById('detail-info');
-  const modalCloseBtn = modal.querySelector('.modal-close-btn');
+    // Modal elements
+    const modal = document.getElementById('user-modal');
+    const modalName = document.getElementById('detail-name');
+    const modalEmail = document.getElementById('detail-email');
+    const modalClub = document.getElementById('detail-club');
+    const modalInfo = document.getElementById('detail-info');
+    const modalCloseBtn = modal.querySelector('.modal-close-btn');
 
-  // Sample detailed user data (replace with backend data)
-  const userDetails = {
-    'Sarah Nuwandinda': {
-      email: 'sarah@example.com',
-      club: 'Green Harvest',
-      info: 'Member since 2023. Pending approval for full membership.',
-    },
-    'David Okello': {
-      email: 'david@example.com',
-      club: 'Club not found',
-      info: 'Requested club is not yet created. Contact user for more info.',
+    // Sample detailed user data (replace with backend data)
+    const userDetails = {
+      'Sarah Nuwandinda': {
+        email: 'sarah@example.com',
+        club: 'Green Harvest',
+        info: 'Member since 2023. Pending approval for full membership.',
+      },
+      'David Okello': {
+        email: 'david@example.com',
+        club: 'Club not found',
+        info: 'Requested club is not yet created. Contact user for more info.',
+      }
+    };
+
+    // Open modal on user name click
+    document.querySelectorAll('.user-name').forEach(cell => {
+      cell.addEventListener('click', () => {
+        const name = cell.textContent.trim();
+        const details = userDetails[name];
+        if (details) {
+          modalName.textContent = name;
+          modalEmail.textContent = details.email;
+          modalClub.textContent = details.club;
+          modalInfo.textContent = details.info;
+          modal.classList.add('active');
+          modal.focus();
+        }
+      });
+      // Keyboard accessibility
+      cell.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          cell.click();
+        }
+      });
+    });
+
+    // Close modal function
+    function closeModal() {
+      modal.classList.remove('active');
     }
-  };
-
-  // Open modal on user name click
-  document.querySelectorAll('.user-name').forEach(cell => {
-    cell.addEventListener('click', () => {
-      const name = cell.textContent.trim();
-      const details = userDetails[name];
-      if (details) {
-        modalName.textContent = name;
-        modalEmail.textContent = details.email;
-        modalClub.textContent = details.club;
-        modalInfo.textContent = details.info;
-        modal.classList.add('active');
-        modal.focus();
+    modalCloseBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', e => {
+      if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && modal.classList.contains('active')) {
+        closeModal();
       }
     });
-    // Keyboard accessibility
-    cell.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        cell.click();
-      }
-    });
-  });
 
-  // Close modal function
-  function closeModal() {
-    modal.classList.remove('active');
-  }
-  modalCloseBtn.addEventListener('click', closeModal);
-  modal.addEventListener('click', e => {
-    if (e.target === modal) closeModal();
-  });
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && modal.classList.contains('active')) {
-      closeModal();
-    }
-  });
+    // Export to Excel (CSV)
+    document.getElementById('export-excel').addEventListener('click', () => {
+      let csvContent = "data:text/csv;charset=utf-8,";
+      // headers
+      csvContent += ['Full User Name','Email','Requested Club'].join(",") + "\r\n";
 
-  // Export to Excel (CSV)
-  document.getElementById('export-excel').addEventListener('click', () => {
-    let csvContent = "data:text/csv;charset=utf-8,";
-    // headers
-    csvContent += ['Full User Name','Email','Requested Club'].join(",") + "\r\n";
+      // rows (only visible rows)
+      Array.from(tbody.rows).forEach(row => {
+        if(row.style.display === 'none') return; // skip hidden rows
+        const rowData = [
+          row.cells[0].textContent.trim(),
+          row.cells[1].textContent.trim(),
+          row.cells[2].textContent.trim()
+        ];
+        csvContent += rowData.map(v => `"${v.replace(/"/g, '""')}"`).join(",") + "\r\n";
+      });
 
-    // rows (only visible rows)
-    Array.from(tbody.rows).forEach(row => {
-      if(row.style.display === 'none') return; // skip hidden rows
-      const rowData = [
-        row.cells[0].textContent.trim(),
-        row.cells[1].textContent.trim(),
-        row.cells[2].textContent.trim()
-      ];
-      csvContent += rowData.map(v => `"${v.replace(/"/g, '""')}"`).join(",") + "\r\n";
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", "user_approvals.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     });
 
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "user_approvals.csv");
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  });
+    // Export to PDF using jsPDF and autoTable
+    document.getElementById('export-pdf').addEventListener('click', () => {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
 
-  // Export to PDF using jsPDF and autoTable with branding & A4 landscape
-  document.getElementById('export-pdf').addEventListener('click', () => {
-    const { jsPDF } = window.jspdf;
+      // Get data rows visible
+      const rows = [];
+      Array.from(tbody.rows).forEach(row => {
+        if(row.style.display === 'none') return;
+        rows.push([
+          row.cells[0].textContent.trim(),
+          row.cells[1].textContent.trim(),
+          row.cells[2].textContent.trim()
+        ]);
+      });
 
-    // A4 Landscape, units in points
-    const doc = new jsPDF({
-      orientation: 'landscape',
-      unit: 'pt',
-      format: 'a4',
+      doc.setFontSize(18);
+      doc.text("Pending User Approvals", 14, 22);
+      doc.autoTable({
+        startY: 30,
+        head: [['Full User Name', 'Email', 'Requested Club']],
+        body: rows,
+        theme: 'grid',
+        headStyles: { fillColor: [195, 158, 61] },
+      });
+
+      doc.save('user_approvals.pdf');
     });
-
-    // Branding colors
-    const gold = [195, 158, 61];
-    const dark = [16, 49, 37];
-    const lightText = [255, 255, 255];
-
-    // Add logo (replace with your base64 image or URL as needed)
-    const logoBase64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAOwwAADsMBx2+oZAAAABl0RVh0U29mdHdhcmUAUGFpbnQuTkVUIHYzLjM2qefiJQAAAH5JREFUWIXt1zEOgCAMBFD/fzOq09qQIjJbq+MxVnpk6IoMAtQIodBI6QF5H3n5QuMYUSXn4r1DnAVHlTi6NGicvmPQlSCoUyEMwgkgJQyAySMuEPOv3A9KX/6zqOfvH9fXpCqEbdlhg1fVxTQG6yChAqHkVbqFGDk2PxVkQ60Fr1Q7Gk6QY56pYxJo2pNjrGwJ6uWslvP3pVWwAAAABJRU5ErkJggg==';
-    doc.addImage(logoBase64, 'PNG', 40, 20, 40, 40);
-
-    // Title and header text
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(28);
-    doc.setTextColor(...gold);
-    doc.text('Growing Cents', 90, 50);
-
-    doc.setFontSize(16);
-    doc.setTextColor(...dark);
-    doc.text('Pending User Approvals Report', 90, 70);
-
-    // Collect table data from visible rows
-    const rows = [];
-    Array.from(tbody.rows).forEach(row => {
-      if (row.style.display === 'none') return;
-      rows.push([
-        row.cells[0].textContent.trim(),
-        row.cells[1].textContent.trim(),
-        row.cells[2].textContent.trim(),
-      ]);
-    });
-
-    // Generate table with autotable
-    doc.autoTable({
-      startY: 100,
-      head: [['Full User Name', 'Email', 'Requested Club']],
-      body: rows,
-      theme: 'grid',
-      headStyles: {
-        fillColor: gold,
-        textColor: lightText,
-        fontStyle: 'bold',
-        halign: 'center',
-      },
-      bodyStyles: {
-        fontSize: 12,
-        textColor: dark,
-      },
-      margin: { left: 40, right: 40 },
-    });
-
-    // Footer with generation date, bottom-left
-    const pageHeight = doc.internal.pageSize.height;
-    doc.setFontSize(10);
-    doc.setTextColor(...dark);
-    const now = new Date();
-    doc.text(`Generated on: ${now.toLocaleString()}`, 40, pageHeight - 30);
-
-    // Save PDF
-    doc.save('GrowingCents_UserApprovals_Report.pdf');
-  });
-</script>
-
+  </script>
 </body>
 </html>

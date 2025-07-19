@@ -5,6 +5,12 @@
   <title>All Clubs – Growing Cents</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
+
   <style>
     :root {
       --bg-dark: #103125;
@@ -160,6 +166,7 @@
       background-color: #145bb5;
     }
 
+    /* Responsive Table for Mobile */
     @media (max-width: 900px) {
       body {
         flex-direction: column;
@@ -190,6 +197,7 @@
         padding: 20px;
       }
 
+      /* Make table elements block for small screens */
       table,
       thead,
       tbody,
@@ -218,8 +226,10 @@
         position: relative;
         padding-left: 50%;
         text-align: right;
+        white-space: normal;
       }
 
+      /* Show the label before each td content */
       tbody td::before {
         content: attr(data-label);
         position: absolute;
@@ -236,6 +246,75 @@
         margin: 10px 1% 0 0;
       }
     }
+
+    /* Insights / KPI Cards Styling */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 30px;
+}
+
+.kpi-card {
+  background-color: #ffffff;
+  color: var(--text-dark);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  transition: transform 0.2s ease;
+}
+
+.kpi-card:hover {
+  transform: translateY(-2px);
+}
+
+.kpi-icon {
+  font-size: 24px;
+  color: var(--accent-gold);
+  margin-bottom: 10px;
+}
+
+.kpi-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--bg-dark);
+  margin-bottom: 4px;
+}
+
+.kpi-value {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--accent-gold);
+}
+
+/* Headings inside main.content sections */
+main.content h2 {
+  font-size: 1.5rem;
+  font-family: 'Marcellus', serif;
+  color: var(--bg-dark);
+  margin: 30px 0 15px;
+}
+
+/* Responsive tweaks for KPI cards */
+@media screen and (max-width: 600px) {
+  .kpi-title {
+    font-size: 0.85rem;
+  }
+
+  .kpi-value {
+    font-size: 1rem;
+  }
+
+  .kpi-icon {
+    font-size: 20px;
+  }
+
+  .kpi-grid {
+    gap: 12px;
+  }
+}
+
   </style>
 </head>
 <body>
@@ -248,78 +327,230 @@
       <p>View and manage all investment clubs registered on Growing Cents.</p>
     </header>
 
-    <section>
-      <table aria-label="List of all clubs">
-        <thead>
-          <tr>
-            <th>Club Name</th>
-            <th>Country</th>
-            <th>Region</th>
-            <th>Tier</th>
-            <th>Status</th>
-            <th>Date Created</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td data-label="Club Name">Green Harvest</td>
-            <td data-label="Country">Uganda</td>
-            <td data-label="Region">Central</td>
-            <td data-label="Tier">Tier 2</td>
-            <td data-label="Status"><span class="status-active">Active</span></td>
-            <td data-label="Date Created">2024-02-15</td>
-            <td data-label="Actions" class="action-buttons">
-              <button class="btn-view" onclick="alert('View Green Harvest details')">View</button>
-              <button class="btn-edit" onclick="alert('Edit Green Harvest details')">Edit</button>
-            </td>
-          </tr>
-          <tr>
-            <td data-label="Club Name">Sunrise Investors</td>
-            <td data-label="Country">Kenya</td>
-            <td data-label="Region">Nairobi</td>
-            <td data-label="Tier">Tier 1</td>
-            <td data-label="Status"><span class="status-inactive">Inactive</span></td>
-            <td data-label="Date Created">2023-11-10</td>
-            <td data-label="Actions" class="action-buttons">
-              <button class="btn-view" onclick="alert('View Sunrise Investors details')">View</button>
-              <button class="btn-edit" onclick="alert('Edit Sunrise Investors details')">Edit</button>
-            </td>
-          </tr>
-          <tr>
-            <td data-label="Club Name">Harvest Wealth</td>
-            <td data-label="Country">Uganda</td>
-            <td data-label="Region">Eastern</td>
-            <td data-label="Tier">Tier 3</td>
-            <td data-label="Status"><span class="status-active">Active</span></td>
-            <td data-label="Date Created">2025-01-20</td>
-            <td data-label="Actions" class="action-buttons">
-              <button class="btn-view" onclick="alert('View Harvest Wealth details')">View</button>
-              <button class="btn-edit" onclick="alert('Edit Harvest Wealth details')">Edit</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+   <section>
+<div style="background: #ffffff; padding: 20px 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+  <h2 style="color: #103125; font-size: 1.2rem; margin-bottom: 20px; border-left: 4px solid #C39E3D; padding-left: 10px;">Club Analytics</h2>
+  <div class="kpi-grid">
+    <div class="kpi-card"><i class="fas fa-users kpi-icon"></i><div class="kpi-title">Total Clubs</div><div class="kpi-value">150</div></div>
+    <div class="kpi-card"><i class="fas fa-check-circle kpi-icon"></i><div class="kpi-title">Active Clubs</div><div class="kpi-value">120</div></div>
+    <div class="kpi-card"><i class="fas fa-times-circle kpi-icon"></i><div class="kpi-title">Inactive Clubs</div><div class="kpi-value">30</div></div>
+    <div class="kpi-card"><i class="fas fa-flag kpi-icon"></i><div class="kpi-title">Countries Represented</div><div class="kpi-value">5</div></div>
+    <div class="kpi-card"><i class="fas fa-map-marker-alt kpi-icon"></i><div class="kpi-title">Most Active Region</div><div class="kpi-value">Central Uganda</div></div>
+  </div>
+</div>
+
+<div style="background: #ffffff; padding: 20px 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-top: 30px;">
+  <h2 style="color: #103125; font-size: 1.2rem; margin-bottom: 20px; border-left: 4px solid #C39E3D; padding-left: 10px;">Regional Insights</h2>
+  <div class="kpi-grid">
+    <div class="kpi-card"><i class="fas fa-map-marker-alt kpi-icon"></i><div class="kpi-title">Clubs in Central Region</div><div class="kpi-value">45</div></div>
+    <div class="kpi-card"><i class="fas fa-compass kpi-icon"></i><div class="kpi-title">Clubs in Eastern Region</div><div class="kpi-value">30</div></div>
+    <div class="kpi-card"><i class="fas fa-mountain kpi-icon"></i><div class="kpi-title">Clubs in Western Region</div><div class="kpi-value">25</div></div>
+    <div class="kpi-card"><i class="fas fa-sun kpi-icon"></i><div class="kpi-title">Clubs in Northern Region</div><div class="kpi-value">20</div></div>
+    <div class="kpi-card"><i class="fas fa-tree kpi-icon"></i><div class="kpi-title">Clubs in Southern Region</div><div class="kpi-value">30</div></div>
+  </div>
+</div>
+<!-----list table------->
+<div style="margin-top: 40px;">
+  <h2 style="color: #103125; font-size: 1.2rem; margin-bottom: 15px; border-left: 4px solid #C39E3D; padding-left: 10px;">
+    Club List
+  </h2>
+
+ <!-- Search and Export -->
+  <div class="table-controls" style="display: flex; gap: 15px; margin-bottom: 20px; align-items: center;">
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="Search clubs..."
+      style="
+        padding: 10px 15px;
+        border: 2px solid #C39E3D;
+        border-radius: 8px;
+        font-size: 1rem;
+        flex-grow: 1;
+        max-width: 300px;
+        outline-offset: 2px;
+        transition: border-color 0.3s ease;
+      "
+      onfocus="this.style.borderColor='#a67c28'"
+      onblur="this.style.borderColor='#C39E3D'"
+    />
+    <button
+      onclick="exportTableToCSV('clubs.csv')"
+      style="
+        background-color: #C39E3D;
+        border: none;
+        color: #103125;
+        padding: 10px 20px;
+        font-weight: 700;
+        font-size: 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      "
+      onmouseover="this.style.backgroundColor='#a67c28'"
+      onmouseout="this.style.backgroundColor='#C39E3D'"
+    >
+      Export CSV
+    </button>
+
+    <button
+      onclick="exportTableToPDF()"
+      style="
+        background-color: #103125;
+        border: none;
+        color: #C39E3D;
+        padding: 10px 20px;
+        font-weight: 700;
+        font-size: 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      "
+      onmouseover="this.style.backgroundColor='#0b2415'"
+      onmouseout="this.style.backgroundColor='#103125'"
+    >
+      Export PDF
+    </button>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrapper">
+    <table id="club-table" aria-label="List of all clubs" style="width: 100%;">
+      <thead>
+        <tr>
+          <th>Club Name</th>
+          <th>Country</th>
+          <th>Region</th>
+          <th>Subscription</th>
+          <th>Maturity Level</th>
+          <th>Status</th>
+          <th>Date Created</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- dummy data here -->
+        <tr>
+          <td data-label="Club Name">Green Harvest</td>
+          <td data-label="Country">Uganda</td>
+          <td data-label="Region">Central</td>
+          <td data-label="Subscription">Premium</td>
+          <td data-label="Maturity Level">High</td>
+          <td data-label="Status"><span class="status-active">Active</span></td>
+          <td data-label="Date Created">2024-02-15</td>
+          <td data-label="Actions" class="action-buttons">
+            <button class="btn-view">View</button>
+            <button class="btn-edit">Edit</button>
+          </td>
+        </tr>
+        <tr>
+          <td data-label="Club Name">Sunrise Investors</td>
+          <td data-label="Country">Kenya</td>
+          <td data-label="Region">Nairobi</td>
+          <td data-label="Subscription">Basic</td>
+          <td data-label="Maturity Level">Medium</td>
+          <td data-label="Status"><span class="status-inactive">Inactive</span></td>
+          <td data-label="Date Created">2023-11-10</td>
+          <td data-label="Actions" class="action-buttons">
+            <button class="btn-view">View</button>
+            <button class="btn-edit">Edit</button>
+          </td>
+        </tr>
+        <tr>
+          <td data-label="Club Name">Harvest Wealth</td>
+          <td data-label="Country">Uganda</td>
+          <td data-label="Region">Eastern</td>
+          <td data-label="Subscription">Standard</td>
+          <td data-label="Maturity Level">Low</td>
+          <td data-label="Status"><span class="status-active">Active</span></td>
+          <td data-label="Date Created">2025-01-20</td>
+          <td data-label="Actions" class="action-buttons">
+            <button class="btn-view">View</button>
+            <button class="btn-edit">Edit</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+      </div>
     </section>
-  </main>
+<script>
+  function exportTableToPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF('p', 'pt', 'a4');
+  const table = document.getElementById('club-table');
 
-  <script>
-    // Load the admin menu dynamically
-    fetch('admin-menu.html')
-      .then(response => response.text())
-      .then(html => {
-        document.getElementById('sidebar-container').innerHTML = html;
+  // Use html2canvas to capture the table as image
+  html2canvas(table, { scale: 2 }).then(canvas => {
+    const imgData = canvas.toDataURL('image/png');
+    const imgProps = doc.getImageProperties(imgData);
+    const pdfWidth = doc.internal.pageSize.getWidth() - 40; // 20pt margin each side
+    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
 
-        // Attach toggle events for submenu after loading menu
-        document.querySelectorAll('.menu-toggle').forEach(button => {
-          button.addEventListener('click', () => {
-            const submenu = button.nextElementSibling;
-            submenu.classList.toggle('show');
+    doc.addImage(imgData, 'PNG', 20, 20, pdfWidth, pdfHeight);
+    doc.save('clubs.pdf');
+  });
+}
+
+</script>
+    <!-- Format date to DD-MMM-YYYY -->
+    <script>
+      function formatDateToDDMMMYYYY(dateString) {
+        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        const date = new Date(dateString);
+        if (isNaN(date)) return dateString;
+        return `${String(date.getDate()).padStart(2, '0')}-${months[date.getMonth()]}-${date.getFullYear()}`;
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll('#club-table tbody tr').forEach(row => {
+          const dateCell = row.querySelector('td[data-label="Date Created"]');
+          if (dateCell) dateCell.textContent = formatDateToDDMMMYYYY(dateCell.textContent.trim());
+        });
+      });
+    </script>
+
+    <!-- Search and Export Scripts -->
+    <script>
+      document.getElementById("searchInput").addEventListener("input", function () {
+        const filter = this.value.toLowerCase();
+        document.querySelectorAll("#club-table tbody tr").forEach(row => {
+          row.style.display = [...row.cells].some(cell => cell.textContent.toLowerCase().includes(filter)) ? "" : "none";
+        });
+      });
+
+      function exportTableToCSV(filename) {
+        const rows = document.querySelectorAll("table tr");
+        const csv = [...rows].map(row =>
+          [...row.querySelectorAll("th, td")]
+            .map(cell => `"${cell.innerText.replace(/"/g, '""')}"`)
+            .join(",")
+        ).join("\n");
+
+        const blob = new Blob([csv], { type: "text/csv" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    </script>
+
+    <!-- Load menu dynamically -->
+    <script>
+      fetch('admin-menu.html')
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById('sidebar-container').innerHTML = html;
+          document.querySelectorAll('.menu-toggle').forEach(btn => {
+            btn.addEventListener('click', () => btn.nextElementSibling.classList.toggle('show'));
           });
         });
-      })
-      .catch(err => console.error('Failed to load menu:', err));
-  </script>
+    </script>
 
+ </main>
 </body>
 </html>
